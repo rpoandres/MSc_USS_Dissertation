@@ -85,7 +85,7 @@ I dedicate this ...
 \thispagestyle{empty}
 \vspace*{\fill}
 \begin{center}
-Copyright \copyright  \thinspace 2022 by Joseph Rowell \\ All Rights Reserved
+Copyright \copyright  \thinspace 2023 by Andr\'{e}s Restrepo Jim\'{e}nez \\ All Rights Reserved
 \end{center}
 \vspace*{\fill}
 \newpage
@@ -115,7 +115,7 @@ I, Name,  I declare that the thesis has been composed by myself and that the wor
 
 
 \tableofcontents
-
+\pagenumbering{arabic}
 \thispagestyle{plain}
 \listoffigures
 \listoftables
@@ -145,18 +145,38 @@ I, Name,  I declare that the thesis has been composed by myself and that the wor
   \end{sortedlist}
 % \end{singlespace}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{1 Project Plan}
+%\input{1 Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{2 Introduction and Background}
+%\input{2 Literature review}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{3 Methodology}
+%\input{3 Study area and or data chapter}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{4 Results and Analysis}
+%\input{4 Methodology}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{5 Discussion}
+%\input{5 Results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{6 Conclusion}
+%\input{6 Discussion}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\input{7 Conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introduction} \label{Chap1}
+
+\section{Section}
+\subsection{Subsection}
+\subsubsection{SubSubsection}
+\paragraph{Parragraph}
+\lipsum[5]
+Testing \Gls{raster}
+
+Testing references \cite{Kupfer2015AnImages}
+\chapter{Literature review} \label{Chap2}
+\chapter{Study area and or data chapter} \label{Chap3}
+\chapter{Methodology} \label{Chap4}
+\chapter{Results} \label{Chap5}
+\chapter{Discussion} \label{Chap6}
+\chapter{Conclusion} \label{Chap7}
+
+
 \renewcommand{\bibname}{References}
 \bibliographystyle{ieeetr}
 %\bibliography{Bibliography.bib}
