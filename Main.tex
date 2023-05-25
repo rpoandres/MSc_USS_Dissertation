@@ -7,7 +7,7 @@
 \usepackage{multicol}
 \hypersetup{pdftitle = Project Report, pdfauthor = {First Last}, pdfstartview=FitH, pdfkeywords = essay, pdfpagemode = FullScreen, colorlinks, anchorcolor = black, citecolor = blue, urlcolor = blue, filecolor = green, linkcolor = blue, plainpages = false}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagestyle{fancy}
+%\pagestyle{fancy}
 \rhead{}
 \chead{}
 \lhead{University College London}
@@ -44,6 +44,7 @@ This dissertation is submitted in part requirement for \\the \textit{MSc Urban S
 % \\Disclaimer:This report is submitted as part requirement for the MSc in Robotics  and Computation at University College London. It is substantially the result of my own work except where explicitly indicated in the text.The report may be freely copied and distributed provided the source is explicitly acknowledged.
 % September 2022
 }
+\hypersetup{citecolor=black}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 %Adjust logo positions here
@@ -100,14 +101,14 @@ Copyright \copyright  \thinspace 2023 by Andr\'{e}s Restrepo Jim\'{e}nez \\ All 
 
 \thispagestyle{empty}
 \chapter*{Declaration}
-I, Name,  I declare that the thesis has been composed by myself and that the work has not be submitted for any other degree or professional qualification. I confirm that the work submitted is my own, except where work which has formed part of jointly-authored publications has been included and referenced. The report may be freely copied and distributed provided the source is explicitly acknowledged. \\
-%Add signature png here.
-% \begin{figure}[H]
-% \includegraphics{Logos/signature.PNG}
-% \end{figure}
+I, Andr\'{e}s Restrepo Jim\'{e}nez, hereby declare that this dissertation is all my own original work and that all sources have been acknowledged. It is xxx words in length. \\
+Add signature png here.
+\begin{figure}[H]
+\includegraphics{Logos/Signature.jpg}
+\end{figure}
 \vspace{-2cm}
 \noindent\begin{tabular}{ll}
- & 12/09/22 \\
+ & 20/08/23 \\
 \makebox[2.5in]{\hrulefill} & \makebox[2.5in]{\hrulefill}\\
 \textit{Signature} & \textit{Date}\\
 \end{tabular}
@@ -120,28 +121,15 @@ I, Name,  I declare that the thesis has been composed by myself and that the wor
 \listoffigures
 \listoftables
 %\lstlistoflistings
-\listofalgorithms
+%\listofalgorithms
 
 
 %\begin{singlespace}
-\chapter*{List of Abbreviations}
+\chapter*{List of acronyms or abbreviations}
 \begin{sortedlist} %sort alphabetically
-  \sortitem{CNN:     Convolutional Neural Network}
-  \sortitem{DCNN:    Deep Convolutional Neural Network}
-  \sortitem{SLAM:    Simultaneous Localization And Mapping}   \sortitem{GNSS:    Global Navigation Satellite System}
-  \sortitem{vSLAM:   visual Simultaneous Localisation and Mapping}
-  \sortitem{MAP:     Maximum a Posteriori}
-  \sortitem{ML:      Maximum Likelihood}
-  \sortitem{BA:      Bundle Adjustment}
-  \sortitem{TRC:     TPU Research Cloud}
-  \sortitem{TPU:     Tensor Processing Unit}
-  \sortitem{SfM:     Structure from Motion}
-  \sortitem{MVS:     Multi-view Stereo}
-  \sortitem{SIFT:    Scale Invariant Feature Transform}
-  \sortitem{SURF:    Speeded-Up Robust Features}
-  \sortitem{ORB:     Oriented FAST Rotated BRIEF}
-  \sortitem{FAST:    Features from Accelerated Segment Test}
-  \sortitem{BRIEF:   Binary Robust Independent Elementary Features}
+  \sortitem{BRT: Bus rapid transit}
+  \sortitem{GIS: Geopraphic information system}
+  \sortitem{GTFS: General transit feed specification}
   \end{sortedlist}
 % \end{singlespace}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -161,15 +149,60 @@ I, Name,  I declare that the thesis has been composed by myself and that the wor
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction} \label{Chap1}
 
-\section{Section}
-\subsection{Subsection}
-\subsubsection{SubSubsection}
-\paragraph{Parragraph}
-\lipsum[5]
-Testing \Gls{raster}
+\section{Background}
 
-Testing references \cite{Kupfer2015AnImages}
+- . 
+
+\begin{itemize}
+  \item Lack of functioning metro system in Bogota although it has been proposed and mention in previous local and/or national government plans
+    \begin{itemize}
+      \item  For dimensions reference, mention bogotas demographics data.
+    \end{itemize}
+  \item How it contribute or prevent people to have better life quality
+\end{itemize}
+
+\section{Importance}
+
+\begin{itemize}
+  \item Provide technical tools to assess transport planning decision
+  \item Baseline reference for future or similar transport public policy decision making
+  \item Assess how the metro system designs address the accessibility of the inhabitants
+  \item Spatial reference for future local government intervention and investment decisions from the private sector
+  \item Why is accessibility important in a economic and urban context? How can it drive growth?
+  \item How it contribute or prevent people to have better life quality
+\end{itemize}
+
+\section{Research question}
+
+The present research aims to address:
+\begin{center}
+    \textit{How would the public transportation accessibility spatially vary with the construction of Bogot\'{a}\textquotesingle s future metro system?}
+\end{center}
+
+
+% \subsection{Subsection}
+% \subsubsection{SubSubsection}
+% \paragraph{Parragraph}
+% \lipsum[5]
+% Testing \Gls{raster}
+
+Testing footnote\footnote{Capion of footnote!}
+
+Testing references \citep{alcaldiamayordebogotad.c.EstacionesPrimeraLinea2022}
 \chapter{Literature review} \label{Chap2}
+
+\begin{itemize}
+  \item Reference to Global UN Sustainability goals
+  \item Modelling in the urban context
+  \item Reference to north and global south previous research
+  \item Reference to National and local government plans related to transport infrastructure (or in Chapter 3?)
+  \item Reference to research done in Bogota (or in Chapter 3?)
+    \begin{itemize}
+    \item Purchase power analysis of user with BRT integration \citep{bocarejoAccessibilityAnalysisIntegrated2014}
+    \item Regional scale analysis by \citep{guzmanAssessingEquityTransport2017}
+    \end{itemize}
+\end{itemize}
+
 \chapter{Study area and or data chapter} \label{Chap3}
 \chapter{Methodology} \label{Chap4}
 \chapter{Results} \label{Chap5}
@@ -178,23 +211,21 @@ Testing references \cite{Kupfer2015AnImages}
 
 
 \renewcommand{\bibname}{References}
-\bibliographystyle{ieeetr}
+\bibliographystyle{abbrvnat}
 %\bibliography{Bibliography.bib}
 \bibliography{references.bib}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % APPENDIX
 \begin{appendices}
-\chapter{Source Code} \label{System Requirements}
-Source code for all of the methods implemented in Chap. \ref{Chap3} for the project can be found in the GitHub repository: \newline \url{link}. \newline \\
-Project files can be found on Google Drive \url{link}
+\chapter{Source code and data} \label{System Requirements}
+Source code and data for all of the methods implemented in Chap. \ref{Chap4} for the project can be found in the remote repository: \href{https://github.com/rpoandres/MSc_USS_Dissertation}{GitHub}
 
 
-\chapter{Project Introduction Video}\label{sec:projectIntroduction}
-A short video presentation, introducing background, aims and organisation of the project, as of 30$^{th}$ June 2022: \newline
-\url{link}
-\\
-\\
-\\
+
+% \chapter{Project Introduction Video}\label{sec:projectIntroduction}
+% A short video presentation, introducing background, aims and organisation of the project, as of 30$^{th}$ June 2022: \newline
+% \url{link}
+
 
 
 \end{appendices}
