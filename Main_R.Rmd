@@ -186,6 +186,13 @@ __Do we need to create one? How?__
 ```{r}
 head(brt_gtfs$stop_times)
 ```
+#### Trip Id
+
+
+```{r}
+n_distinct(brt_gtfs$stop_times$trip_id)
+```
+
 Sorting by trip id
 
 ```{r}
@@ -198,4 +205,49 @@ Unique value in stop_sequence field
 ```{r}
 n_distinct(brt_gtfs$stop_times$stop_sequence)
 ```
-__Filter a specific trip__
+Filter a specific trip
+
+Case 1 
+
+```{r}
+filter(brt_gtfs$stop_times, trip_id == "BC26E0001-10-3")
+```
+Case 2 
+
+```{r}
+filter(brt_gtfs$stop_times, trip_id == "BC26E0005-19-3")
+```
+__Do a group by with 0 and 1 values in stop sequence__
+
+
+### Frequencies (non existing)
+
+### Calendar dates
+
+```{r}
+head(brt_gtfs$calendar_dates)
+```
+Number of exceptions
+
+```{r}
+n_distinct(brt_gtfs$calendar_dates)
+```
+#### Exception type
+
+Exeption_type: "Indicates whether service is available on the date specified in the date field.
+
+Valid options are:
+
+1 - Service has been added for the specified date.
+2 - Service has been removed for the specified date." 
+
+```{r}
+unique(brt_gtfs$calendar_dates$exception_type)
+```
+Number of different dates in calendar dates
+
+```{r}
+unique(brt_gtfs$calendar_dates$date)
+```
+It seems to be holidays in Colombia.
+
