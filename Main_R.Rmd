@@ -9,8 +9,154 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Accessibility assessment: 
+## Libraries
 
-Testing Commiting using RStudio
+```{r}
+library(r5r)
+library(accessibility)
+library(ggplot2)
+library(aopdata)
+library(gtfstools)
+library(dplyr)
+library(st)
+library(httr)
+library(sf)
+library(patchwork)
+library(tmap)
+library(forcats)
+library(scales)
+```
 
-Resting the commit procedure
+## Memory setup
+
+```{r}
+options(java.parameters = "-Xmx4G")
+```
+
+# Bus Rapid Transit network (BRT)
+
+## Downloading the GTFS data
+
+Setting the temp file path
+
+```{r}
+brt_path <- tempfile("brt", fileext = ".zip")
+```
+
+Downloading the BRT GTFS data
+
+```{r}
+httr::GET(
+  "https://www.arcgis.com/sharing/rest/content/items/6def68cda70c43ab8d93d74f43c5915a/data",
+  httr::write_disk(brt_path)
+)
+```
+The GTFS data is a static feed (2021-07-04) provided by the Transport Secretary of Bogota City Council.
+
+## Inspection of data
+
+Review of tables of downloaded data
+
+```{r}
+unzip(brt_path, list = TRUE)
+```
+
+```{r}
+brt_gtfs <- read_gtfs(brt_path)
+
+names(brt_gtfs)
+```
+### Agency
+
+```{r}
+head(brt_gtfs$agency)
+```
+
+
+### Routes
+
+```{r}
+head(brt_gtfs$routes)
+```
+#### Id
+
+Number of rows in route table
+
+```{r}
+nrow(brt_gtfs$routes)
+```
+Number of route id's.
+
+```{r}
+n_distinct(brt_gtfs$routes$route_id)
+```
+There are 547 different routes in the BRT network.
+
+#### Description
+
+Number of descriptions
+
+```{r}
+n_distinct(brt_gtfs$routes$route_desc)
+```
+Description texts
+
+```{r}
+unique(brt_gtfs$routes$route_desc)
+```
+#### Type
+
+Number of types
+
+```{r}
+n_distinct(brt_gtfs$routes$route_type)
+```
+Type texts
+
+```{r}
+unique(brt_gtfs$routes$route_type)
+```
+Consistent with official GTFS [specification](https://gtfs.org/schedule/reference/#routestxt).
+
+### Trips
+
+```{r}
+head(brt_gtfs$trips)
+```
+__How can you tell the direction?__
+
+Number of routes in table
+
+```{r}
+n_distinct(brt_gtfs$trips$route_id)
+```
+Number of duplicates
+
+```{r}
+brt_gtfs$trips[, .N, by = .(route_id, trip_id, service_id)]
+```
+Review
+
+```{r}
+n_distinct(brt_gtfs$trips)
+```
+There are 158976 trips included in the BRT GTFS data.
+
+### Stops
+
+```{r}
+head(brt_gtfs$stops)
+```
+Number of stations
+
+```{r}
+n_distinct(brt_gtfs$stops)
+```
+#### Id
+
+Number of rows in station table
+
+```{r}
+n_distinct(brt_gtfs$stops$stop_id)
+```
+There are 7819 different stations in the BRT network.
