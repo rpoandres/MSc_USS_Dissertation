@@ -160,3 +160,42 @@ Number of rows in station table
 n_distinct(brt_gtfs$stops$stop_id)
 ```
 There are 7819 different stations in the BRT network.
+
+#### Stop code
+
+Number of rows in station table
+
+```{r}
+n_distinct(brt_gtfs$stops$stop_code)
+```
+Stop code and stop id seem to be equivalent.
+
+### Calendar
+
+```{r}
+head(brt_gtfs$calendar)
+```
+From 1-5, it is the same schedule.
+
+### Shape (non existing)
+
+__Do we need to create one? How?__
+
+### Stops times
+
+```{r}
+head(brt_gtfs$stop_times)
+```
+Sorting by trip id
+
+```{r}
+brt_gtfs$stop_times[order(trip_id)]
+```
+__How to interpret the stop_sequence field?__
+
+Unique value in stop_sequence field
+
+```{r}
+n_distinct(brt_gtfs$stop_times$stop_sequence)
+```
+__Filter a specific trip__
