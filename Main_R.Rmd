@@ -182,6 +182,20 @@ From 1-5, it is the same schedule.
 
 __Do we need to create one? How?__
 
+Getting geometry from stops location for trip in case 3.
+
+```{r}
+geo_from_stops <- get_trip_geometry(brt_gtfs, trip_id = "BC26E0001-2-3")
+```
+
+Plotting
+
+```{r}
+plot(geo_from_stops)
+```
+
+
+
 ### Stops times
 
 ```{r}
@@ -220,6 +234,12 @@ filter(brt_gtfs$stop_times, trip_id == "BC26E0005-19-3")
 ```
 __Do a group by with 0 and 1 values in stop sequence__
 
+
+Case 3 
+
+```{r}
+filter(brt_gtfs$stop_times, trip_id == "BC26E0001-2-3")
+```
 
 ### Frequencies (non existing)
 
