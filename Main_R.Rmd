@@ -249,6 +249,12 @@ __It seems that there are some trips with no geometries.__
 ### Stops times
 
 ```{r}
+summary(brt_gtfs$stop_times)
+```
+
+
+
+```{r}
 head(brt_gtfs$stop_times)
 ```
 #### Trip Id
