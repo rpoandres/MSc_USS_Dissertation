@@ -24,6 +24,7 @@ library(httr)
 library(sf)
 library(patchwork)
 library(tmap)
+library(tmaptools)
 library(forcats)
 library(scales)
 ```
@@ -403,6 +404,8 @@ Filtering sf object
 filter(brt_stations_sf,stop_id == "97095" | stop_id == "88730") %>%
   plot()
 ```
+
+Map with color scheme based on the transit
 
 
 
