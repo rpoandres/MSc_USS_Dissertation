@@ -124,6 +124,7 @@ Consistent with official GTFS [specification](https://gtfs.org/schedule/referenc
 head(brt_gtfs$trips)
 ```
 __How can you tell the direction?__
+__It does not have the shape id__
 
 Number of routes in table
 
@@ -250,4 +251,11 @@ Number of different dates in calendar dates
 unique(brt_gtfs$calendar_dates$date)
 ```
 It seems to be holidays in Colombia.
+
+#### Service id
+
+```{r}
+n_distinct(brt_gtfs$calendar_dates$service_id)
+```
+
 
