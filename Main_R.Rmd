@@ -182,17 +182,50 @@ From 1-5, it is the same schedule.
 
 __Do we need to create one? How?__
 
+#### Geometry
+
 Getting geometry from stops location for trip in case 3.
 
 ```{r}
-geo_from_stops <- get_trip_geometry(brt_gtfs, trip_id = "BC26E0001-2-3")
+geo_from_stops_test <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "BC26E0001-2-3")
 ```
 
 Plotting
 
 ```{r}
-plot(geo_from_stops)
+plot(geo_from_stops_test)
 ```
+
+Plotting geometry only
+
+
+```{r}
+geo_from_stops_test %>%
+  st_geometry() %>%
+  plot()
+```
+
+Basic geo map
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_from_stops_test) +
+  theme_minimal()
+```
+
+
+#### Creating shape table
+
+
+#### Converting to sf
+
+```{r}
+test_shape <- gtfstools::convert_shapes_to_sf(
+  geo_from_stops,
+  shape_id = "BC26E0001-2-3"
+)
+```
+__Need to create a shape table before converting to sf__
 
 
 
