@@ -292,6 +292,36 @@ Filter a specific trip
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BC26E0001-10-3")
 ```
+Review of individual geometry
+
+```{r}
+geo_case_1 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "BC26E0001-10-3")
+```
+
+The new object is already a sf object.
+
+Plotting
+
+```{r}
+plot(geo_case_1)
+```
+
+Plotting geometry only
+
+
+```{r}
+geo_case_1 %>%
+  st_geometry() %>%
+  plot()
+```
+
+There is no geometry with only 0 and 1 values in stop sequence values.
+
+
+
+
+
+
 ##### Case 2 
 
 ```{r}
