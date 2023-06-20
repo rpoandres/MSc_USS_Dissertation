@@ -190,6 +190,8 @@ Getting geometry from stops location for trip in case 3.
 geo_from_stops_test <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "BC26E0001-2-3")
 ```
 
+The new object is already a sf object.
+
 Plotting
 
 ```{r}
@@ -213,21 +215,36 @@ ggplot() +
   theme_minimal()
 ```
 
-
 #### Creating shape table
 
-
-#### Converting to sf
+Orders the stop_times table based on the stop_sequence order.
 
 ```{r}
-test_shape <- gtfstools::convert_shapes_to_sf(
-  geo_from_stops,
-  shape_id = "BC26E0001-2-3"
-)
+brt_gtfs$stop_times <- brt_gtfs$stop_times[
+  order(trip_id, stop_sequence)
+]
 ```
-__Need to create a shape table before converting to sf__
+
+Creates a objects with all the geometries
+
+```{r}
+brt_shape <- gtfstools::get_trip_geometry(
+  brt_gtfs)
+```
+
+##### Inspection of geometries object
+
+There are 3039 unique geometries, so need to understand the duplicates structure.
+
+Na values in geometries
+
+```{r}
+brt_shape %>%
+  filter(is.na(geometry))
+```
 
 
+__It seems that there are some trips with no geometries.__
 
 ### Stops times
 
@@ -246,6 +263,9 @@ Sorting by trip id
 ```{r}
 brt_gtfs$stop_times[order(trip_id)]
 ```
+
+#### Stop sequence
+
 __How to interpret the stop_sequence field?__
 
 Unique value in stop_sequence field
@@ -253,14 +273,26 @@ Unique value in stop_sequence field
 ```{r}
 n_distinct(brt_gtfs$stop_times$stop_sequence)
 ```
+Histogram on stop sequence values
+
+```{r}
+histo_stop_sequence <- ggplot(brt_gtfs$stop_times, aes(x=stop_sequence)) +
+  ggtitle("Histogram of stop sequence values") + 
+  geom_histogram() + xlab("Stop sequence")
+histo_stop_sequence
+```
+
+Multiple stations with "1" values in the stop sequence.
+
+
 Filter a specific trip
 
-Case 1 
+##### Case 1 
 
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BC26E0001-10-3")
 ```
-Case 2 
+##### Case 2 
 
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BC26E0005-19-3")
@@ -268,7 +300,7 @@ filter(brt_gtfs$stop_times, trip_id == "BC26E0005-19-3")
 __Do a group by with 0 and 1 values in stop sequence__
 
 
-Case 3 
+##### Case 3 
 
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BC26E0001-2-3")
