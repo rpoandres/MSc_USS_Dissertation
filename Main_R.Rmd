@@ -17,6 +17,7 @@ library(accessibility)
 library(ggplot2)
 library(aopdata)
 library(gtfstools)
+#library(gtfs2gps)
 library(dplyr)
 library(st)
 library(httr)
@@ -131,12 +132,7 @@ Number of routes in table
 ```{r}
 n_distinct(brt_gtfs$trips$route_id)
 ```
-Number of duplicates
-
-```{r}
-brt_gtfs$trips[, .N, by = .(route_id, trip_id, service_id)]
-```
-Review
+Number of uniques entries
 
 ```{r}
 n_distinct(brt_gtfs$trips)
@@ -153,6 +149,32 @@ Number of stations
 ```{r}
 n_distinct(brt_gtfs$stops)
 ```
+Convert stops to sf
+
+```{r}
+brt_stations_sf <- st_as_sf(brt_gtfs$stops,coords = c("stop_lon", "stop_lat"))
+```
+
+Plot stations
+
+```{r}
+brt_stations_sf %>%
+  st_geometry() %>%
+  plot()
+```
+
+Basic geo map
+
+```{r}
+ggplot() +
+  geom_sf(data = brt_stations_sf) +
+  theme_minimal()
+```
+
+
+
+
+
 #### Id
 
 Number of rows in station table
@@ -341,6 +363,18 @@ __Do a group by with 0 and 1 values in stop sequence__
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BC26E0001-2-3")
 ```
+
+##### Pivot table
+
+```{r}
+trips_by_stop <- brt_gtfs$stop_times %>%
+  group_by(trip_id) %>%
+  summarize(count_by_stop_sequence = n())
+```
+
+
+
+
 
 ### Frequencies (non existing)
 
