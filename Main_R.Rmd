@@ -353,9 +353,6 @@ There is no geometry with only 0 and 1 values in stop sequence values.
 
 
 
-
-
-
 ##### Case 2 
 
 ```{r}
@@ -372,6 +369,7 @@ filter(brt_gtfs$stop_times, trip_id == "BC26E0001-2-3")
 
 ##### Stations with the most transit
 
+It is not counting the stop secuence field
 
 ```{r}
 trips_by_stop <- brt_gtfs$stop_times %>%
@@ -381,16 +379,18 @@ trips_by_stop <- brt_gtfs$stop_times %>%
 
 ```
 
+__Misleading count__
+
 Orders descending
 
 ```{r}
-trips_by_stop[order(desc(trips_by_stop$count_transit)),]
+head(trips_by_stop[order(desc(trips_by_stop$count_transit)),])
 ```
 
 Orders ascending
 
 ```{r}
-trips_by_stop[order((trips_by_stop$count_transit)),]
+head(trips_by_stop[order((trips_by_stop$count_transit)),])
 ```
 
 ##### High and low traffic stations
@@ -405,7 +405,7 @@ filter(brt_stations_sf,stop_id == "97095" | stop_id == "88730") %>%
   plot()
 ```
 
-Map with color scheme based on the transit
+Filtering the stop table based on t
 
 
 
