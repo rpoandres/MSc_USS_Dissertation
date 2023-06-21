@@ -210,7 +210,7 @@ __Do we need to create one? How?__
 Getting geometry from stops location for trip in case 3.
 
 ```{r}
-geo_from_stops_test <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "BC26E0001-2-3")
+geo_from_stops_test <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = c( "BC26E0001-2-3","BC26E0001-3-3"))
 ```
 
 The new object is already a sf object.
@@ -280,6 +280,36 @@ summary(brt_gtfs$stop_times)
 ```{r}
 head(brt_gtfs$stop_times)
 ```
+
+```{r}
+brt_gtfs$stop_times
+```
+
+Filter stop sequence 0 values
+
+```{r}
+filter(brt_gtfs$stop_times, stop_sequence == 0)
+```
+
+Count of 0 stop sequence values
+
+```{r}
+stop_cero_sequence <- filter(brt_gtfs$stop_times, stop_sequence == 0) %>%
+  group_by(stop_id) %>%
+  summarize(count_cero = n()) #%>%
+
+stop_cero_sequence <- stop_cero_sequence[order(desc(stop_cero_sequence$count_cero)),]
+
+```
+
+Filtering the stop table
+
+```{r}
+filter(brt_gtfs$stops, stop_id == stop_cero_sequence$stop_id[1])
+```
+
+
+
 #### Trip Id
 
 
@@ -292,6 +322,8 @@ Sorting by trip id
 ```{r}
 brt_gtfs$stop_times[order(trip_id)]
 ```
+
+The BC26E0001-XX-3 suffix is a consecutive counter of the same service.
 
 #### Stop sequence
 
@@ -393,9 +425,7 @@ stops_by_trip <- brt_gtfs$stop_times %>%
 head(stops_by_trip)
 ```
 
-
-
-Filter the trips with just 2 stops (inconsistent geometry)
+Drop the trips with just 2 stops (inconsistent geometry)
 
 ```{r}
 stops_by_trip_filtered <- stops_by_trip[!(stops_by_trip$S_0 == 1 & stops_by_trip$S_1 == 1 & apply(stops_by_trip[,4:length(stops_by_trip)], 1, function(x) all(x == 0))), ]
@@ -404,7 +434,7 @@ head(stops_by_trip_filtered)
 
 ```
 __Take these trips and drops them from the sf object__
-
+__Review if these are really inconsistent__
 
 
 Orders descending
