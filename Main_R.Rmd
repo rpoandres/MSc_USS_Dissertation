@@ -19,6 +19,7 @@ library(aopdata)
 library(gtfstools)
 #library(gtfs2gps)
 library(dplyr)
+library(tidyr)
 library(st)
 library(httr)
 library(sf)
@@ -381,6 +382,31 @@ trips_by_stop <- brt_gtfs$stop_times %>%
 
 __Misleading count__
 
+Adjusted count
+
+```{r}
+stops_by_trip <- brt_gtfs$stop_times %>%
+  group_by(trip_id, stop_sequence) %>%
+  summarize(count_stop_sequence = n()) %>%
+  pivot_wider(names_from = stop_sequence, values_from = count_stop_sequence, values_fill = 0,names_prefix = "S_")
+
+head(stops_by_trip)
+```
+
+
+
+Filter the trips with just 2 stops (inconsistent geometry)
+
+```{r}
+stops_by_trip_filtered <- stops_by_trip[!(stops_by_trip$S_0 == 1 & stops_by_trip$S_1 == 1 & apply(stops_by_trip[,4:length(stops_by_trip)], 1, function(x) all(x == 0))), ]
+
+head(stops_by_trip_filtered)
+
+```
+__Take these trips and drops them from the sf object__
+
+
+
 Orders descending
 
 ```{r}
@@ -394,6 +420,8 @@ head(trips_by_stop[order((trips_by_stop$count_transit)),])
 ```
 
 ##### High and low traffic stations
+
+__Based on misleading count__
 
 ```{r}
 filter(brt_gtfs$stops, stop_id == "97095" | stop_id == "88730" )
