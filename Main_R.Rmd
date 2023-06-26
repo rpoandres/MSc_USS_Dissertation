@@ -28,6 +28,7 @@ library(tmap)
 library(tmaptools)
 library(forcats)
 library(scales)
+library(writexl)
 ```
 
 ## Memory setup
@@ -435,6 +436,196 @@ head(stops_by_trip_filtered)
 ```
 __Take these trips and drops them from the sf object__
 __Review if these are really inconsistent__
+
+
+Plotting filtered geometries
+
+```{r}
+geo_from_stops_filtered <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = c("BC26E0001-2-3" , "BC26E0001-3-3"))
+```
+
+
+Sample of trips
+
+```{r}
+sample_1000 <- sample(stops_by_trip_filtered$trip_id,1000)
+
+head(sample_1000)
+
+```
+
+```{r}
+geo_from_stops_sample_1000 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = sample_1000)
+```
+
+Plotting sample
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_from_stops_sample_1000) +
+  theme_minimal()
+```
+The plotting issue started at a 5000 trip sample.
+
+
+##### One by one plotting
+
+Extract stops_by_trip to excel
+
+```{r}
+write_xlsx(stops_by_trip,"Test/stops_by_trip.xlsx")
+```
+
+Extract stops_by_trip_filtered to excel
+
+```{r}
+write_xlsx(stops_by_trip_filtered,"Test/stops_by_trip_filtered.xlsx")
+```
+
+
+###### Case 1: One only point
+
+Subsetting geometries
+
+```{r}
+geo_from_stops_1x1_1 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "BOJQ70001-3-3")
+```
+
+Plotting 1x1
+
+Basic geo map
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_from_stops_1x1_1) +
+  theme_minimal()
+```
+Filtering stop times table
+
+```{r}
+filter(brt_gtfs$stop_times, trip_id == "BOJQ70001-3-3")
+```
+
+
+
+###### Case 2: Two points
+
+Subsetting geometries
+
+```{r}
+geo_from_stops_1x1_2 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "BC26E0001-10-3")
+```
+
+Plotting 1x1
+
+Basic geo map
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_from_stops_1x1_2) +
+  theme_minimal()
+```
+Empty geometry
+
+
+Filtering stop times table
+
+```{r}
+filter(brt_gtfs$stop_times, trip_id == "BC26E0001-10-3")
+```
+Does not make sense
+
+###### Case 3: Tree points
+
+Subsetting geometries
+
+```{r}
+geo_from_stops_1x1_3 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "BOJLO0009-6-3")
+```
+
+Plotting 1x1
+
+Basic geo map
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_from_stops_1x1_3) +
+  theme_minimal()
+```
+Filtering stop times table
+
+```{r}
+filter(brt_gtfs$stop_times, trip_id == "BOJLO0009-6-3")
+```
+
+Geographically makes sense, unsure if in a functional way.
+
+Filtering stop  table
+
+```{r}
+filter(brt_gtfs$stops, stop_id %in% c("87927","88823", "87927"))
+```
+The plotted geometry is consistent in terms of the origin and destination location, however, it does not account for the real geographical route of the trip.
+
+__Is this adjusted when using the street network?__
+
+
+test (Working)
+
+```{r}
+geo_from_stops_filtered <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = stops_by_trip_filtered$trip_id)
+```
+
+
+Basic geo map
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_from_stops_filtered) +
+  theme_minimal()
+```
+
+```{r}
+summary(geo_from_stops_filtered)
+```
+Geometry type
+
+```{r}
+unique(st_geometry_type(geo_from_stops_filtered))
+```
+Valid geometry
+
+```{r}
+st_is_valid(geo_from_stops_filtered)
+```
+Remove invalid geometries
+
+```{r}
+invalid_geometries <- !st_is_valid(geo_from_stops_filtered)
+
+geo_from_stops_filtered <- geo_from_stops_filtered[invalid_geometries == FALSE, ]
+```
+
+Check for valid geometries again
+
+```{r}
+unique(st_is_valid(geo_from_stops_filtered))
+```
+Empty geometries
+
+```{r}
+st_is_empty(geo_from_stops_filtered)
+```
+
+
+
+Replotting
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_from_stops_filtered) +
+  theme_minimal()
+```
 
 
 Orders descending
