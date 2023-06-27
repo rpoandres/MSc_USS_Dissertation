@@ -12,3 +12,7 @@
 # Directories
 Data/Survey/CSV/
 Data/Survey/Shape/
+Test/
+
+# Jupyter Notebook records
+.ipynb_checkpoints
