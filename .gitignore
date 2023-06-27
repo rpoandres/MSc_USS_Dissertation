@@ -8,9 +8,11 @@
 .rar
 .zip
 # Directories
-Data/Survey/CSV/
+Data/Survey/CSV_Main/
+Data/Survey/CSV_Additional/
 Data/Survey/Shape/
 Test/
 # Jupyter Notebook records
 .ipynb_checkpoints
 Main_R.html
+Main_R.Rmd
