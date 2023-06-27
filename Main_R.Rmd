@@ -17,7 +17,7 @@ library(accessibility)
 library(ggplot2)
 library(aopdata)
 library(gtfstools)
-#library(gtfs2gps)
+library(readr)
 library(dplyr)
 library(tidyr)
 library(st)
@@ -39,7 +39,7 @@ options(java.parameters = "-Xmx4G")
 
 # Bus Rapid Transit network (BRT)
 
-## Downloading the GTFS data
+## Downloading the data
 
 Setting the temp file path
 
@@ -57,7 +57,7 @@ httr::GET(
 ```
 The GTFS data is a static feed (2021-07-04) provided by the Transport Secretary of Bogota City Council.
 
-## Inspection of data
+## Data inspection
 
 Review of tables of downloaded data
 
@@ -458,12 +458,12 @@ head(sample_1000)
 geo_from_stops_sample_1000 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = sample_1000)
 ```
 
-Plotting sample
+Plotting sample (Error)
 
 ```{r}
-ggplot() +
-  geom_sf(data = geo_from_stops_sample_1000) +
-  theme_minimal()
+# ggplot() +
+#   geom_sf(data = geo_from_stops_sample_1000) +
+#   theme_minimal()
 ```
 The plotting issue started at a 5000 trip sample.
 
@@ -568,6 +568,42 @@ filter(brt_gtfs$stops, stop_id %in% c("87927","88823", "87927"))
 The plotted geometry is consistent in terms of the origin and destination location, however, it does not account for the real geographical route of the trip.
 
 __Is this adjusted when using the street network?__
+
+
+###### Case 4: Four points
+
+
+Subsetting geometries
+
+```{r}
+geo_from_stops_1x1_4 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "CN1340030-10-3")
+```
+
+Plotting 1x1
+
+Basic geo map
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_from_stops_1x1_4) +
+  theme_minimal()
+```
+Filtering stop times table
+
+```{r}
+filter(brt_gtfs$stop_times, trip_id == "CN1340030-10-3")
+```
+
+Geographically makes sense, unsure if in a functional way.
+
+Filtering stop  table
+
+```{r}
+filter(brt_gtfs$stops, stop_id %in% c("5215","93431", "92919", "5215"))
+```
+
+
+
 
 
 test (Working)
@@ -695,4 +731,48 @@ It seems to be holidays in Colombia.
 n_distinct(brt_gtfs$calendar_dates$service_id)
 ```
 
+# Multipurpose survey
 
+## Reading the data
+
+### ZPU layer
+
+```{r}
+geo_zpu <- st_read("Data/Survey/Shape/ShapeEM2021/EM2021_UPZ.shp")
+```
+Geometry
+
+```{r}
+qtm(geo_zpu)
+```
+
+### Survey data
+
+Downloading and reading from source
+
+```{r}
+# url<- "https://www.sdp.gov.co/sites/default/files/encuestas-multiproposito/20230620em2021.zip"
+# 
+# download.file(url,"20230620em2021.zip")
+# 
+# unzip("20230620em2021.zip")
+# 
+# survey_raw <- read_csv("20230620EM2021.csv")
+```
+
+Reading from local
+
+```{r}
+survey_raw <- read_csv("Data/Survey/CSV/20230620EM2021.csv")
+```
+Preview
+
+```{r}
+head(survey_raw,10)
+```
+
+
+
+`
+
+    
