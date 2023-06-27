@@ -3,16 +3,15 @@
 .Rhistory
 .RData
 .Ruserdata
-
 # Type of data
 .csv
 .rar
 .zip
-
 # Directories
 Data/Survey/CSV/
 Data/Survey/Shape/
+Data/Survey/Data_dictionary/
 Test/
-
 # Jupyter Notebook records
 .ipynb_checkpoints
+Main_R.html
