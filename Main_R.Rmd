@@ -771,8 +771,36 @@ Preview
 head(survey_raw,10)
 ```
 
+## Data inspection
 
+### ZPU layer
 
-`
+CRS
+
+```{r}
+st_crs(geo_zpu)
+```
+Summary
+
+```{r}
+summary(geo_zpu)
+```
+UPZEM: Numeric
+UPZEM2: String
+
+### Survey data
+
+Data type
+
+```{r}
+Datatypelist_survey <- survey_raw %>% 
+  summarise_all(class) %>%
+  pivot_longer(everything(), 
+               names_to="All_variables", 
+               values_to="Variable_class")
+
+Datatypelist_survey
+```
+
 
     
