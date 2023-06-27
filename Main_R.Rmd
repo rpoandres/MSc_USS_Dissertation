@@ -748,27 +748,54 @@ qtm(geo_zpu)
 
 ### Survey data
 
+#### Main forms
+
 Downloading and reading from source
 
 ```{r}
-# url<- "https://www.sdp.gov.co/sites/default/files/encuestas-multiproposito/20230620em2021.zip"
-# 
-# download.file(url,"20230620em2021.zip")
-# 
-# unzip("20230620em2021.zip")
-# 
-# survey_raw <- read_csv("20230620EM2021.csv")
+url<- "https://www.sdp.gov.co/sites/default/files/encuestas-multiproposito/20230620em2021.zip"
+
+download.file(url,"Data/Survey/CSV_Main/20230620em2021.zip")
+
+unzip("Data/Survey/CSV_Main/20230620em2021.zip",exdir = "Data/Survey/CSV_Main")
+
+survey_raw <- read_csv("Data/Survey/CSV_Main/20230620EM2021.csv")
 ```
 
 Reading from local
 
 ```{r}
-survey_raw <- read_csv("Data/Survey/CSV/20230620EM2021.csv")
+survey_raw <- read_csv("Data/Survey/CSV_Main/20230620EM2021.csv")
 ```
 Preview
 
 ```{r}
 head(survey_raw,10)
+```
+
+#### Additional variables
+
+Downloading and reading from source
+
+```{r}
+url<- "https://www.sdp.gov.co/sites/default/files/encuestas-multiproposito/20230220_variables_adicionales_em2021_csv.zip"
+
+download.file(url,"Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021_csv.zip")
+
+unzip("Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021_csv.zip",exdir = "Data/Survey/CSV_Additional")
+
+survey_add_raw <- read_csv("Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021.csv")
+```
+Reading from local
+
+```{r}
+survey_add_raw <- read_csv("Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021.csv")
+```
+
+Preview
+
+```{r}
+head(survey_add_raw,10)
 ```
 
 ## Data inspection
@@ -790,6 +817,8 @@ UPZEM2: String
 
 ### Survey data
 
+#### Main forms
+
 Data type
 
 ```{r}
@@ -802,5 +831,16 @@ Datatypelist_survey <- survey_raw %>%
 Datatypelist_survey
 ```
 
+#### Additional variables
 
-    
+Data type
+
+```{r}
+Datatypelist_survey_add <- survey_add_raw %>% 
+  summarise_all(class) %>%
+  pivot_longer(everything(), 
+               names_to="All_variables", 
+               values_to="Variable_class")
+
+Datatypelist_survey_add
+```
