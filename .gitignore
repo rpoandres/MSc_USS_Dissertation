@@ -3,7 +3,12 @@
 .Rhistory
 .RData
 .Ruserdata
-# Data
+
+# Type of data
 .csv
 .rar
 .zip
+
+# Directories
+Data/Survey/CSV/
+Data/Survey/Shape/
