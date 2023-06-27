@@ -1,0 +1,9 @@
+# R records
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+# Data
+.csv
+.rar
+.zip
