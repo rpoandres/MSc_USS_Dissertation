@@ -755,6 +755,27 @@ It seems to be holidays in Colombia.
 n_distinct(brt_gtfs$calendar_dates$service_id)
 ```
 
+## Data cleaning (pending)
+
+# Street network (pending)
+
+## Data reading
+
+## Data inspection
+
+## Data cleaning
+
+
+# Metro system (pending)
+
+## Data reading
+
+## Data inspection
+
+## Data cleaning
+
+
+
 # Multipurpose survey
 
 ## Reading the data
@@ -856,7 +877,6 @@ Datatypelist_survey <- survey_raw %>%
 Datatypelist_survey
 ```
 
-__N/A's review in key fields__
 
 ##### Profiling
 
@@ -993,4 +1013,36 @@ filter(survey_add_raw, directorio == "220102") %>%
     N_INGTOT_PER, # Total income 
     N_pobre_monetario) # Monetary poverty
 ```
+
+## Data cleaning (pending)
+
+
+
+# Preprocessing
+
+## Data enrichment
+
+## Spatial analysis unit
+
+Hexagons grid??
+
+# Spatial analysis
+
+
+
+
+
+
+# Accessiblity modelling
+
+## Current scenario
+
+## Base scenario
+
+## Alternative scenario
+
+
+
+
+
 
