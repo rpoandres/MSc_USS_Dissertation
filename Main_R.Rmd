@@ -32,6 +32,22 @@ library(writexl)
 library(DataExplorer)
 ```
 
+## Temporary directory
+
+
+Location
+
+```{r}
+tempdir()
+```
+
+Deletes
+
+```{r}
+# unlink(tempdir(), recursive = TRUE)
+```
+
+
 ## Memory setup
 
 ```{r}
@@ -457,6 +473,8 @@ geo_from_stops_filtered <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = c("B
 Sample of trips
 
 ```{r}
+set.seed(123) 
+
 sample_500 <- sample(stops_by_trip_filtered$trip_id,500)
 
 head(sample_500)
@@ -759,13 +777,13 @@ qtm(geo_zpu)
 Downloading and reading from source
 
 ```{r}
-url<- "https://www.sdp.gov.co/sites/default/files/encuestas-multiproposito/20230620em2021.zip"
-
-download.file(url,"Data/Survey/CSV_Main/20230620em2021.zip")
-
-unzip("Data/Survey/CSV_Main/20230620em2021.zip",exdir = "Data/Survey/CSV_Main")
-
-survey_raw <- read_csv("Data/Survey/CSV_Main/20230620EM2021.csv")
+# url<- "https://www.sdp.gov.co/sites/default/files/encuestas-multiproposito/20230620em2021.zip"
+# 
+# download.file(url,"Data/Survey/CSV_Main/20230620em2021.zip")
+# 
+# unzip("Data/Survey/CSV_Main/20230620em2021.zip",exdir = "Data/Survey/CSV_Main")
+# 
+# survey_raw <- read_csv("Data/Survey/CSV_Main/20230620EM2021.csv")
 ```
 
 Reading from local
@@ -784,14 +802,15 @@ head(survey_raw,10)
 Downloading and reading from source
 
 ```{r}
-url<- "https://www.sdp.gov.co/sites/default/files/encuestas-multiproposito/20230220_variables_adicionales_em2021_csv.zip"
-
-download.file(url,"Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021_csv.zip")
-
-unzip("Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021_csv.zip",exdir = "Data/Survey/CSV_Additional")
-
-survey_add_raw <- read_csv("Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021.csv")
+# url<- "https://www.sdp.gov.co/sites/default/files/encuestas-multiproposito/20230220_variables_adicionales_em2021_csv.zip"
+# 
+# download.file(url,"Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021_csv.zip")
+# 
+# unzip("Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021_csv.zip",exdir = "Data/Survey/CSV_Additional")
+# 
+# survey_add_raw <- read_csv("Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021.csv")
 ```
+
 Reading from local
 
 ```{r}
@@ -841,8 +860,23 @@ __N/A's review in key fields__
 
 ##### Profiling
 
+Summary
+
 ```{r}
 introduce(survey_raw)
+```
+Missing values
+
+```{r}
+plot_missing(survey_raw)
+```
+
+Missing values on ID fields
+
+```{r}
+survey_raw %>% select(directorio,directorio_per, directorio_hog, dpto, mpio,clase,cod_localidad, nombre_localidad, cod_upz_grupo, nombre_upz_grupo, estrato2021, nombre_estrato, fex_c) %>%
+  plot_missing(.)
+
 ```
 
 
@@ -873,6 +907,28 @@ Datatypelist_survey_add <- survey_add_raw %>%
 
 Datatypelist_survey_add
 ```
+
+##### Profiling
+
+Summary
+
+```{r}
+introduce(survey_add_raw)
+```
+Missing values
+
+```{r}
+plot_missing(survey_raw)
+```
+
+Missing values on ID fields
+
+```{r}
+survey_add_raw %>% select(directorio, directorio_per, directorio_hog) %>%
+  plot_missing(.)
+
+```
+
 ##### Example
 
 directorio = "220102"
