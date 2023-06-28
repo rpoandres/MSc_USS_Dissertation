@@ -879,6 +879,52 @@ survey_raw %>% select(directorio,directorio_per, directorio_hog, dpto, mpio,clas
 
 ```
 
+Missing values by ZPU
+
+```{r}
+na_by_zpu <- survey_raw %>%
+  group_by(cod_upz_grupo) %>%
+  summarize(count_entry = n()) %>%
+  mutate(percentage_entry = count_entry / nrow(survey_raw) * 100) %>%
+  arrange(desc(percentage_entry))
+
+head(na_by_zpu)
+```
+
+Missing ZPU by "directorio"
+
+```{r}
+entry_by_directorio <- survey_raw %>%
+  group_by(directorio) %>%
+  summarize(count_entry = n(),count_na = sum(is.na(cod_upz_grupo))) %>%
+  mutate(percentage_entry = count_entry / nrow(survey_raw) * 100) %>%
+  mutate(control = ifelse(count_entry == count_na,"All na's", "None")) %>%
+  mutate(diff = count_entry - count_na) %>%
+  arrange((diff))
+
+entry_by_directorio
+```
+
+Filter equal values
+
+```{r}
+entry_by_directorio_control <- filter(entry_by_directorio, control == "None") %>%
+  mutate(control_diff = diff==count_entry)
+
+unique(entry_by_directorio_control$control_diff)
+```
+All entries, either have all NA's value per "directorio" or none.
+
+
+
+Missing ZPU
+
+```{r}
+filter(survey_raw, is.na(cod_upz_grupo))
+
+```
+
+
 
 ##### Example
 
@@ -886,7 +932,9 @@ directorio = "220102"
 
 ```{r}
 filter(survey_raw, directorio == "220102") %>%
-  select(directorio,directorio_per, # ID
+  select(directorio,directorio_per, directorio_hog, # ID
+         cod_upz_grupo, # ZPU code
+         nombre_upz_grupo, # ZPU name
          orden, # Order in home
          npcep4, # Age
          npcep6, # Relation to Household leader
