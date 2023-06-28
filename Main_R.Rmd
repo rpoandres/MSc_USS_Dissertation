@@ -29,12 +29,13 @@ library(tmaptools)
 library(forcats)
 library(scales)
 library(writexl)
+library(DataExplorer)
 ```
 
 ## Memory setup
 
 ```{r}
-options(java.parameters = "-Xmx4G")
+options(java.parameters = "-Xmx6G")
 ```
 
 # Bus Rapid Transit network (BRT)
@@ -59,6 +60,7 @@ The GTFS data is a static feed (2021-07-04) provided by the Transport Secretary 
 
 ## Data inspection
 
+
 Review of tables of downloaded data
 
 ```{r}
@@ -70,6 +72,13 @@ brt_gtfs <- read_gtfs(brt_path)
 
 names(brt_gtfs)
 ```
+### Profiling
+
+```{r}
+plot_str(brt_gtfs)
+```
+
+
 ### Agency
 
 ```{r}
@@ -448,24 +457,24 @@ geo_from_stops_filtered <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = c("B
 Sample of trips
 
 ```{r}
-sample_1000 <- sample(stops_by_trip_filtered$trip_id,1000)
+sample_500 <- sample(stops_by_trip_filtered$trip_id,500)
 
-head(sample_1000)
+head(sample_500)
 
 ```
 
 ```{r}
-geo_from_stops_sample_1000 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = sample_1000)
+geo_from_stops_sample_500 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = sample_500)
 ```
 
 Plotting sample (Error)
 
 ```{r}
-# ggplot() +
-#   geom_sf(data = geo_from_stops_sample_1000) +
-#   theme_minimal()
+ggplot() +
+  geom_sf(data = geo_from_stops_sample_500) +
+  theme_minimal()
 ```
-The plotting issue started at a 5000 trip sample.
+The plotting issue started at a 1000 trip sample. As it is random, this might change.
 
 
 ##### One by one plotting
@@ -473,17 +482,17 @@ The plotting issue started at a 5000 trip sample.
 Extract stops_by_trip to excel
 
 ```{r}
-write_xlsx(stops_by_trip,"Test/stops_by_trip.xlsx")
+# write_xlsx(stops_by_trip,"Test/stops_by_trip.xlsx")
 ```
 
 Extract stops_by_trip_filtered to excel
 
 ```{r}
-write_xlsx(stops_by_trip_filtered,"Test/stops_by_trip_filtered.xlsx")
+# write_xlsx(stops_by_trip_filtered,"Test/stops_by_trip_filtered.xlsx")
 ```
 
 
-###### Case 1: One only point
+###### Case 1: One only point (not working)
 
 Subsetting geometries
 
@@ -493,19 +502,19 @@ geo_from_stops_1x1_1 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "BOJQ70
 
 Plotting 1x1
 
-Basic geo map
+Basic geo map (not working)
 
 ```{r}
-ggplot() +
-  geom_sf(data = geo_from_stops_1x1_1) +
-  theme_minimal()
+# ggplot() +
+#   geom_sf(data = geo_from_stops_1x1_1) +
+#   theme_minimal()
 ```
+
 Filtering stop times table
 
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BOJQ70001-3-3")
 ```
-
 
 
 ###### Case 2: Two points
@@ -603,9 +612,6 @@ filter(brt_gtfs$stops, stop_id %in% c("5215","93431", "92919", "5215"))
 ```
 
 
-
-
-
 test (Working)
 
 ```{r}
@@ -613,12 +619,12 @@ geo_from_stops_filtered <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = stop
 ```
 
 
-Basic geo map
+Basic geo map (not working)
 
 ```{r}
-ggplot() +
-  geom_sf(data = geo_from_stops_filtered) +
-  theme_minimal()
+# ggplot() +
+#   geom_sf(data = geo_from_stops_filtered) +
+#   theme_minimal()
 ```
 
 ```{r}
@@ -647,20 +653,20 @@ Check for valid geometries again
 ```{r}
 unique(st_is_valid(geo_from_stops_filtered))
 ```
-Empty geometries
+Empty geometries (not working)
 
 ```{r}
-st_is_empty(geo_from_stops_filtered)
+# st_is_empty(geo_from_stops_filtered)
 ```
 
 
 
-Replotting
+Replotting (not working)
 
 ```{r}
-ggplot() +
-  geom_sf(data = geo_from_stops_filtered) +
-  theme_minimal()
+# ggplot() +
+#   geom_sf(data = geo_from_stops_filtered) +
+#   theme_minimal()
 ```
 
 
@@ -831,6 +837,29 @@ Datatypelist_survey <- survey_raw %>%
 Datatypelist_survey
 ```
 
+__N/A's review in key fields__
+
+##### Profiling
+
+```{r}
+introduce(survey_raw)
+```
+
+
+##### Example
+
+directorio = "220102"
+
+```{r}
+filter(survey_raw, directorio == "220102") %>%
+  select(directorio,directorio_per, # ID
+         orden, # Order in home
+         npcep4, # Age
+         npcep6, # Relation to Household leader
+         npcep11a) # Place of birth
+```
+
+
 #### Additional variables
 
 Data type
@@ -844,3 +873,20 @@ Datatypelist_survey_add <- survey_add_raw %>%
 
 Datatypelist_survey_add
 ```
+##### Example
+
+directorio = "220102"
+
+```{r}
+filter(survey_add_raw, directorio == "220102") %>%
+  select(
+    directorio,directorio_per, # ID
+    N_fuerza_trabajo, # In labour market
+    N_informal, # Informal
+    N_analfabeta, # Illiterate
+    N_pobre_ipm, # MPI poor
+    N_codigo_upz_trabajo, # ZPU ID of workplace
+    N_INGTOT_PER, # Total income 
+    N_pobre_monetario) # Monetary poverty
+```
+
