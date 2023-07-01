@@ -32,6 +32,7 @@ library(writexl)
 library(DataExplorer)
 library(osmextract)
 library(osmdata)
+library(leaflet) #for making the interactive map
 ```
 
 ## Temporary directory
@@ -774,8 +775,6 @@ Open Street Map Data downloaded from: https://export.hotosm.org/es/v3/
 osm_network <- oe_read("Data/Network/Bogota_general_network.osm.pbf") 
 ```
 
-
-
 Plotting
 
 ```{r}
@@ -786,6 +785,55 @@ plot(sf::st_geometry(osm_network))
 
 
 ## Data inspection
+
+
+### CRS
+
+```{r}
+st_crs(osm_network)
+```
+
+### Profilling
+
+```{r}
+plot_missing(osm_network)
+```
+
+Filter by highway value
+
+```{r}
+osm_by_highway<- osm_network %>%
+  group_by(highway) %>%
+  summarize(count_entry = n()) %>%
+  arrange(desc(count_entry))
+  
+
+osm_by_highway
+```
+
+Plotting by highway value
+
+```{r}
+
+osm_subsetting <- osm_by_highway %>%
+  filter(., highway == "footway")
+
+
+par(mar = rep(0.1, 4))
+plot(sf::st_geometry(osm_subsetting))
+```
+
+Interactive map by subsetting value
+
+```{r}
+tmap_mode("view")
+
+# tm_shape(osm_subsetting)
+
+tm_sf(osm_subsetting)
+
+```
+
 
 ## Data cleaning
 
