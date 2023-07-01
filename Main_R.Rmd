@@ -32,7 +32,10 @@ library(writexl)
 library(DataExplorer)
 library(osmextract)
 library(osmdata)
-library(leaflet) #for making the interactive map
+library(leaflet) # for making the interactive map
+library(elevatr) # DEM (Digital Elevation Model)
+library(raster)
+#library(terra) # Not installed
 ```
 
 ## Temporary directory
@@ -818,11 +821,33 @@ plot(sf::st_geometry(osm_subsetting))
 Interactive map by subsetting value
 
 ```{r}
-leaflet() %>% 
-  addTiles() %>% 
-  addPolylines(data = osm_subsetting)
+# leaflet() %>% 
+#   addTiles() %>% 
+#   addPolylines(data = osm_subsetting)
 
 ```
+
+__What sub-setting should be done before the accessibility modelling?__
+
+
+# TEST: ELevation
+
+```{r}
+elevation <- get_elev_raster(geo_zpu, z = 9)
+```
+```{r}
+elevation
+```
+
+
+
+Plotting test
+
+```{r}
+plot(elevation)
+#plot(geo_zpu, add = TRUE)
+```
+
 
 ## Data cleaning
 
