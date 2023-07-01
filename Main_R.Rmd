@@ -30,6 +30,8 @@ library(forcats)
 library(scales)
 library(writexl)
 library(DataExplorer)
+library(osmextract)
+library(osmdata)
 ```
 
 ## Temporary directory
@@ -757,9 +759,31 @@ n_distinct(brt_gtfs$calendar_dates$service_id)
 
 ## Data cleaning (pending)
 
-# Street network (pending)
+# BRT network? (pending)
+
+
+
 
 ## Data reading
+
+_Data downloaded in the wrong format__
+
+Open Street Map Data downloaded from: https://export.hotosm.org/es/v3/
+
+```{r}
+osm_network <- oe_read("Data/Network/Bogota_general_network.osm.pbf") 
+```
+
+
+
+Plotting
+
+```{r}
+par(mar = rep(0.1, 4))
+plot(sf::st_geometry(osm_network))
+```
+
+
 
 ## Data inspection
 
