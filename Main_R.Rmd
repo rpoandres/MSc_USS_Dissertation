@@ -37,7 +37,6 @@ library(leaflet) #for making the interactive map
 
 ## Temporary directory
 
-
 Location
 
 ```{r}
@@ -49,7 +48,6 @@ Deletes
 ```{r}
 # unlink(tempdir(), recursive = TRUE)
 ```
-
 
 ## Memory setup
 
@@ -75,10 +73,10 @@ httr::GET(
   httr::write_disk(brt_path)
 )
 ```
+
 The GTFS data is a static feed (2021-07-04) provided by the Transport Secretary of Bogota City Council.
 
 ## Data inspection
-
 
 Review of tables of downloaded data
 
@@ -91,12 +89,12 @@ brt_gtfs <- read_gtfs(brt_path)
 
 names(brt_gtfs)
 ```
+
 ### Profiling
 
 ```{r}
 plot_str(brt_gtfs)
 ```
-
 
 ### Agency
 
@@ -104,12 +102,12 @@ plot_str(brt_gtfs)
 head(brt_gtfs$agency)
 ```
 
-
 ### Routes
 
 ```{r}
 head(brt_gtfs$routes)
 ```
+
 #### Id
 
 Number of rows in route table
@@ -117,11 +115,13 @@ Number of rows in route table
 ```{r}
 nrow(brt_gtfs$routes)
 ```
+
 Number of route id's.
 
 ```{r}
 n_distinct(brt_gtfs$routes$route_id)
 ```
+
 There are 547 different routes in the BRT network.
 
 #### Description
@@ -131,11 +131,13 @@ Number of descriptions
 ```{r}
 n_distinct(brt_gtfs$routes$route_desc)
 ```
+
 Description texts
 
 ```{r}
 unique(brt_gtfs$routes$route_desc)
 ```
+
 #### Type
 
 Number of types
@@ -143,11 +145,13 @@ Number of types
 ```{r}
 n_distinct(brt_gtfs$routes$route_type)
 ```
+
 Type texts
 
 ```{r}
 unique(brt_gtfs$routes$route_type)
 ```
+
 Consistent with official GTFS [specification](https://gtfs.org/schedule/reference/#routestxt).
 
 ### Trips
@@ -155,19 +159,21 @@ Consistent with official GTFS [specification](https://gtfs.org/schedule/referenc
 ```{r}
 head(brt_gtfs$trips)
 ```
-__How can you tell the direction?__
-__It does not have the shape id__
+
+**How can you tell the direction?** **It does not have the shape id**
 
 Number of routes in table
 
 ```{r}
 n_distinct(brt_gtfs$trips$route_id)
 ```
+
 Number of uniques entries
 
 ```{r}
 n_distinct(brt_gtfs$trips)
 ```
+
 There are 158976 trips included in the BRT GTFS data.
 
 ### Stops
@@ -175,11 +181,13 @@ There are 158976 trips included in the BRT GTFS data.
 ```{r}
 head(brt_gtfs$stops)
 ```
+
 Number of stations
 
 ```{r}
 n_distinct(brt_gtfs$stops)
 ```
+
 Convert stops to sf
 
 ```{r}
@@ -202,9 +210,6 @@ ggplot() +
   theme_minimal()
 ```
 
-
-
-
 #### Id
 
 Number of rows in station table
@@ -212,6 +217,7 @@ Number of rows in station table
 ```{r}
 n_distinct(brt_gtfs$stops$stop_id)
 ```
+
 There are 7819 different stations in the BRT network.
 
 #### Stop code
@@ -221,6 +227,7 @@ Number of rows in station table
 ```{r}
 n_distinct(brt_gtfs$stops$stop_code)
 ```
+
 Stop code and stop id seem to be equivalent.
 
 ### Calendar
@@ -228,11 +235,12 @@ Stop code and stop id seem to be equivalent.
 ```{r}
 head(brt_gtfs$calendar)
 ```
+
 From 1-5, it is the same schedule.
 
 ### Shape (non existing)
 
-__Do we need to create one? How?__
+**Do we need to create one? How?**
 
 #### Geometry
 
@@ -251,7 +259,6 @@ plot(geo_from_stops_test)
 ```
 
 Plotting geometry only
-
 
 ```{r}
 geo_from_stops_test %>%
@@ -295,16 +302,13 @@ brt_shape %>%
   filter(is.na(geometry))
 ```
 
-
-__It seems that there are some trips with no geometries.__
+**It seems that there are some trips with no geometries.**
 
 ### Stops times
 
 ```{r}
 summary(brt_gtfs$stop_times)
 ```
-
-
 
 ```{r}
 head(brt_gtfs$stop_times)
@@ -337,10 +341,7 @@ Filtering the stop table
 filter(brt_gtfs$stops, stop_id == stop_cero_sequence$stop_id[1])
 ```
 
-
-
 #### Trip Id
-
 
 ```{r}
 n_distinct(brt_gtfs$stop_times$trip_id)
@@ -356,13 +357,14 @@ The BC26E0001-XX-3 suffix is a consecutive counter of the same service.
 
 #### Stop sequence
 
-__How to interpret the stop_sequence field?__
+**How to interpret the stop_sequence field?**
 
 Unique value in stop_sequence field
 
 ```{r}
 n_distinct(brt_gtfs$stop_times$stop_sequence)
 ```
+
 Histogram on stop sequence values
 
 ```{r}
@@ -380,14 +382,14 @@ Number of stops for each station
 
 ```
 
-
 Filter a specific trip
 
-##### Case 1 
+##### Case 1
 
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BC26E0001-10-3")
 ```
+
 Review of individual geometry
 
 ```{r}
@@ -404,7 +406,6 @@ plot(geo_case_1)
 
 Plotting geometry only
 
-
 ```{r}
 geo_case_1 %>%
   st_geometry() %>%
@@ -413,17 +414,15 @@ geo_case_1 %>%
 
 There is no geometry with only 0 and 1 values in stop sequence values.
 
-
-
-##### Case 2 
+##### Case 2
 
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BC26E0005-19-3")
 ```
-__Do a group by with 0 and 1 values in stop sequence__
 
+**Do a group by with 0 and 1 values in stop sequence**
 
-##### Case 3 
+##### Case 3
 
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BC26E0001-2-3")
@@ -441,7 +440,7 @@ trips_by_stop <- brt_gtfs$stop_times %>%
 
 ```
 
-__Misleading count__
+**Misleading count**
 
 Adjusted count
 
@@ -462,16 +461,14 @@ stops_by_trip_filtered <- stops_by_trip[!(stops_by_trip$S_0 == 1 & stops_by_trip
 head(stops_by_trip_filtered)
 
 ```
-__Take these trips and drops them from the sf object__
-__Review if these are really inconsistent__
 
+**Take these trips and drops them from the sf object** **Review if these are really inconsistent**
 
 Plotting filtered geometries
 
 ```{r}
 geo_from_stops_filtered <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = c("BC26E0001-2-3" , "BC26E0001-3-3"))
 ```
-
 
 Sample of trips
 
@@ -495,8 +492,8 @@ ggplot() +
   geom_sf(data = geo_from_stops_sample_500) +
   theme_minimal()
 ```
-The plotting issue started at a 1000 trip sample. As it is random, this might change.
 
+The plotting issue started at a 1000 trip sample. As it is random, this might change.
 
 ##### One by one plotting
 
@@ -511,7 +508,6 @@ Extract stops_by_trip_filtered to excel
 ```{r}
 # write_xlsx(stops_by_trip_filtered,"Test/stops_by_trip_filtered.xlsx")
 ```
-
 
 ###### Case 1: One only point (not working)
 
@@ -537,7 +533,6 @@ Filtering stop times table
 filter(brt_gtfs$stop_times, trip_id == "BOJQ70001-3-3")
 ```
 
-
 ###### Case 2: Two points
 
 Subsetting geometries
@@ -555,14 +550,15 @@ ggplot() +
   geom_sf(data = geo_from_stops_1x1_2) +
   theme_minimal()
 ```
-Empty geometry
 
+Empty geometry
 
 Filtering stop times table
 
 ```{r}
 filter(brt_gtfs$stop_times, trip_id == "BC26E0001-10-3")
 ```
+
 Does not make sense
 
 ###### Case 3: Tree points
@@ -582,6 +578,7 @@ ggplot() +
   geom_sf(data = geo_from_stops_1x1_3) +
   theme_minimal()
 ```
+
 Filtering stop times table
 
 ```{r}
@@ -590,18 +587,17 @@ filter(brt_gtfs$stop_times, trip_id == "BOJLO0009-6-3")
 
 Geographically makes sense, unsure if in a functional way.
 
-Filtering stop  table
+Filtering stop table
 
 ```{r}
 filter(brt_gtfs$stops, stop_id %in% c("87927","88823", "87927"))
 ```
+
 The plotted geometry is consistent in terms of the origin and destination location, however, it does not account for the real geographical route of the trip.
 
-__Is this adjusted when using the street network?__
-
+**Is this adjusted when using the street network?**
 
 ###### Case 4: Four points
-
 
 Subsetting geometries
 
@@ -618,6 +614,7 @@ ggplot() +
   geom_sf(data = geo_from_stops_1x1_4) +
   theme_minimal()
 ```
+
 Filtering stop times table
 
 ```{r}
@@ -626,19 +623,17 @@ filter(brt_gtfs$stop_times, trip_id == "CN1340030-10-3")
 
 Geographically makes sense, unsure if in a functional way.
 
-Filtering stop  table
+Filtering stop table
 
 ```{r}
 filter(brt_gtfs$stops, stop_id %in% c("5215","93431", "92919", "5215"))
 ```
-
 
 test (Working)
 
 ```{r}
 geo_from_stops_filtered <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = stops_by_trip_filtered$trip_id)
 ```
-
 
 Basic geo map (not working)
 
@@ -651,16 +646,19 @@ Basic geo map (not working)
 ```{r}
 summary(geo_from_stops_filtered)
 ```
+
 Geometry type
 
 ```{r}
 unique(st_geometry_type(geo_from_stops_filtered))
 ```
+
 Valid geometry
 
 ```{r}
 st_is_valid(geo_from_stops_filtered)
 ```
+
 Remove invalid geometries
 
 ```{r}
@@ -674,13 +672,12 @@ Check for valid geometries again
 ```{r}
 unique(st_is_valid(geo_from_stops_filtered))
 ```
+
 Empty geometries (not working)
 
 ```{r}
 # st_is_empty(geo_from_stops_filtered)
 ```
-
-
 
 Replotting (not working)
 
@@ -689,7 +686,6 @@ Replotting (not working)
 #   geom_sf(data = geo_from_stops_filtered) +
 #   theme_minimal()
 ```
-
 
 Orders descending
 
@@ -705,11 +701,12 @@ head(trips_by_stop[order((trips_by_stop$count_transit)),])
 
 ##### High and low traffic stations
 
-__Based on misleading count__
+**Based on misleading count**
 
 ```{r}
 filter(brt_gtfs$stops, stop_id == "97095" | stop_id == "88730" )
 ```
+
 Filtering sf object
 
 ```{r}
@@ -719,8 +716,6 @@ filter(brt_stations_sf,stop_id == "97095" | stop_id == "88730") %>%
 
 Filtering the stop table based on t
 
-
-
 ### Frequencies (non existing)
 
 ### Calendar dates
@@ -728,28 +723,31 @@ Filtering the stop table based on t
 ```{r}
 head(brt_gtfs$calendar_dates)
 ```
+
 Number of exceptions
 
 ```{r}
 n_distinct(brt_gtfs$calendar_dates)
 ```
+
 #### Exception type
 
 Exeption_type: "Indicates whether service is available on the date specified in the date field.
 
 Valid options are:
 
-1 - Service has been added for the specified date.
-2 - Service has been removed for the specified date." 
+1 - Service has been added for the specified date. 2 - Service has been removed for the specified date."
 
 ```{r}
 unique(brt_gtfs$calendar_dates$exception_type)
 ```
+
 Number of different dates in calendar dates
 
 ```{r}
 unique(brt_gtfs$calendar_dates$date)
 ```
+
 It seems to be holidays in Colombia.
 
 #### Service id
@@ -762,14 +760,11 @@ n_distinct(brt_gtfs$calendar_dates$service_id)
 
 # BRT network? (pending)
 
-
-
-
 ## Data reading
 
-_Data downloaded in the wrong format__
+\_Data downloaded in the wrong format\_\_
 
-Open Street Map Data downloaded from: https://export.hotosm.org/es/v3/
+Open Street Map Data downloaded from: <https://export.hotosm.org/es/v3/>
 
 ```{r}
 osm_network <- oe_read("Data/Network/Bogota_general_network.osm.pbf") 
@@ -782,10 +777,7 @@ par(mar = rep(0.1, 4))
 plot(sf::st_geometry(osm_network))
 ```
 
-
-
 ## Data inspection
-
 
 ### CRS
 
@@ -816,7 +808,7 @@ Plotting by highway value
 ```{r}
 
 osm_subsetting <- osm_by_highway %>%
-  filter(., highway == "footway")
+  filter(., highway == "residential")
 
 
 par(mar = rep(0.1, 4))
@@ -826,17 +818,13 @@ plot(sf::st_geometry(osm_subsetting))
 Interactive map by subsetting value
 
 ```{r}
-tmap_mode("view")
-
-# tm_shape(osm_subsetting)
-
-tm_sf(osm_subsetting)
+leaflet() %>% 
+  addTiles() %>% 
+  addPolylines(data = osm_subsetting)
 
 ```
 
-
 ## Data cleaning
-
 
 # Metro system (pending)
 
@@ -845,8 +833,6 @@ tm_sf(osm_subsetting)
 ## Data inspection
 
 ## Data cleaning
-
-
 
 # Multipurpose survey
 
@@ -857,6 +843,7 @@ tm_sf(osm_subsetting)
 ```{r}
 geo_zpu <- st_read("Data/Survey/Shape/ShapeEM2021/EM2021_UPZ.shp")
 ```
+
 Geometry
 
 ```{r}
@@ -884,6 +871,7 @@ Reading from local
 ```{r}
 survey_raw <- read_csv("Data/Survey/CSV_Main/20230620EM2021.csv")
 ```
+
 Preview
 
 ```{r}
@@ -925,13 +913,14 @@ CRS
 ```{r}
 st_crs(geo_zpu)
 ```
+
 Summary
 
 ```{r}
 summary(geo_zpu)
 ```
-UPZEM: Numeric
-UPZEM2: String
+
+UPZEM: Numeric UPZEM2: String
 
 ### Survey data
 
@@ -949,7 +938,6 @@ Datatypelist_survey <- survey_raw %>%
 Datatypelist_survey
 ```
 
-
 ##### Profiling
 
 Summary
@@ -957,6 +945,7 @@ Summary
 ```{r}
 introduce(survey_raw)
 ```
+
 Missing values
 
 ```{r}
@@ -1005,9 +994,8 @@ entry_by_directorio_control <- filter(entry_by_directorio, control == "None") %>
 
 unique(entry_by_directorio_control$control_diff)
 ```
+
 All entries, either have all NA's value per "directorio" or none.
-
-
 
 Missing ZPU
 
@@ -1015,8 +1003,6 @@ Missing ZPU
 filter(survey_raw, is.na(cod_upz_grupo))
 
 ```
-
-
 
 ##### Example
 
@@ -1032,7 +1018,6 @@ filter(survey_raw, directorio == "220102") %>%
          npcep6, # Relation to Household leader
          npcep11a) # Place of birth
 ```
-
 
 #### Additional variables
 
@@ -1055,6 +1040,7 @@ Summary
 ```{r}
 introduce(survey_add_raw)
 ```
+
 Missing values
 
 ```{r}
@@ -1088,8 +1074,6 @@ filter(survey_add_raw, directorio == "220102") %>%
 
 ## Data cleaning (pending)
 
-
-
 # Preprocessing
 
 ## Data enrichment
@@ -1100,11 +1084,6 @@ Hexagons grid??
 
 # Spatial analysis
 
-
-
-
-
-
 # Accessiblity modelling
 
 ## Current scenario
@@ -1112,9 +1091,3 @@ Hexagons grid??
 ## Base scenario
 
 ## Alternative scenario
-
-
-
-
-
-
