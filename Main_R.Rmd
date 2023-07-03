@@ -591,7 +591,7 @@ head(brt_gtfs$fare_attributes)
 brt_gtfs$fare_attributes
 ```
 
-Price information by agency.
+Types of fare (price) information by agency.
 
 Transfers
 1. 0 indicate no transfers permitted.
@@ -607,6 +607,19 @@ head(brt_gtfs$fare_rules)
 brt_gtfs$fare_rules
 ```
 
+#### Fare id
+
+```{r}
+unique(brt_gtfs$fare_rules$fare_id)
+```
+Fare 2 missing
+
+#### Route id
+
+```{r}
+length(unique(brt_gtfs$fare_rules$route_id))
+```
+Fare information for 1086 routes.
 
 
 ## Data cleaning (pending)
