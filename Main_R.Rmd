@@ -358,13 +358,13 @@ geo_shapes_filtered <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = sample)
 
 
 ```{r}
-head(geo_shapes_filtered)
+head(geo_shapes_sample)
 ```
 Plotting sample geometries
 
 ```{r}
 ggplot() +
-  geom_sf(data = geo_shapes_filtered) +
+  geom_sf(data = geo_shapes_sample) +
   theme_minimal()
 ```
 
