@@ -55,7 +55,7 @@ Deletes
 ## Memory setup
 
 ```{r}
-options(java.parameters = "-Xmx6G")
+options(java.parameters = "-Xmx2G")
 ```
 
 # Bus Rapid Transit network (BRT)
@@ -830,25 +830,6 @@ Interactive map by subsetting value
 __What sub-setting should be done before the accessibility modelling?__
 
 
-# TEST: ELevation
-
-```{r}
-elevation <- get_elev_raster(geo_zpu, z = 9)
-```
-```{r}
-elevation
-```
-
-
-
-Plotting test
-
-```{r}
-plot(elevation)
-#plot(geo_zpu, add = TRUE)
-```
-
-
 ## Data cleaning
 
 # Metro system (pending)
@@ -1096,6 +1077,33 @@ filter(survey_add_raw, directorio == "220102") %>%
     N_INGTOT_PER, # Total income 
     N_pobre_monetario) # Monetary poverty
 ```
+
+# Elevation data (Not working)
+
+Elevation data on every ZPU polygon
+
+__Should be calculated for the H3 hegagon grid__
+
+```{r}
+elevation <- get_elev_raster(geo_zpu, z = 9)
+```
+
+
+
+```{r}
+elevation
+```
+
+
+
+Plotting test
+
+```{r}
+plot(elevation)
+plot(geo_zpu, add = TRUE)
+```
+
+
 
 ## Data cleaning (pending)
 
