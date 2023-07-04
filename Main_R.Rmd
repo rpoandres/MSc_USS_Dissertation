@@ -348,12 +348,12 @@ set.seed(123)
 
 sample <- sample(brt_gtfs$trips$trip_id,1000)
 
-head(s_500)
+head(sample)
 ```
 Subsetting geometries
 
 ```{r}
-geo_shapes_filtered <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = sample)
+geo_shapes_sample<- gtfstools::get_trip_geometry(brt_gtfs,file = "shapes", trip_id = sample)
 ```
 
 
@@ -484,7 +484,7 @@ head(stops_by_trip)
 Extract stops_by_trip to excel
 
 ```{r}
-write_xlsx(stops_by_trip,"Test/stops_by_trip.xlsx")
+# write_xlsx(stops_by_trip,"Test/stops_by_trip.xlsx")
 ```
 
 
@@ -820,8 +820,10 @@ plot_missing(survey_raw)
 Missing values on ID fields
 
 ```{r}
-survey_raw %>% select(directorio,directorio_per, directorio_hog, dpto, mpio,clase,cod_localidad, nombre_localidad, cod_upz_grupo, nombre_upz_grupo, estrato2021, nombre_estrato, fex_c) %>%
-  plot_missing(.)
+survey_raw_id <- survey_raw %>% 
+  dplyr::select(directorio, directorio_per, dpto, mpio, clase, cod_localidad, nombre_localidad, cod_upz_grupo, nombre_upz_grupo, estrato2021, nombre_estrato, fex_c)
+
+plot_missing(survey_raw_id)
 
 ```
 
@@ -875,7 +877,7 @@ directorio = "220102"
 
 ```{r}
 filter(survey_raw, directorio == "220102") %>%
-  select(directorio,directorio_per, directorio_hog, # ID
+  dplyr::select(directorio,directorio_per, directorio_hog, # ID
          cod_upz_grupo, # ZPU code
          nombre_upz_grupo, # ZPU name
          orden, # Order in home
@@ -915,7 +917,7 @@ plot_missing(survey_raw)
 Missing values on ID fields
 
 ```{r}
-survey_add_raw %>% select(directorio, directorio_per, directorio_hog) %>%
+survey_add_raw %>% dplyr::select(directorio, directorio_per, directorio_hog) %>%
   plot_missing(.)
 
 ```
@@ -926,7 +928,7 @@ directorio = "220102"
 
 ```{r}
 filter(survey_add_raw, directorio == "220102") %>%
-  select(
+  dplyr::select(
     directorio,directorio_per, # ID
     N_fuerza_trabajo, # In labour market
     N_informal, # Informal
