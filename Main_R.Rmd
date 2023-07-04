@@ -36,6 +36,9 @@ library(leaflet) # for making the interactive map
 library(elevatr) # DEM (Digital Elevation Model)
 library(raster)
 #library(terra) # Not installed
+library(h3jsr) # H3 hegagonal grid
+library(remotes)
+library(h3)
 ```
 
 ## Temporary directory
@@ -964,11 +967,54 @@ plot(geo_zpu, add = TRUE)
 
 # Preprocessing
 
-## Data enrichment
-
 ## Spatial analysis unit
 
-Hexagons grid??
+H3 hexagonal grid
+
+Set the polygon object in WGS84 CRS
+
+```{r}
+geo_zpu_wgs84 <- geo_zpu %>%
+  st_transform(.,4326)
+```
+
+New CRS
+
+```{r}
+st_crs(geo_zpu_wgs84)
+```
+Dissolve polygons
+
+```{r}
+geo_zpu_wgs84_mono <- st_union(geo_zpu_wgs84, by_feature = FALSE)
+```
+
+
+### Hegagonal grid
+
+Intersecting grids
+
+```{r}
+intergrid <- polyfill(geo_zpu_wgs84_mono, res = 8)
+```
+
+```{r}
+hex_grid8<- h3_to_geo_boundary_sf(intergrid)
+```
+
+Basic geo map
+
+```{r}
+ggplot() +
+  geom_sf(data = hex_grid8) +
+  theme_minimal()
+```
+
+
+
+## Data enrichment
+
+
 
 # Spatial analysis
 
