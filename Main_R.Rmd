@@ -985,30 +985,68 @@ st_crs(geo_zpu_wgs84)
 ```
 Dissolve polygons
 
+Method 1
+
 ```{r}
 geo_zpu_wgs84_mono <- st_union(geo_zpu_wgs84, by_feature = FALSE)
 ```
 
+Method 2
+
+```{r}
+geo_zpu_wgs84_mono_2 <- geo_zpu_wgs84 %>%
+  group_by() %>%
+  summarise()
+```
+
+
 
 ### Hegagonal grid
+
+#### Resolution 9
 
 Intersecting grids
 
 ```{r}
-intergrid <- polyfill(geo_zpu_wgs84_mono, res = 8)
+intergrid_9 <- polyfill(geo_zpu_wgs84_mono, res = 9)
 ```
+H3 id to sf
 
 ```{r}
-hex_grid8<- h3_to_geo_boundary_sf(intergrid)
+hex_grid_9<- h3_to_geo_boundary_sf(intergrid_9)
 ```
 
 Basic geo map
 
 ```{r}
 ggplot() +
-  geom_sf(data = hex_grid8) +
+  geom_sf(data = hex_grid_9) +
   theme_minimal()
 ```
+There are holes in the grid with a 9 resolution.
+
+#### Resolution 8
+
+Intersecting grids
+
+```{r}
+intergrid_8 <- polyfill(geo_zpu_wgs84_mono, res = 8)
+```
+H3 id to sf
+
+```{r}
+hex_grid_8 <- h3_to_geo_boundary_sf(intergrid_8)
+```
+
+Basic geo map
+
+```{r}
+ggplot() +
+  geom_sf(data = hex_grid_8) +
+  theme_minimal()
+```
+
+
 
 
 
