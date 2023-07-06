@@ -12,6 +12,8 @@ Data/Survey/CSV_Main/
 Data/Survey/CSV_Additional/
 Data/Survey/Shape/
 Data/Survey/Form/
+Data/BRT/
+Data/OSM/
 Test/
 # Jupyter Notebook records
 .ipynb_checkpoints
