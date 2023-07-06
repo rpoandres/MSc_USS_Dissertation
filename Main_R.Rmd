@@ -63,40 +63,58 @@ options(java.parameters = "-Xmx4G")
 
 # Bus Rapid Transit network (BRT)
 
-## Downloading the data
+## Downloading the data (turn off)
 
 Setting the temp file path
 
 ```{r}
-brt_path <- tempfile("brt", fileext = ".zip")
+# brt_path <- tempfile("brt", fileext = ".zip")
 ```
 
 Downloading the BRT GTFS data
 
 ```{r}
-httr::GET(
-  "https://storage.googleapis.com/gtfs-estaticos/GTFS-2023-06-21.zip",
-  httr::write_disk(brt_path)
-)
+# httr::GET(
+#   "https://storage.googleapis.com/gtfs-estaticos/GTFS-2023-06-21.zip",
+#   httr::write_disk(brt_path)
+# )
 ```
 
 Initial: The GTFS data is a static feed (2021-07-04) provided by the Transport Secretary of Bogota City Council available [here](https://datos.movilidadbogota.gov.co/datasets/599751603a494051b15ac3d4f1f38ec5/about).
 
 Update: The data was updated with static feed (2023-06-21) provided by Transmilenio in their open data webpage and available [here](https://datosabiertos-transmilenio.hub.arcgis.com/documents/gtfs-est%C3%A1ticos-2023-06-21/about).
 
-## Data inspection
+
 
 Review of tables of downloaded data
 
 ```{r}
-unzip(brt_path, list = TRUE)
+# unzip(brt_path, list = TRUE)
 ```
 
+
 ```{r}
-brt_gtfs <- read_gtfs(brt_path)
+# brt_gtfs <- read_gtfs(brt_path)
+# 
+# names(brt_gtfs)
+```
+## Reading data locally
+
+Local path
+
+```{r}
+local_path <- "Data/BRT/GTFS-2023-06-21.zip"
+```
+
+Reading data locally
+
+```{r}
+brt_gtfs <- read_gtfs(local_path)
 
 names(brt_gtfs)
 ```
+
+## Data inspection
 
 ### Profiling
 
@@ -625,6 +643,93 @@ length(unique(brt_gtfs$fare_rules$route_id))
 Fare information for 1086 routes.
 
 
+### Route detailed review
+
+#### Case 1
+
+Route 6-4, "6-4" in route id field with id 
+
+```{r}
+brt_gtfs_C1 <- filter_by_route_id(brt_gtfs, "T_1899", keep = TRUE)
+```
+
+
+##### Route
+
+```{r}
+brt_gtfs_C1$routes
+```
+##### Trips
+
+```{r}
+brt_gtfs_C1$trips
+```
+
+Schedule: Monday to Friday.
+
+Number of trips
+
+```{r}
+length(unique(brt_gtfs_C1$trips$trip_id))
+```
+There are 666 trips for this route.
+
+
+##### Shapes
+
+```{r}
+brt_gtfs_C1$shapes
+```
+
+Geometry
+
+```{r}
+geo_brt_gtfs_C1 <- gtfstools::get_trip_geometry(brt_gtfs_C1,file = "shapes")
+```
+
+Review
+
+```{r}
+geo_brt_gtfs_C1
+```
+
+Plotting
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_brt_gtfs_C1) +
+  theme_minimal()
+```
+##### Stops
+
+```{r}
+brt_gtfs_C1$stops
+```
+
+Convert stops to sf
+
+```{r}
+brt_stations_C1_sf <- st_as_sf(brt_gtfs_C1$stops,coords = c("stop_lon", "stop_lat"))
+```
+
+Plot stations
+
+```{r}
+brt_stations_C1_sf %>%
+  st_geometry() %>%
+  plot()
+```
+##### Stop times
+
+```{r}
+brt_gtfs_C1$stop_times
+```
+
+
+##### Fare attribute
+
+##### Fare rules
+
 ## Data cleaning (pending)
 
 # BRT network (pending)
@@ -963,7 +1068,7 @@ plot(elevation)
 plot(geo_zpu, add = TRUE)
 ```
 
-## Data cleaning (pending)
+## Data cleaning (pending,remove?)
 
 # Preprocessing
 
@@ -1046,11 +1151,31 @@ ggplot() +
   theme_minimal()
 ```
 
-
+There are not holes with 8 resolution value.
 
 
 
 ## Data enrichment
+
+### Data aggregation
+
+#### Main forms
+
+#### Additional variables
+
+Aggregation of additional variables data by ZPU
+
+```{r}
+# survey_add_raw_clean <- survey_add_raw %>%
+  
+```
+
+Erase entries with Na ZPU id field.
+
+```{r}
+
+```
+
 
 
 
