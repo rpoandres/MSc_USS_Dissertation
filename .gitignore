@@ -8,10 +8,9 @@
 .rar
 .zip
 # Directories
-Data/Demo/Survey/
-Data/Transport/BRT/
-Data/Transport/OSM/
+Data/
 Test/
+Accessibility/
 # Jupyter Notebook records
 .ipynb_checkpoints
 Main_R.html
