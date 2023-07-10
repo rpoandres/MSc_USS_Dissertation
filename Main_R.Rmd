@@ -103,7 +103,7 @@ Review of tables of downloaded data
 Local path
 
 ```{r}
-local_path <- "Data/BRT/GTFS-2023-06-21.zip"
+local_path <- "Data/Transport/BRT/GTFS-2023-06-21.zip"
 ```
 
 Reading data locally
@@ -217,7 +217,7 @@ n_distinct(brt_gtfs$stops)
 Convert stops to sf
 
 ```{r}
-brt_stations_sf <- st_as_sf(brt_gtfs$stops,coords = c("stop_lon", "stop_lat"))
+brt_stations_sf <- st_as_sf(brt_gtfs$stops,coords = c("stop_lon", "stop_lat"), crs = 4326 )
 ```
 
 Plot stations
@@ -709,37 +709,54 @@ brt_gtfs_C1$stops
 Convert stops to sf
 
 ```{r}
-brt_stations_C1_sf <- st_as_sf(brt_gtfs_C1$stops,coords = c("stop_lon", "stop_lat"))
+geo_brt_stations_C1_sf <- st_as_sf(brt_gtfs_C1$stops,coords = c("stop_lon", "stop_lat"), crs = 4326)
 ```
 
 Plot stations
 
 ```{r}
-brt_stations_C1_sf %>%
+geo_brt_stations_C1_sf %>%
   st_geometry() %>%
   plot()
 ```
 ##### Stop times
 
 ```{r}
-brt_gtfs_C1$stop_times
+arrange(brt_gtfs_C1$stop_times, trip_id, stop_sequence)
 ```
 
 
 ##### Fare attribute
 
+```{r}
+brt_gtfs_C1$fare_attributes
+```
+
 ##### Fare rules
+
+```{r}
+brt_gtfs_C1$fare_rules
+```
+##### Plotting
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_brt_stations_C1_sf) + 
+  geom_sf(data = geo_brt_gtfs_C1) + 
+  theme_minimal()
+```
+
 
 ## Data cleaning (pending)
 
-# BRT network (pending)
+# OSM network (pending)
 
 ## Data reading
 
 Open Street Map Data downloaded from: <https://export.hotosm.org/es/v3/>
 
 ```{r}
-osm_network <- oe_read("Data/Network/Bogota_general_network.osm.pbf") 
+osm_network <- oe_read("Data/Transport/OSM/Bogota_general_network.osm.pbf") 
 ```
 
 Plotting
@@ -814,7 +831,7 @@ Interactive map by subsetting value
 ### ZPU layer
 
 ```{r}
-geo_zpu <- st_read("Data/Survey/Shape/ShapeEM2021/EM2021_UPZ.shp")
+geo_zpu <- st_read("Data/Demo/Survey/Shape/ShapeEM2021/EM2021_UPZ.shp")
 ```
 
 Geometry
@@ -842,7 +859,7 @@ Downloading and reading from source
 Reading from local
 
 ```{r}
-survey_raw <- read_csv("Data/Survey/CSV_Main/20230620EM2021.csv")
+survey_raw <- read_csv("Data/Demo/Survey/CSV_Main/20230620EM2021.csv")
 ```
 
 Preview
@@ -868,7 +885,7 @@ Downloading and reading from source
 Reading from local
 
 ```{r}
-survey_add_raw <- read_csv("Data/Survey/CSV_Additional/20230220_variables_adicionales_em2021.csv")
+survey_add_raw <- read_csv("Data/Demo/Survey/CSV_Additional/20230220_variables_adicionales_em2021.csv")
 ```
 
 Preview
@@ -1047,25 +1064,25 @@ filter(survey_add_raw, directorio == "220102") %>%
     N_pobre_monetario) # Monetary poverty
 ```
 
-# Elevation data (Not working)
+# Elevation data (Not included yet)
 
 Elevation data on every ZPU polygon
 
 **Should be calculated for the H3 hegagon grid**
 
 ```{r}
-elevation <- get_elev_raster(geo_zpu, z = 9)
+# elevation <- get_elev_raster(geo_zpu, z = 9)
 ```
 
 ```{r}
-elevation
+# elevation
 ```
 
 Plotting test
 
 ```{r}
-plot(elevation)
-plot(geo_zpu, add = TRUE)
+# plot(elevation)
+# plot(geo_zpu, add = TRUE)
 ```
 
 ## Data cleaning (pending,remove?)
@@ -1182,6 +1199,48 @@ Erase entries with Na ZPU id field.
 # Spatial analysis
 
 # Accessiblity modelling
+
+## Data preparation
+
+Creates directory for accessibility analysis
+
+
+```{r}
+access_dir <- "Accessibility"
+dir.create(access_dir)
+```
+
+Creates before and after directories
+
+```{r}
+before_dir <- file.path(access_dir, "Before")
+after_dir <- file.path(access_dir, "After")
+
+dir.create(before_dir)
+dir.create(after_dir)
+```
+
+Copy input files to before directory
+
+Read from local file
+
+```{r}
+# BRT GTFS data
+file.copy(from = "Data/Transport/BRT/GTFS-2023-06-21.zip", to = file.path(before_dir, "brt_gtfs.zip"))
+
+# OSM Street network
+file.copy(from = "Data/Transport/OSM/Bogota_general_network.osm.pbf", to = file.path(before_dir, "street_network.osm.pbf"))
+
+```
+
+Visualize directory
+
+```{r}
+fs::dir_tree(access_dir)
+```
+
+
+
 
 ## Current scenario
 
