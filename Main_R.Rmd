@@ -1064,6 +1064,67 @@ filter(survey_add_raw, directorio == "220102") %>%
     N_pobre_monetario) # Monetary poverty
 ```
 
+# Land use (in progress)
+
+## Data reading
+
+```{r}
+land_use_terrain <- st_read("Data/Land_use/Terrain/DestinoSHP/Destino.shp")
+```
+Geometry
+
+```{r}
+# qtm(land_use_terrain)
+```
+Invalid poligons
+
+## Data inspection
+
+CRS
+
+```{r}
+st_crs(land_use_terrain)
+```
+
+Set the polygon object in WGS84 CRS
+
+```{r}
+land_use_terrain84 <- land_use_terrain %>%
+  st_set_crs(.,4326)
+```
+
+New CRS
+
+
+```{r}
+st_crs(land_use_terrain84)
+```
+
+## Data cleaning
+
+Invalid geometries
+
+```{r}
+invalid_geo_land_use <- st_is_valid(land_use_terrain84, reason = TRUE)
+```
+
+Clean geometry
+
+```{r}
+land_use_terrain84_clean <- st_make_valid(land_use_terrain84)
+```
+
+
+Map
+
+```{r}
+qtm(land_use_terrain84_clean)
+```
+
+
+
+
+
 # Elevation data (Not included yet)
 
 Elevation data on every ZPU polygon
@@ -1174,7 +1235,8 @@ There are not holes with 8 resolution value.
 
 ## Data enrichment
 
-### Data aggregation
+
+### Survey
 
 #### Main forms
 
@@ -1193,7 +1255,67 @@ Erase entries with Na ZPU id field.
 
 ```
 
+### Land use
 
+Spatial join between hexagon grid and land use layer
+
+```{r}
+hex9_land_use_join <- st_join(hex_grid_9, land_use_terrain84_clean, join = st_intersects )
+```
+
+
+
+Pivot wide by land use category
+
+```{r}
+hex9_land_use_join_wide <- hex9_land_use_join %>%
+  
+  group_by(h3_index, DESTINOCOD) %>%
+  summarize(count_land_use_code = n())  %>%
+  pivot_wider(names_from = "DESTINOCOD", values_from = "count_land_use_code", values_fill = 0 , names_prefix = "LU_COD_")
+
+
+  
+```
+Review
+
+```{r}
+head(hex9_land_use_join_wide)
+```
+Dropping geometry column
+
+```{r}
+hex9_land_use_join_wide <- hex9_land_use_join_wide %>%
+  dplyr::select(!geometry) %>%
+  st_drop_geometry(.)
+```
+
+
+Review
+
+```{r}
+head(hex9_land_use_join_wide)
+```
+
+Merge with initial hexagon grid
+
+```{r}
+hex9_land_use_final <- merge(hex_grid_9, hex9_land_use_join_wide, by.x = "h3_index", by.y = "h3_index", all.x = TRUE)
+
+```
+
+
+Review
+
+```{r}
+head(hex9_land_use_final)
+```
+Plotting
+
+```{r}
+tmap_mode("plot")
+qtm(hex9_land_use_final, fill = "LU_COD_01")
+```
 
 
 # Spatial analysis
