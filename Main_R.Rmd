@@ -1318,6 +1318,8 @@ qtm(hex9_land_use_final, fill = "LU_COD_01")
 ```
 
 
+
+
 # Spatial analysis
 
 # Accessiblity modelling
