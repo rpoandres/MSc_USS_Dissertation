@@ -1335,6 +1335,36 @@ qtm(hex9_land_use_final, fill = "LU_COD_01")
 ```
 
 
+## Origin and destination points
+
+```{r}
+hex9_points <- hex9_land_use_final %>%
+  st_centroid() %>%
+  rename(id = h3_index)
+  
+
+```
+
+```{r}
+qtm(hex9_points)
+```
+
+Calculate lon and lat coordinates
+
+```{r}
+hex9_points$lon <- st_coordinates(hex9_points)[, 1]
+hex9_points$lat <- st_coordinates(hex9_points)[, 2]
+```
+
+Drop geometry of hex grid
+
+```{r}
+hex9_points <- hex9_points %>% 
+  st_drop_geometry() %>%
+  relocate(lon, .after = id) %>%
+  relocate(lat, .after = lon)
+```
+
 
 
 
@@ -1383,6 +1413,8 @@ Visualize directory
 ```{r}
 fs::dir_tree(access_dir)
 ```
+## Inputs
+
 
 
 
