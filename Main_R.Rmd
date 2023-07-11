@@ -756,7 +756,7 @@ ggplot() +
 Open Street Map Data downloaded from: <https://export.hotosm.org/es/v3/>
 
 ```{r}
-osm_network <- oe_read("Data/Transport/OSM/Bogota_general_network.osm.pbf") 
+osm_network <- oe_read("Data/Raw/Transport/OSM/Bogota_general_network.osm.pbf") 
 ```
 
 Plotting
@@ -1342,7 +1342,6 @@ hex9_points <- hex9_land_use_final %>%
   st_centroid() %>%
   rename(id = h3_index)
   
-
 ```
 
 ```{r}
@@ -1364,6 +1363,13 @@ hex9_points <- hex9_points %>%
   relocate(lon, .after = id) %>%
   relocate(lat, .after = lon)
 ```
+
+Save point data as csv
+
+```{r}
+write.csv(hex9_points,file='Data/Preprocessed/Grid/Hex9_grid_LU.csv', row.names=FALSE)
+```
+
 
 
 
@@ -1402,9 +1408,8 @@ file.copy(from = "Data/Raw/Transport/BRT/GTFS-2023-06-21.zip", to = file.path(be
 # OSM Street network
 file.copy(from = "Data/Raw/Transport/OSM/Bogota_general_network.osm.pbf", to = file.path(before_dir, "street_network.osm.pbf"))
 
-# Hexagon land use grid (without demographic data)
-file.copy(from = "Data/Preprocessed/Grid/Hex_grid.gpkg", to = file.path(before_dir, "Hex_grid.gpkg"))
-
+# Hexagon opportunities data based on hexagon grid
+file.copy(from = "Data/Preprocessed/Grid/Hex9_grid_LU.csv", to = file.path(before_dir, "hex9_points_LU.csv"))
 
 ```
 
@@ -1413,13 +1418,44 @@ Visualize directory
 ```{r}
 fs::dir_tree(access_dir)
 ```
-## Inputs
-
-
 
 
 
 ## Current scenario
+
+It does not have the future metro data.
+
+### Setup
+
+```{r}
+r5r_before <- setup_r5("Accessibility/Before", verbose = FALSE)
+```
+Centroids of hexagons
+
+```{r}
+hex_points_main <- data.table::fread("Accessibility/Before/hex9_points_LU.csv")
+```
+
+### Timte travel matrix
+
+```{r}
+ttm <- travel_time_matrix(
+  r5r_before,
+  origins = hex_points_main,
+  destinations = hex_points_main,
+  mode = c("WALK", "TRANSIT"),
+  departure_datetime = as.POSIXct(
+    "06-06-2023 8:00:00",
+    format = "%d-%m-%Y %H:%M:%S"
+  ),
+  max_walk_time = 30,
+  max_trip_duration = 120,
+  verbose = FALSE,
+  progress = FALSE
+)
+```
+
+
 
 ## Base scenario
 
