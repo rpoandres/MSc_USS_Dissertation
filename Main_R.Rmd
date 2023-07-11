@@ -1260,7 +1260,7 @@ Erase entries with Na ZPU id field.
 Spatial join between hexagon grid and land use layer
 
 ```{r}
-hex9_land_use_join <- st_join(hex_grid_9, land_use_terrain84_clean, join = st_intersects )
+# hex9_land_use_join <- st_join(hex_grid_9, land_use_terrain84_clean, join = st_intersects )
 ```
 
 
@@ -1268,40 +1268,57 @@ hex9_land_use_join <- st_join(hex_grid_9, land_use_terrain84_clean, join = st_in
 Pivot wide by land use category
 
 ```{r}
-hex9_land_use_join_wide <- hex9_land_use_join %>%
-  
-  group_by(h3_index, DESTINOCOD) %>%
-  summarize(count_land_use_code = n())  %>%
-  pivot_wider(names_from = "DESTINOCOD", values_from = "count_land_use_code", values_fill = 0 , names_prefix = "LU_COD_")
-
+# hex9_land_use_join_wide <- hex9_land_use_join %>%
+#   
+#   group_by(h3_index, DESTINOCOD) %>%
+#   summarize(count_land_use_code = n())  %>%
+#   pivot_wider(names_from = "DESTINOCOD", values_from = "count_land_use_code", values_fill = 0 , names_prefix = "LU_COD_")
+# 
 
   
 ```
 Review
 
 ```{r}
-head(hex9_land_use_join_wide)
+# head(hex9_land_use_join_wide)
 ```
 Dropping geometry column
 
 ```{r}
-hex9_land_use_join_wide <- hex9_land_use_join_wide %>%
-  dplyr::select(!geometry) %>%
-  st_drop_geometry(.)
+# hex9_land_use_join_wide <- hex9_land_use_join_wide %>%
+#   dplyr::select(!geometry) %>%
+#   st_drop_geometry(.)
 ```
 
 
 Review
 
 ```{r}
-head(hex9_land_use_join_wide)
+# head(hex9_land_use_join_wide)
 ```
 
 Merge with initial hexagon grid
 
 ```{r}
-hex9_land_use_final <- merge(hex_grid_9, hex9_land_use_join_wide, by.x = "h3_index", by.y = "h3_index", all.x = TRUE)
+# hex9_land_use_final <- merge(hex_grid_9, hex9_land_use_join_wide, by.x = "h3_index", by.y = "h3_index", all.x = TRUE)
 
+```
+
+Saving hexagon grid
+
+__It does not include demographics data yet__
+
+```{r}
+# hex9_land_use_final %>%
+#   st_write(.,"Data/Preprocessed/Grid/Hex_grid.gpkg",
+#            "Hex9_LU",
+#            delete_layer=TRUE)
+```
+
+Reading from preprocessed directory
+
+```{r}
+hex9_land_use_final <- st_read("Data/Preprocessed/Grid/Hex_grid.gpkg","Hex9_LU")
 ```
 
 
@@ -1317,7 +1334,8 @@ tmap_mode("plot")
 qtm(hex9_land_use_final, fill = "LU_COD_01")
 ```
 
-# SAVE HEXAGON GRID
+
+
 
 
 # Spatial analysis
@@ -1346,7 +1364,6 @@ dir.create(after_dir)
 
 Copy input files to before directory
 
-Read from local file
 
 ```{r}
 # BRT GTFS data
@@ -1354,6 +1371,10 @@ file.copy(from = "Data/Raw/Transport/BRT/GTFS-2023-06-21.zip", to = file.path(be
 
 # OSM Street network
 file.copy(from = "Data/Raw/Transport/OSM/Bogota_general_network.osm.pbf", to = file.path(before_dir, "street_network.osm.pbf"))
+
+# Hexagon land use grid (without demographic data)
+file.copy(from = "Data/Preprocessed/Grid/Hex_grid.gpkg", to = file.path(before_dir, "Hex_grid.gpkg"))
+
 
 ```
 
