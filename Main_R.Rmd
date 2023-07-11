@@ -103,7 +103,7 @@ Review of tables of downloaded data
 Local path
 
 ```{r}
-local_path <- "Data/Transport/BRT/GTFS-2023-06-21.zip"
+local_path <- "Data/Raw/Transport/BRT/GTFS-2023-06-21.zip"
 ```
 
 Reading data locally
@@ -831,7 +831,7 @@ Interactive map by subsetting value
 ### ZPU layer
 
 ```{r}
-geo_zpu <- st_read("Data/Demo/Survey/Shape/ShapeEM2021/EM2021_UPZ.shp")
+geo_zpu <- st_read("Data/Raw/Demo/Survey/Shape/ShapeEM2021/EM2021_UPZ.shp")
 ```
 
 Geometry
@@ -859,7 +859,7 @@ Downloading and reading from source
 Reading from local
 
 ```{r}
-survey_raw <- read_csv("Data/Demo/Survey/CSV_Main/20230620EM2021.csv")
+survey_raw <- read_csv("Data/Raw/Demo/Survey/CSV_Main/20230620EM2021.csv")
 ```
 
 Preview
@@ -885,7 +885,7 @@ Downloading and reading from source
 Reading from local
 
 ```{r}
-survey_add_raw <- read_csv("Data/Demo/Survey/CSV_Additional/20230220_variables_adicionales_em2021.csv")
+survey_add_raw <- read_csv("Data/Raw/Demo/Survey/CSV_Additional/20230220_variables_adicionales_em2021.csv")
 ```
 
 Preview
@@ -1069,7 +1069,7 @@ filter(survey_add_raw, directorio == "220102") %>%
 ## Data reading
 
 ```{r}
-land_use_terrain <- st_read("Data/Land_use/Terrain/DestinoSHP/Destino.shp")
+land_use_terrain <- st_read("Data/Raw/Land_use/Terrain/DestinoSHP/Destino.shp")
 ```
 Geometry
 
@@ -1317,7 +1317,7 @@ tmap_mode("plot")
 qtm(hex9_land_use_final, fill = "LU_COD_01")
 ```
 
-
+# SAVE HEXAGON GRID
 
 
 # Spatial analysis
@@ -1350,10 +1350,10 @@ Read from local file
 
 ```{r}
 # BRT GTFS data
-file.copy(from = "Data/Transport/BRT/GTFS-2023-06-21.zip", to = file.path(before_dir, "brt_gtfs.zip"))
+file.copy(from = "Data/Raw/Transport/BRT/GTFS-2023-06-21.zip", to = file.path(before_dir, "brt_gtfs.zip"))
 
 # OSM Street network
-file.copy(from = "Data/Transport/OSM/Bogota_general_network.osm.pbf", to = file.path(before_dir, "street_network.osm.pbf"))
+file.copy(from = "Data/Raw/Transport/OSM/Bogota_general_network.osm.pbf", to = file.path(before_dir, "street_network.osm.pbf"))
 
 ```
 
