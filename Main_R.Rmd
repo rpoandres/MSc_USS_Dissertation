@@ -1571,12 +1571,12 @@ data.table::setnames(
 )
 ```
 
-
 Review
 
 ```{r}
 head(access_comparison[, .(id, r5r_access, accessibility_access)])
 ```
+Results consistent accross methods.
 
 
 ## Alternative scenario
