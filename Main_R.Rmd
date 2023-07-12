@@ -340,10 +340,13 @@ Review
 head(geo_shapes)
 ```
 
-Plotting
+Saving shapes as geopackage
 
 ```{r}
-# plot(geo_from_stops_test)
+geo_shapes %>%
+  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+           "Current_Network",
+           delete_layer=TRUE)
 ```
 
 Plotting geometry onlyv (too big)
@@ -1240,7 +1243,7 @@ There are not holes with 8 resolution value.
 
 #### Main forms
 
-#### Additional variables
+#### Additional variables (pending)
 
 Aggregation of additional variables data by ZPU
 
@@ -1269,13 +1272,13 @@ Pivot wide by land use category
 
 ```{r}
 # hex9_land_use_join_wide <- hex9_land_use_join %>%
-#   
+# 
 #   group_by(h3_index, DESTINOCOD) %>%
 #   summarize(count_land_use_code = n())  %>%
 #   pivot_wider(names_from = "DESTINOCOD", values_from = "count_land_use_code", values_fill = 0 , names_prefix = "LU_COD_")
 # 
-
-  
+# 
+#   
 ```
 Review
 
@@ -1310,7 +1313,7 @@ __It does not include demographics data yet__
 
 ```{r}
 # hex9_land_use_final %>%
-#   st_write(.,"Data/Preprocessed/Grid/Hex_grid.gpkg",
+#   st_write("Data/Preprocessed/Grid/Hex9_grid.gpkg",
 #            "Hex9_LU",
 #            delete_layer=TRUE)
 ```
@@ -1318,7 +1321,7 @@ __It does not include demographics data yet__
 Reading from preprocessed directory
 
 ```{r}
-hex9_land_use_final <- st_read("Data/Preprocessed/Grid/Hex_grid.gpkg","Hex9_LU")
+hex9_land_use_final <- st_read("Data/Preprocessed/Grid/Hex9_grid.gpkg","Hex9_LU")
 ```
 
 
@@ -1580,7 +1583,7 @@ Results consistent across methods.
 
 ### Spatial distribution
 
-Mergiing accessibility results with hexagon grid
+Merging accessibility results with hexagon grid
 
 ```{r}
 spatial_access <- merge(
@@ -1618,11 +1621,18 @@ Save results in geopackage
 
 ```{r}
 spatial_access %>%
-  st_write(.,"Data/Preprocessed/Grid/Hex_grid.gpkg",
-           "Hex9_LU_COD_21",
+  st_write("Data/Results/Before/Grid/Hex9_grid.gpkg",
+           "Hex9_spatial_access",
            delete_layer=TRUE)
 ```
 __Save in different directory__
+
+Plotting of BRT Network
+
+```{r}
+
+```
+
 
 
 ## Alternative scenario
