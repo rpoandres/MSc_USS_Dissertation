@@ -163,6 +163,195 @@ Description texts
 ```{r}
 unique(brt_gtfs$routes$route_desc)
 ```
+Filtering route id by desc value
+
+##### Main corredor
+
+```{r}
+route_id_main <- filter(brt_gtfs$routes,  route_desc == "TRONCAL") %>%
+  dplyr::select(route_id)
+```
+
+Subset GTFS data by route id
+
+```{r}
+brt_gtfs_main <- filter_by_route_id(brt_gtfs, route_id_main$route_id, keep = TRUE)
+```
+
+Geometry of subsetted routes
+
+```{r}
+geo_shapes_main <- gtfstools::get_trip_geometry(brt_gtfs_main, file = "shapes")
+```
+
+
+##### Urban
+
+```{r}
+route_id_urban <- filter(brt_gtfs$routes,  route_desc == "URBANO") %>%
+  dplyr::select(route_id)
+```
+
+Subset GTFS data by route id
+
+```{r}
+brt_gtfs_urban <- filter_by_route_id(brt_gtfs, route_id_urban$route_id, keep = TRUE)
+```
+
+Geometry of subsetted routes
+
+```{r}
+geo_shapes_urban <- gtfstools::get_trip_geometry(brt_gtfs_urban, file = "shapes")
+```
+
+##### Feeder
+
+```{r}
+route_id_feeder <- filter(brt_gtfs$routes,  route_desc == "ALIMENTADOR") %>%
+  dplyr::select(route_id)
+```
+
+Subset GTFS data by route id
+
+```{r}
+brt_gtfs_feeder <- filter_by_route_id(brt_gtfs, route_id_feeder$route_id, keep = TRUE)
+```
+
+Geometry of subsetted routes
+
+```{r}
+geo_shapes_feeder <- gtfstools::get_trip_geometry(brt_gtfs_feeder, file = "shapes")
+```
+
+##### Feeder_V
+
+```{r}
+route_id_feeder_v <- filter(brt_gtfs$routes,  route_desc == "ALIMENTADOR_V") %>%
+  dplyr::select(route_id)
+```
+
+Subset GTFS data by route id
+
+```{r}
+brt_gtfs_feeder_v <- filter_by_route_id(brt_gtfs, route_id_feeder_v$route_id, keep = TRUE)
+```
+
+Geometry of subsetted routes
+
+```{r}
+geo_shapes_feeder_v <- gtfstools::get_trip_geometry(brt_gtfs_feeder_v, file = "shapes")
+```
+
+
+##### Complementary
+
+```{r}
+route_id_comp <- filter(brt_gtfs$routes,  route_desc == "COMPLEMENTARIO") %>%
+  dplyr::select(route_id)
+```
+
+Subset GTFS data by route id
+
+```{r}
+brt_gtfs_comp <- filter_by_route_id(brt_gtfs, route_id_comp$route_id, keep = TRUE)
+```
+
+Geometry of subsetted routes
+
+```{r}
+geo_shapes_comp <- gtfstools::get_trip_geometry(brt_gtfs_comp, file = "shapes")
+```
+
+##### Special
+
+```{r}
+route_id_special <- filter(brt_gtfs$routes,  route_desc == "ESPECIAL") %>%
+  dplyr::select(route_id)
+```
+
+Subset GTFS data by route id
+
+```{r}
+brt_gtfs_special <- filter_by_route_id(brt_gtfs, route_id_special$route_id, keep = TRUE)
+```
+
+Geometry of subsetted routes
+
+```{r}
+geo_shapes_special <- gtfstools::get_trip_geometry(brt_gtfs_special, file = "shapes")
+```
+
+##### Saving 
+
+```{r}
+# Main
+geo_shapes_main %>%
+  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+           "Main",
+           delete_layer=TRUE)
+
+geo_shapes_urban %>%
+  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+           "Urban",
+           delete_layer=TRUE)
+
+geo_shapes_feeder %>%
+  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+           "Feeder",
+           delete_layer=TRUE)
+
+# geo_shapes_feeder_v %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Feeder_v",
+#            delete_layer=TRUE)
+
+# geo_shapes_comp %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Complementary",
+#            delete_layer=TRUE)
+# 
+# geo_shapes_special %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Special",
+#            delete_layer=TRUE)
+
+
+
+
+```
+Test
+
+
+```{r}
+# # Main
+# geo_shapes_main %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Main")
+# 
+# geo_shapes_urban %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Urban")
+# 
+# geo_shapes_feeder %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Feeder")
+# 
+# geo_shapes_feeder_v %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Feeder_v")
+# 
+# geo_shapes_comp %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Complementary")
+# 
+# geo_shapes_special %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Special")
+
+
+```
+
+
 
 #### Type
 
@@ -340,13 +529,15 @@ Review
 head(geo_shapes)
 ```
 
-Saving shapes as geopackage
+###### Saving
+
+Saving shapes as geopackage (not working)
 
 ```{r}
-geo_shapes %>%
-  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-           "Current_Network",
-           delete_layer=TRUE)
+# geo_shapes %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Complete_Network",
+#            delete_layer=TRUE)
 ```
 
 Plotting geometry onlyv (too big)
