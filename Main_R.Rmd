@@ -284,27 +284,27 @@ geo_shapes_special <- gtfstools::get_trip_geometry(brt_gtfs_special, file = "sha
 ##### Saving 
 
 ```{r}
-# Main
-geo_shapes_main %>%
-  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-           "Main",
-           delete_layer=TRUE)
-
-geo_shapes_urban %>%
-  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-           "Urban",
-           delete_layer=TRUE)
-
-geo_shapes_feeder %>%
-  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-           "Feeder",
-           delete_layer=TRUE)
-
+# # Main
+# geo_shapes_main %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Main",
+#            delete_layer=TRUE)
+# 
+# geo_shapes_urban %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Urban",
+#            delete_layer=TRUE)
+# 
+# geo_shapes_feeder %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Feeder",
+#            delete_layer=TRUE)
+# 
 # geo_shapes_feeder_v %>%
 #   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-#            "Feeder_v",
-#            delete_layer=TRUE)
-
+#             "Feeder_v",
+#             delete_layer=TRUE)
+# 
 # geo_shapes_comp %>%
 #   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
 #            "Complementary",
@@ -319,6 +319,8 @@ geo_shapes_feeder %>%
 
 
 ```
+
+
 Test
 
 
