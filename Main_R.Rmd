@@ -689,12 +689,12 @@ Filter a specific trip
 Adjusted count
 
 ```{r}
-stops_by_trip <- brt_gtfs$stop_times %>%
-  group_by(trip_id, stop_sequence) %>%
-  summarize(count_stop_sequence = n()) %>%
-  pivot_wider(names_from = stop_sequence, values_from = count_stop_sequence, values_fill = 0,names_prefix = "S_")
-
-head(stops_by_trip)
+# stops_by_trip <- brt_gtfs$stop_times %>%
+#   group_by(trip_id, stop_sequence) %>%
+#   summarize(count_stop_sequence = n()) %>%
+#   pivot_wider(names_from = stop_sequence, values_from = count_stop_sequence, values_fill = 0,names_prefix = "S_")
+# 
+# head(stops_by_trip)
 ```
 Extract stops_by_trip to excel
 
