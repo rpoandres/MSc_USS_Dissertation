@@ -284,27 +284,27 @@ geo_shapes_special <- gtfstools::get_trip_geometry(brt_gtfs_special, file = "sha
 ##### Saving 
 
 ```{r}
-# Main
-geo_shapes_main %>%
-  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-           "Main",
-           delete_layer=TRUE)
-
-geo_shapes_urban %>%
-  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-           "Urban",
-           delete_layer=TRUE)
-
-geo_shapes_feeder %>%
-  st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-           "Feeder",
-           delete_layer=TRUE)
-
+# # Main
+# geo_shapes_main %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Main",
+#            delete_layer=TRUE)
+# 
+# geo_shapes_urban %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Urban",
+#            delete_layer=TRUE)
+# 
+# geo_shapes_feeder %>%
+#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
+#            "Feeder",
+#            delete_layer=TRUE)
+# 
 # geo_shapes_feeder_v %>%
 #   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-#            "Feeder_v",
-#            delete_layer=TRUE)
-
+#             "Feeder_v",
+#             delete_layer=TRUE)
+# 
 # geo_shapes_comp %>%
 #   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
 #            "Complementary",
@@ -319,6 +319,8 @@ geo_shapes_feeder %>%
 
 
 ```
+
+
 Test
 
 
@@ -1021,8 +1023,7 @@ Generates the main tables of the GTFS metro data.
 ```{r}
 metro_agency <- tibble::tribble(
   ~agency_id,  ~agency_name,        ~agency_url,  ~agency_timezone,  ~agency_lang,  ~agency_phone,
-  "1",         "Metro de Bogotá",   "https://www.metrodebogota.gov.co/",  "America/Bogota",  "es", "(+57)601-555-33-33"
-)
+  "1",         "Metro de Bogotá",   "https://www.metrodebogota.gov.co/",  "America/Bogota",  "es", "(+57)601-555-33-33")
 
 ```
 
@@ -1033,19 +1034,79 @@ data.table::setDT(metro_agency)
 ```
 
 
-
-
 ### Routes
+
+
 
 ### Trips
 
 ### Stops
+
+Reading stations data of first line of metro.
+
+```{r}
+geo_metro_stations <- st_read("Data/Raw/Transport/Metro/Stations/ESTACIONES.shp") %>%
+  st_transform(.,4326)
+```
+Review CRS
+
+```{r}
+st_crs(geo_metro_stations)
+```
+Geometry
+
+```{r}
+qtm(geo_metro_stations)
+```
+
+
 
 ### Calendar
 
 ### Calendar dates
 
 ### Shapes
+
+Reading track data of first line of metro.
+
+```{r}
+geo_metro_line <- st_read("Data/Raw/Transport/Metro/Track/TRAZADO_PLMB.shp") %>%
+  st_transform(.,4326)
+```
+
+Review CRS
+
+```{r}
+st_crs(geo_metro_line)
+```
+
+Geometry
+
+```{r}
+qtm(geo_metro_line)
+```
+Create shape id column
+
+```{r}
+geo_metro_line$shape_id = "M1_001"
+```
+
+Relocate columns
+
+```{r}
+# relocate(lon, .after = id)
+```
+
+
+
+
+Create shape table from sf object
+
+```{r}
+metro_line_shape <- convert_sf_to_shapes(geo_metro_line, shape_id = NULL)
+```
+
+
 
 ### Stop times
 
@@ -1312,6 +1373,7 @@ Geometry
 ```{r}
 # qtm(land_use_terrain)
 ```
+
 Invalid poligons
 
 ## Data inspection
