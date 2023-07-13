@@ -1012,7 +1012,32 @@ Interactive map by subsetting value
 
 # Metro system (pending)
 
-## Data reading
+## GTFS data generation
+
+Generates the main tables of the GTFS metro data.
+
+### Agency
+
+### Routes
+
+### Trips
+
+### Stops
+
+### Calendar
+
+### Calendar dates
+
+### Shapes
+
+### Stop times
+
+### Frequencies (non-existing in BRT data)
+
+### Fare attributes
+
+### Fare rules
+
 
 ## Data inspection
 
