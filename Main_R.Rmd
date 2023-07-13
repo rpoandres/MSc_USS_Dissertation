@@ -1018,6 +1018,23 @@ Generates the main tables of the GTFS metro data.
 
 ### Agency
 
+```{r}
+metro_agency <- tibble::tribble(
+  ~agency_id,  ~agency_name,        ~agency_url,  ~agency_timezone,  ~agency_lang,  ~agency_phone,
+  "1",         "Metro de Bogotá",   "https://www.metrodebogota.gov.co/",  "America/Bogota",  "es", "(+57)601-555-33-33"
+)
+
+```
+
+Generates table
+
+```{r}
+data.table::setDT(metro_agency)
+```
+
+
+
+
 ### Routes
 
 ### Trips
