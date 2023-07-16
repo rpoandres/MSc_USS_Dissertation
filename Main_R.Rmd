@@ -393,6 +393,34 @@ n_distinct(brt_gtfs$trips)
 
 There were 158976 trips included in the initial BRT GTFS data and 179454 in the updated data.
 
+#### Case 1
+
+Routes: Z_7295 and Z_7295-2.
+
+```{r}
+brt_gtfs_trip_c1 <- filter_by_route_id(brt_gtfs, c("Z_7295", "Z_7295-2") , keep = TRUE)
+```
+
+Get geometry
+
+```{r}
+geo_brt_gtfs_trip_c1 <- gtfstools::get_trip_geometry(brt_gtfs_trip_c1, file = "shapes")
+```
+
+Plot
+
+```{r}
+qtm(geo_brt_gtfs_trip_c1)
+```
+
+Stop times
+
+```{r}
+View(brt_gtfs_trip_c1$stop_times)
+```
+
+
+
 ### Stops
 
 ```{r}
@@ -1054,6 +1082,21 @@ data.table::setDT(metro_routes)
 
 ### Trips
 
+The trip id field will follow the structure: TRIPCODE_SERVICE_ID_SHAPE_ID
+
+
+
+```{r}
+metro_trips <- tibble::tribble(
+  ~route_id,  ~service_id,~trip_id, ~shape_id,
+  "M_001", "3", "TRIPID", "M1_001")
+```
+
+Reads it as a table
+
+```{r}
+data.table::setDT(metro_trips)
+```
 
 
 
@@ -1089,6 +1132,16 @@ metro_calendar <- brt_gtfs$calendar
 
 
 ### Calendar dates
+
+Creating a mirror calendar date table from the BRT GTFS data (only for year 2022).
+
+```{r}
+metro_calendar_dates <- brt_gtfs$calendar_dates
+```
+
+"1 - Service has been added for the specified date. 
+2 - Service has been removed for the specified date."
+
 
 ### Shapes
 
@@ -1128,8 +1181,6 @@ Create shape table from sf object
 ```{r}
 metro_shapes <- convert_sf_to_shapes(raw_metro_line, shape_id = NULL)
 ```
-
-
 
 ### Stop times
 
