@@ -58,7 +58,7 @@ Deletes
 ## Memory setup
 
 ```{r}
-options(java.parameters = "-Xmx4G")
+options(java.parameters = "-Xmx6G")
 ```
 
 # Bus Rapid Transit network (BRT)
@@ -1023,7 +1023,7 @@ Generates the main tables of the GTFS metro data.
 ```{r}
 metro_agency <- tibble::tribble(
   ~agency_id,  ~agency_name,        ~agency_url,  ~agency_timezone,  ~agency_lang,  ~agency_phone,
-  "1",         "Metro de Bogotá",   "https://www.metrodebogota.gov.co/",  "America/Bogota",  "es", "(+57)601-555-33-33")
+  "1", "Metro de Bogotá", "https://www.metrodebogota.gov.co/", "America/Bogota", "es","(+57)601-555-33-33")
 
 ```
 
@@ -1036,6 +1036,21 @@ data.table::setDT(metro_agency)
 
 ### Routes
 
+Create a metro route table
+
+```{r}
+metro_routes <- tibble::tribble(
+  ~route_id,  ~route_short_name,~route_long_name, ~route_desc, ~agency_id, ~route_color, ~route_text_color, ~route_type,
+  "M_001", "S_001", "South", "Main", "1", "FFFFFF", "000000", "1",
+  "M_002", "N_001", "North", "Main", "1", "FFFFFF", "000000", "1")
+```
+
+Reads it as data frame
+
+```{r}
+data.table::setDT(metro_routes)
+```
+
 
 
 ### Trips
@@ -1045,18 +1060,18 @@ data.table::setDT(metro_agency)
 Reading stations data of first line of metro.
 
 ```{r}
-geo_metro_stations <- st_read("Data/Raw/Transport/Metro/Stations/ESTACIONES.shp") %>%
+raw_metro_stations <- st_read("Data/Raw/Transport/Metro/Stations/ESTACIONES.shp") %>%
   st_transform(.,4326)
 ```
 Review CRS
 
 ```{r}
-st_crs(geo_metro_stations)
+st_crs(raw_metro_stations)
 ```
 Geometry
 
 ```{r}
-qtm(geo_metro_stations)
+qtm(raw_metro_stations)
 ```
 
 
@@ -1070,40 +1085,38 @@ qtm(geo_metro_stations)
 Reading track data of first line of metro.
 
 ```{r}
-geo_metro_line <- st_read("Data/Raw/Transport/Metro/Track/TRAZADO_PLMB.shp") %>%
+raw_metro_line <- st_read("Data/Raw/Transport/Metro/Track/TRAZADO_PLMB.shp") %>%
   st_transform(.,4326)
 ```
 
 Review CRS
 
 ```{r}
-st_crs(geo_metro_line)
+st_crs(raw_metro_line)
 ```
 
 Geometry
 
 ```{r}
-qtm(geo_metro_line)
+qtm(raw_metro_line)
 ```
 Create shape id column
 
 ```{r}
-geo_metro_line$shape_id = "M1_001"
+raw_metro_line$shape_id = "M1_0001"
 ```
 
 Relocate columns
 
 ```{r}
-# relocate(lon, .after = id)
+raw_metro_line <- raw_metro_line  %>%
+  relocate(shape_id)
 ```
-
-
-
 
 Create shape table from sf object
 
 ```{r}
-metro_line_shape <- convert_sf_to_shapes(geo_metro_line, shape_id = NULL)
+metro_line_shape <- convert_sf_to_shapes(raw_metro_line, shape_id = NULL)
 ```
 
 
