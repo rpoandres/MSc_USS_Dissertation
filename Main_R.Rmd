@@ -1089,7 +1089,6 @@ N: North
 S: South
 
 
-
 ```{r}
 metro_trips <- tibble::tribble(
   ~route_id,  ~service_id,~trip_id, ~shape_id,
@@ -1102,7 +1101,6 @@ Reads it as a table
 ```{r}
 data.table::setDT(metro_trips)
 ```
-
 
 
 
