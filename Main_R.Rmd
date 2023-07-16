@@ -1069,8 +1069,8 @@ Create a metro route table
 ```{r}
 metro_routes <- tibble::tribble(
   ~route_id,  ~route_short_name,~route_long_name, ~route_desc, ~agency_id, ~route_color, ~route_text_color, ~route_type,
-  "M_001", "S_001", "South", "Main", "1", "FFFFFF", "000000", "1",
-  "M_002", "N_001", "North", "Main", "1", "FFFFFF", "000000", "1")
+  "M1_001", "S_001", "South", "Main", "1", "FFFFFF", "000000", "1",
+  "M1_002", "N_001", "North", "Main", "1", "FFFFFF", "000000", "1")
 ```
 
 Reads it as data frame
@@ -1082,14 +1082,19 @@ data.table::setDT(metro_routes)
 
 ### Trips
 
-The trip id field will follow the structure: TRIPCODE_SERVICE_ID_SHAPE_ID
+The trip id field will follow the structure: ROUTEID_DIRECTION_SERVICEID_SHAPE_ID
+
+DIRECTION:
+N: North
+S: South
 
 
 
 ```{r}
 metro_trips <- tibble::tribble(
   ~route_id,  ~service_id,~trip_id, ~shape_id,
-  "M_001", "3", "TRIPID", "M1_001")
+  "M1_001", "3", "M1_001_S_3_M1_001", "M1_001",
+  "M1_002", "3", "M1_002_N_3_M1_001", "M1_001")
 ```
 
 Reads it as a table
@@ -1166,7 +1171,7 @@ qtm(raw_metro_line)
 Create shape id column
 
 ```{r}
-raw_metro_line$shape_id = "M1_0001"
+raw_metro_line$shape_id = "M1_001"
 ```
 
 Relocate columns
