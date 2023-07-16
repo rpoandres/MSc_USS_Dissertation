@@ -1052,8 +1052,11 @@ data.table::setDT(metro_routes)
 ```
 
 
-
 ### Trips
+
+
+
+
 
 ### Stops
 
@@ -1077,6 +1080,13 @@ qtm(raw_metro_stations)
 
 
 ### Calendar
+
+Creating a mirror calendar table from the BRT GTFS data.
+
+```{r}
+metro_calendar <- brt_gtfs$calendar
+```
+
 
 ### Calendar dates
 
@@ -1116,7 +1126,7 @@ raw_metro_line <- raw_metro_line  %>%
 Create shape table from sf object
 
 ```{r}
-metro_line_shape <- convert_sf_to_shapes(raw_metro_line, shape_id = NULL)
+metro_shapes <- convert_sf_to_shapes(raw_metro_line, shape_id = NULL)
 ```
 
 
