@@ -98,18 +98,14 @@ Review of tables of downloaded data
 # 
 # names(brt_gtfs)
 ```
+
 ## Reading data locally
 
-Local path
-
-```{r}
-local_path <- "Data/Raw/Transport/BRT/GTFS-2023-06-21.zip"
-```
 
 Reading data locally
 
 ```{r}
-brt_gtfs <- read_gtfs(local_path)
+brt_gtfs <- read_gtfs("Data/Raw/Transport/BRT/GTFS-2023-06-21.zip")
 
 names(brt_gtfs)
 ```
@@ -1049,7 +1045,8 @@ Generates the main tables of the GTFS metro data.
 ### Agency
 
 ```{r}
-metro_agency <- tibble::tribble(~agency_id,  ~agency_name, ~agency_url, ~agency_timezone, ~agency_lang, ~agency_phone,"1", "Metro de Bogotá", "https://www.metrodebogota.gov.co/", "America/Bogota", "es", "(+57)601-555-33-33")
+metro_agency <- tibble::tribble(~agency_id,  ~agency_name, ~agency_url, ~agency_timezone, ~agency_lang, ~agency_phone,
+                                "1", "Metro de Bogotá", "https://www.metrodebogota.gov.co/", "America/Bogota", "es", "(+57)601-555-33-33")
 
 ```
 
@@ -1115,6 +1112,7 @@ Review CRS
 ```{r}
 st_crs(raw_metro_stations)
 ```
+
 Geometry
 
 ```{r}
@@ -1126,23 +1124,43 @@ Calculates the centrids of every station polygon
 ```{r}
 metro_stops <- raw_metro_stations %>%
   st_centroid() %>%
-  rename(stop_name = RefName)
+  rename(stop_name = RefName) %>%
+  rename(stop_id = NOMBRE) %>%
+  rename(stop_code = NUMERO)
   
 ```
+Stops
+
+```{r}
+head(metro_stops)
+```
+
+
 Calculate longitude and latitude coordinates of centroids
 
 ```{r}
 metro_stops$stop_lon <- st_coordinates(metro_stops)[, 1]
 metro_stops$stop_lat <- st_coordinates(metro_stops)[, 2]
-metro_stops$location_type <- "0"
-metro_stops$zone_id <- "0"
 
 ```
 
-
+Adjust station code and populate location_type and zone_id
 
 ```{r}
-qtm(metro_stops)
+metro_stops$location_type <- "0"
+metro_stops$zone_id <- "0"
+metro_stops$stop_id <- gsub("E", "M", metro_stops$stop_id)
+```
+
+Dropping columns and geometry
+
+```{r}
+metro_stops <- metro_stops %>%
+  st_drop_geometry(.) %>%
+  dplyr::select(!c(OBJECTID,TIPO, Shape_Leng, Shape_Area)) %>%
+  relocate(stop_id) %>%
+  relocate(stop_code, .after = stop_id) %>%
+  relocate(stop_lat, .after = stop_name)
 ```
 
 
@@ -1208,6 +1226,8 @@ metro_shapes <- convert_sf_to_shapes(raw_metro_line, shape_id = NULL)
 ```
 
 ### Stop times
+
+
 
 ### Frequencies (non-existing in BRT data)
 
