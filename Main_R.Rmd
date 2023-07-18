@@ -1045,8 +1045,8 @@ Generates the main tables of the GTFS metro data.
 ### Agency
 
 ```{r}
-metro_agency <- tibble::tribble(~agency_id,  ~agency_name, ~agency_url, ~agency_timezone, ~agency_lang, ~agency_phone,
-                                "1", "Metro de Bogotá", "https://www.metrodebogota.gov.co/", "America/Bogota", "es", "(+57)601-555-33-33")
+metro_agency <- tibble::tribble(~agency_id, ~agency_name, ~agency_url, ~agency_timezone, ~agency_lang, ~agency_phone,
+                                "1","Metro de Bogotá","https://www.metrodebogota.gov.co/","America/Bogota","es", "(+57)601-555-33-33")
 
 ```
 
@@ -1135,7 +1135,6 @@ Stops
 head(metro_stops)
 ```
 
-
 Calculate longitude and latitude coordinates of centroids
 
 ```{r}
@@ -1152,7 +1151,7 @@ metro_stops$zone_id <- "0"
 metro_stops$stop_id <- gsub("E", "M", metro_stops$stop_id)
 ```
 
-Dropping columns and geometry
+Dropping columns and geometry and relocating columns
 
 ```{r}
 metro_stops <- metro_stops %>%
