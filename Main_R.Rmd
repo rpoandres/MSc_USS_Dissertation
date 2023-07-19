@@ -1242,6 +1242,27 @@ distance_stations <- st_distance(metro_stations_points,metro_stations_points)
 ```
 
 
+Iterate to calculate distance from next station
+
+```{r}
+
+distance_list<- list()
+
+for (i in 1:(nrow(distance_stations) - 1)) {
+  
+  temp_distances <- c()
+  distance_ij <- distance_stations[i, i+1]
+  temp_distances <- c(temp_distances, distance_ij)
+  distance_list <- append(distance_list, temp_distances)
+}
+```
+
+Read as a data frame
+
+```{r}
+distance_stations_df <- data.frame(distance = unlist(distance_list))
+```
+
 
 
 
