@@ -1045,8 +1045,9 @@ Generates the main tables of the GTFS metro data.
 ### Agency
 
 ```{r}
-metro_agency <- tibble::tribble(~agency_id, ~agency_name, ~agency_url, ~agency_timezone, ~agency_lang, ~agency_phone,
-                                "1","Metro de Bogotá","https://www.metrodebogota.gov.co/","America/Bogota","es", "(+57)601-555-33-33")
+metro_agency <- tibble::tribble(
+  ~agency_id, ~agency_name, ~agency_url, ~agency_timezone, ~agency_lang, ~agency_phone,
+  "1","Metro de Bogotá","https://www.metrodebogota.gov.co/","America/Bogota","es", "(+57)601-555-33-33")
 
 ```
 
@@ -1143,7 +1144,7 @@ metro_stops$stop_lat <- st_coordinates(metro_stops)[, 2]
 
 ```
 
-Adjust station code and populate location_type and zone_id
+Adjust station code, populate location_type and zone_id
 
 ```{r}
 metro_stops$location_type <- "0"
@@ -1225,6 +1226,22 @@ metro_shapes <- convert_sf_to_shapes(raw_metro_line, shape_id = NULL)
 ```
 
 ### Stop times
+
+#### Distance calculation
+
+Point only geometry
+
+```{r}
+metro_stations_points <- raw_metro_stations %>%
+  st_centroid()
+```
+Calculating distance between stations
+
+```{r}
+distance_stations <- st_distance(metro_stations_points,metro_stations_points)
+```
+
+
 
 
 
