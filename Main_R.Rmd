@@ -1235,6 +1235,13 @@ Point only geometry
 metro_stations_points <- raw_metro_stations %>%
   st_centroid()
 ```
+Sorting stations
+
+```{r}
+metro_stations_points <- metro_stations_points[order(metro_stations_points$NUMERO),]
+```
+
+
 Calculating distance between stations
 
 ```{r}
@@ -1261,7 +1268,7 @@ p_15 <- st_sfc(st_point(c(-74.06168,4.660545))) %>%
 p_16 <- st_sfc(st_point(c(-74.17746,4.640571))) %>% 
   st_set_crs(4326)
 
-st_distance(p_15,p_16)
+st_distance(p_16 ,p_15)
 ```
 
 
