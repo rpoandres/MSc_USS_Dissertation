@@ -1248,38 +1248,13 @@ Calculating distance between stations
 distance_stations <- st_distance(metro_stations_points,metro_stations_points)
 ```
 
-Test
-
-```{r}
-p_1 <- st_sfc(st_point(c(-74.17186, 4.630021))) %>% 
-  st_set_crs(4326)
-
-p_2 <- st_sfc(st_point(c(-74.16671, 4.622248))) %>% 
-  st_set_crs(4326)
-
-st_distance(p_1,p_2)
-```
-Test 2
-
-```{r}
-p_15 <- st_sfc(st_point(c(-74.06168,4.660545))) %>% 
-  st_set_crs(4326)
-
-p_16 <- st_sfc(st_point(c(-74.17746,4.640571))) %>% 
-  st_set_crs(4326)
-
-st_distance(p_16 ,p_15)
-```
-
-
-
-
-
 Iterate to calculate distance from next station
 
 ```{r}
 
 distance_list<- list()
+origin_list <- list()
+destination_list <- list()
 
 for (i in 1:(nrow(distance_stations) - 1)) {
   
@@ -1287,13 +1262,27 @@ for (i in 1:(nrow(distance_stations) - 1)) {
   distance_ij <- distance_stations[i, i+1]
   temp_distances <- c(temp_distances, distance_ij)
   distance_list <- append(distance_list, temp_distances)
+  
+  temp_origin <- c()
+  origin_i <- i
+  temp_origin <- c(temp_origin,origin_i)
+  origin_list<- append(origin_list,temp_origin)
+  
+  
+  
+  temp_destination <- c()
+  destination_j <- i + 1
+  temp_destination <- c(temp_destination,destination_j)
+  destination_list <- append(destination_list,temp_destination)
+  
+  
 }
 ```
 
 Read as a data frame
 
 ```{r}
-distance_stations_df <- data.frame(distance = unlist(distance_list))
+distance_stations_df <- data.frame(o_station = unlist(origin_list), d_station =  unlist(destination_list),distance = unlist(distance_list))
 ```
 
 
