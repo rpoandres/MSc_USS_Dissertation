@@ -1349,7 +1349,7 @@ Iterate to calculate arrival and departure time according to time_to_next statio
 
 ```{r}
 
-for (i in 2:(nrow(metro_stop_times) - 1)) {
+for (i in 2:(nrow(metro_stop_times))) {
   
   metro_stop_times$arrival_time[i] = as_hms(metro_stop_times$departure_time[i-1] + hms(seconds = ceiling(metro_stop_times$time_to_next[i-1]*60)))
   
@@ -1359,6 +1359,23 @@ for (i in 2:(nrow(metro_stop_times) - 1)) {
 
 ```
 
+Creates the stop sequence field
+
+```{r}
+
+metro_stop_times$stop_sequence <- 0
+
+for (i in 1:(nrow(metro_stop_times))) {
+  metro_stop_times$stop_sequence[i] = i
+
+}
+```
+
+Creates the timepoint field
+
+```{r}
+metro_stop_times$timepoint <- 0
+```
 
 
 __Setting initial arrival time value__
