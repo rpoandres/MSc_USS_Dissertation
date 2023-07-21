@@ -1351,20 +1351,9 @@ Iterate to calculate arrival and departure time according to time_to_next statio
 
 for (i in 2:(nrow(metro_stop_times) - 1)) {
   
-  #metro_stop_times$arrival_time[i] = as_hms(metro_stop_times$departure_time[i-1]+ as_hms("00:00:55"))
-  #metro_stop_times$arrival_time[i] = as_hms(metro_stop_times$departure_time[i-1]+ as_hms(paste("00:00:",(metro_stop_times$time_to_next[i-1]*60))))
-  
-  #metro_stop_times$arrival_time[i] =  as_hms(time_add(as.POSIXct(metro_stop_times$departure_time[i-1]), minutes = 55))
-  
-  #as_hms(time_add(as.POSIXct(time), minutes = 55))
-  
   metro_stop_times$arrival_time[i] = as_hms(metro_stop_times$departure_time[i-1] + hms(seconds = ceiling(metro_stop_times$time_to_next[i-1]*60)))
   
-  
-  
   metro_stop_times$departure_time[i] = metro_stop_times$arrival_time[i]
-
-  
 }
 
 
