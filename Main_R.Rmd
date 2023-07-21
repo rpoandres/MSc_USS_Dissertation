@@ -1377,6 +1377,13 @@ Creates the timepoint field
 metro_stop_times$timepoint <- 0
 ```
 
+Droping columns
+
+```{r}
+
+```
+
+
 
 __Setting initial arrival time value__
 
