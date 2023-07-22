@@ -1473,8 +1473,27 @@ metro_stop_times_full <- bind_rows(metro_stop_times_N,metro_stop_times_S)
 
 
 
-### Frequencies (non-existing in BRT data)
+### Frequencies
 
+#### North direction trip
+
+Creates frequencies initial data frame
+
+```{r}
+metro_frequencies_columns = c(names(brt_gtfs$frequencies)) 
+metro_frequencies_N = data.frame(matrix(nrow = 5, ncol = length(metro_frequencies_columns))) 
+colnames(metro_frequencies_N) = metro_frequencies_columns
+```
+
+Assign trip value, star and end time values
+
+```{r}
+metro_frequencies_N$trip_id <- metro_trips$trip_id[2]
+metro_frequencies_N$start_time <- as_hms("00:00:00")
+metro_frequencies_N$end_time <- as_hms("00:00:00")
+```
+
+Duration of time range 
 
 
 ### Fare attributes
