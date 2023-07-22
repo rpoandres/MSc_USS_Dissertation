@@ -1314,34 +1314,32 @@ distance_stations_df <- distance_stations_df %>%
 Stop time table for the north direction trip
 
 ```{r}
-metro_stop_times <- metro_stops %>%
+metro_stop_times_N <- metro_stops %>%
   mutate(trip_id = metro_trips$trip_id[2]) %>%
   relocate(trip_id)
 ```
 
-Temprary list with zero in the final value
+Temporary list with zero in the final value
 
 ```{r}
-temp_time_to_next <- list()
-temp_time_to_next <- as.list(distance_stations_df$dura_min)
-temp_time_to_next <- append(temp_time_to_next,0)
+temp_time_to_next_N <- list()
+temp_time_to_next_N <- as.list(distance_stations_df$dura_min)
+temp_time_to_next_N <- append(temp_time_to_next_N,0)
 ```
 
 Append list in metro stops table
 
 ```{r}
-metro_stop_times <- metro_stop_times %>%
-  mutate(time_to_next = unlist(temp_time_to_next))
+metro_stop_times_N <- metro_stop_times_N %>%
+  mutate(time_to_next = unlist(temp_time_to_next_N))
   
 ```
 
 Creates the arrival and departure time columns
 
 ```{r}
-metro_stop_times$arrival_time <- as_hms("04:00:00")
-#metro_stop_times$arrival_time <- hms(metro_stop_times$arrival_time)
-metro_stop_times$departure_time <- as_hms("04:00:00")
-#metro_stop_times$departure_time <- hms(metro_stop_times$departure_time)
+metro_stop_times_N$arrival_time <- as_hms("04:00:00")
+metro_stop_times_N$departure_time <- as_hms("04:00:00")
 
 ```
 
@@ -1349,11 +1347,11 @@ Iterate to calculate arrival and departure time according to time_to_next statio
 
 ```{r}
 
-for (i in 2:(nrow(metro_stop_times))) {
+for (i in 2:(nrow(metro_stop_times_N))) {
   
-  metro_stop_times$arrival_time[i] = as_hms(metro_stop_times$departure_time[i-1] + hms(seconds = ceiling(metro_stop_times$time_to_next[i-1]*60)))
+  metro_stop_times_N$arrival_time[i] = as_hms(metro_stop_times_N$departure_time[i-1] + hms(seconds = ceiling(metro_stop_times_N$time_to_next[i-1]*60)))
   
-  metro_stop_times$departure_time[i] = metro_stop_times$arrival_time[i]
+  metro_stop_times_N$departure_time[i] = metro_stop_times_N$arrival_time[i]
 }
 
 
@@ -1363,10 +1361,10 @@ Creates the stop sequence field
 
 ```{r}
 
-metro_stop_times$stop_sequence <- 0
+metro_stop_times_N$stop_sequence <- 0
 
-for (i in 1:(nrow(metro_stop_times))) {
-  metro_stop_times$stop_sequence[i] = i
+for (i in 1:(nrow(metro_stop_times_N))) {
+  metro_stop_times_N$stop_sequence[i] = i
 
 }
 ```
@@ -1374,13 +1372,13 @@ for (i in 1:(nrow(metro_stop_times))) {
 Creates the timepoint field
 
 ```{r}
-metro_stop_times$timepoint <- 0
+metro_stop_times_N$timepoint <- 0
 ```
 
 Droping columns
 
 ```{r}
-metro_stop_times <- metro_stop_times %>%
+metro_stop_times_N <- metro_stop_times_N %>%
   dplyr::select(c(trip_id, arrival_time, departure_time, stop_id, stop_sequence, timepoint))
 ```
 
