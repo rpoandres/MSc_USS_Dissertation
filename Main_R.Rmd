@@ -1475,6 +1475,8 @@ metro_stop_times_full <- bind_rows(metro_stop_times_N,metro_stop_times_S)
 
 ### Frequencies (non-existing in BRT data)
 
+
+
 ### Fare attributes
 
 ### Fare rules
