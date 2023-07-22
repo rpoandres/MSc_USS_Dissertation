@@ -1122,7 +1122,7 @@ Geometry
 qtm(raw_metro_stations)
 ```
 
-Calculates the centrids of every station polygon
+Calculates the centroids of every station polygon
 
 ```{r}
 metro_stops <- raw_metro_stations %>%
@@ -1463,6 +1463,13 @@ metro_stop_times_S <- metro_stop_times_S %>%
   dplyr::select(c(trip_id, arrival_time, departure_time, stop_id, stop_sequence, timepoint))
 ```
 
+#### Appeding trips
+
+Appends both north and south direction trips
+
+```{r}
+metro_stop_times_full <- bind_rows(metro_stop_times_N,metro_stop_times_S)
+```
 
 
 
