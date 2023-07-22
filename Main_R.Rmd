@@ -1383,18 +1383,85 @@ metro_stop_times_N <- metro_stop_times_N %>%
 ```
 
 
-
-__Setting initial arrival time value__
-
-
-
-__Add duration time to previous departure time__
-
-
-
-
-
 #### South direction trip
+
+Stop time table for the south direction trip
+
+```{r}
+metro_stop_times_S <- metro_stops %>%
+  mutate(trip_id = metro_trips$trip_id[1]) %>%
+  relocate(trip_id)
+```
+
+Inverse sorting
+
+```{r}
+metro_stop_times_S <- metro_stop_times_S[order(metro_stop_times_S$stop_code,decreasing = TRUE),]
+```
+
+
+Temporary list with zero in the final value
+
+```{r}
+temp_time_to_next_S <- list()
+temp_time_to_next_S <- rev (as.list(distance_stations_df$dura_min)) #Inverse sorting
+temp_time_to_next_S <- append(temp_time_to_next_S,0)
+```
+
+Append list in metro stops table
+
+```{r}
+metro_stop_times_S <- metro_stop_times_S %>%
+  mutate(time_to_next = unlist(temp_time_to_next_S))
+  
+```
+
+Creates the arrival and departure time columns
+
+```{r}
+metro_stop_times_S$arrival_time <- as_hms("04:00:00")
+metro_stop_times_S$departure_time <- as_hms("04:00:00")
+
+```
+
+Iterate to calculate arrival and departure time according to time_to_next station
+
+```{r}
+
+for (i in 2:(nrow(metro_stop_times_S))) {
+  
+  metro_stop_times_S$arrival_time[i] = as_hms(metro_stop_times_S$departure_time[i-1] + hms(seconds = ceiling(metro_stop_times_S$time_to_next[i-1]*60)))
+  
+  metro_stop_times_S$departure_time[i] = metro_stop_times_S$arrival_time[i]
+}
+
+
+```
+
+Creates the stop sequence field
+
+```{r}
+
+metro_stop_times_S$stop_sequence <- 0
+
+for (i in 1:(nrow(metro_stop_times_S))) {
+  metro_stop_times_S$stop_sequence[i] = i
+
+}
+```
+
+Creates the timepoint field
+
+```{r}
+metro_stop_times_S$timepoint <- 0
+```
+
+Droping columns
+
+```{r}
+metro_stop_times_S <- metro_stop_times_S %>%
+  dplyr::select(c(trip_id, arrival_time, departure_time, stop_id, stop_sequence, timepoint))
+```
 
 
 
