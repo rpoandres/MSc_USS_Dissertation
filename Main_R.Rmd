@@ -1380,7 +1380,8 @@ metro_stop_times$timepoint <- 0
 Droping columns
 
 ```{r}
-
+metro_stop_times <- metro_stop_times %>%
+  dplyr::select(c(trip_id, arrival_time, departure_time, stop_id, stop_sequence, timepoint))
 ```
 
 
