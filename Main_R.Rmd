@@ -1493,7 +1493,19 @@ metro_frequencies_N$start_time <- as_hms("00:00:00")
 metro_frequencies_N$end_time <- as_hms("00:00:00")
 ```
 
-Duration of time range 
+Peak and off peak hours
+
+```{r}
+start_time_list <- list("00:00:00","05:30:00", "09:00:00", "16:00:00", "19:00:00")
+end_time_list <- list("05:29:00","08:59:00","15:59:00", "18:59:00","23:59:00")
+```
+
+Assign to dataframe
+
+```{r}
+metro_frequencies_N$start_time <- unlist(start_time_list)
+metro_frequencies_N$end_time <- unlist(end_time_list)
+```
 
 
 ### Fare attributes
