@@ -114,6 +114,13 @@ names(brt_gtfs)
 
 ## Data inspection
 
+### Summary
+
+```{r}
+summary(brt_gtfs)
+```
+
+
 ### Profiling
 
 ```{r}
@@ -1049,7 +1056,7 @@ Generates the main tables of the GTFS metro data.
 ```{r}
 metro_agency <- tibble::tribble(
   ~agency_id, ~agency_name, ~agency_url, ~agency_timezone, ~agency_lang, ~agency_phone,
-  "1","Metro de Bogotá","https://www.metrodebogota.gov.co/","America/Bogota","es", "(+57)601-555-33-33")
+  "1","Metro de Bogota","https://www.metrodebogota.gov.co/","America/Bogota","es", "(+57)601-555-33-33")
 
 ```
 
@@ -1534,9 +1541,72 @@ Appends both north and south direction trips
 metro_frequencies_full <- bind_rows(metro_frequencies_S,metro_frequencies_N)
 ```
 
-### Fare attributes
+### Fare attributes (non-existing)
 
-### Fare rules
+### Fare rules (non-existing)
+
+### Compilation
+
+#### Write
+
+List of origin and destination files
+
+```{r}
+items <- list(
+  metro_agency = "agency.txt",
+  metro_routes = "routes.txt",
+  metro_trips = "trips.txt",
+  metro_stops = "stops.txt",
+  metro_calendar = "calendar.txt",
+  metro_calendar_dates = "calendar_dates.txt",
+  metro_shapes = "shapes.txt",
+  metro_stop_times_full = "stop_times.txt",
+  metro_frequencies_full = "frequencies.txt"
+)
+```
+
+Input directory
+
+```{r}
+input_directory <- "Data/Preprocessed/Metro/GTFS/Inputs/"
+```
+
+
+Writes dataframes as txt files
+
+```{r}
+
+for (i in names(items)) {
+  file_path <- paste0(input_directory, items[[i]])
+  write.table(get(i), file_path, sep=",", quote=FALSE)
+}
+```
+
+
+
+#### Store (Not working)
+
+File list
+
+```{r}
+paths <- file.path(input_directory, items)
+```
+
+Create a new zip file __Its not working__
+
+```{r}
+zip("METRO_GTFS.zip", files = paths, zip = "Data/Preprocessed/Metro/GTFS/Final")
+```
+
+
+#### Read
+
+#### Review
+
+```{r}
+#summary()
+```
+
 
 
 ## Data inspection
