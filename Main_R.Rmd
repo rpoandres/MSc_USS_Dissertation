@@ -41,6 +41,7 @@ library(remotes)
 library(h3)
 library(lubridate) # date data management
 library(hms) # date data management
+library(zip)
 ```
 
 ## Temporary directory
@@ -1592,14 +1593,23 @@ File list
 paths <- file.path(input_directory, items)
 ```
 
-Create a new zip file __Its not working__
+Set working directory
 
 ```{r}
-zip("METRO_GTFS.zip", files = paths, zip = "Data/Preprocessed/Metro/GTFS/Final")
+#zip(zipfile = "test.zip", files = paths[1])
+zip(zipfile = "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip", files = list.files("Data/Preprocessed/Metro/GTFS/Inputs/", full.names = TRUE))
+
 ```
 
 
 #### Read
+
+Reads resulting Metro GTFS Data
+
+```{r}
+
+```
+
 
 #### Review
 
