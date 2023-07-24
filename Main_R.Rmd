@@ -120,6 +120,18 @@ names(brt_gtfs)
 ```{r}
 summary(brt_gtfs)
 ```
+### Validation
+
+```{r}
+validate_gtfs(
+  "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip",
+  output_path = "Data/Raw/Transport/BRT/Validation/",
+  validator_path = download_validator(tempdir())
+)
+```
+
+
+
 
 
 ### Profiling
@@ -1044,11 +1056,11 @@ Interactive map by subsetting value
 
 **What sub-setting should be done before the accessibility modelling?**
 
-## Data cleaning
+## Data cleaning (Non-existing)
 
-# Metro system (pending)
+# Metro system
 
-## GTFS data generation
+## Data generation
 
 Generates the main tables of the GTFS metro data.
 
@@ -1579,24 +1591,18 @@ Writes dataframes as txt files
 
 for (i in names(items)) {
   file_path <- paste0(input_directory, items[[i]])
-  write.table(get(i), file_path, sep=",", quote=FALSE)
+  write.table(get(i), file_path, sep=",", quote=FALSE, row.names = FALSE)
 }
 ```
 
 
 
-#### Store (Not working)
+#### Store
 
-File list
 
-```{r}
-paths <- file.path(input_directory, items)
-```
-
-Set working directory
+Creates zipfile
 
 ```{r}
-#zip(zipfile = "test.zip", files = paths[1])
 zip(zipfile = "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip", files = list.files("Data/Preprocessed/Metro/GTFS/Inputs/", full.names = TRUE))
 
 ```
@@ -1607,21 +1613,75 @@ zip(zipfile = "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip", files = list.
 Reads resulting Metro GTFS Data
 
 ```{r}
+metro_gtfs <- read_gtfs("Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip")
 
+names(metro_gtfs)
 ```
-
-
-#### Review
-
-```{r}
-#summary()
-```
-
-
 
 ## Data inspection
 
-## Data cleaning
+### Summary
+
+```{r}
+summary(metro_gtfs)
+```
+### Profiling
+
+```{r}
+plot_str(metro_gtfs)
+```
+
+### Validation
+
+```{r}
+validate_gtfs(
+  "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip",
+  output_path = "Data/Preprocessed/Metro/GTFS/Validation/",
+  validator_path = download_validator(tempdir())
+)
+```
+
+### Review
+
+Agency
+
+```{r}
+head(metro_gtfs$agency)
+```
+Routes
+
+```{r}
+head(metro_gtfs$routes)
+```
+
+Trips
+
+```{r}
+metro_gtfs$trips
+```
+
+Stops
+
+```{r}
+metro_gtfs$stops
+```
+
+Calendar
+
+```{r}
+metro_gtfs$calendar
+```
+
+Calendar dates
+
+```{r}
+metro_gtfs$calendar_dates
+```
+
+__Error in date column__
+
+
+## Data cleaning (non-existing)
 
 # Multipurpose survey
 
