@@ -1672,6 +1672,15 @@ metro_gtfs$trips
 
 #### Stops
 
+Reads stop_lat and stop_lon as numeric
+
+```{r}
+metro_gtfs$stops$stop_lat = as.numeric(as.character(metro_gtfs$stops$stop_lat))
+metro_gtfs$stops$stop_lon = as.numeric(as.character(metro_gtfs$stops$stop_lon))
+```
+
+
+
 ```{r}
 metro_gtfs$stops
 ```
@@ -1699,8 +1708,10 @@ metro_gtfs$shapes
 Geometry
 
 ```{r}
-geo_metro_shapes <- gtfstools::get_trip_geometry(metro_gtfs, file = "shapes")
+#geo_metro_shapes <- gtfstools::get_trip_geometry(metro_gtfs, file = "shapes")
 ```
+
+__Lat and lon as character__
 
 ## Data cleaning (non-existing)
 
