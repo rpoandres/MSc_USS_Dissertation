@@ -1699,6 +1699,14 @@ metro_gtfs$calendar_dates
 
 #### Shapes
 
+Reads as numeric
+
+```{r}
+metro_gtfs$shapes$shape_dist_traveled = as.numeric(as.character(metro_gtfs$shapes$shape_dist_traveled))
+metro_gtfs$shapes$Shape_Leng = as.numeric(as.character(metro_gtfs$shapes$Shape_Leng))
+```
+
+
 Dataframe
 
 ```{r}
@@ -1708,10 +1716,15 @@ metro_gtfs$shapes
 Geometry
 
 ```{r}
-#geo_metro_shapes <- gtfstools::get_trip_geometry(metro_gtfs, file = "shapes")
+geo_metro_shapes <- gtfstools::get_trip_geometry(metro_gtfs, file = "shapes")
 ```
 
-__Lat and lon as character__
+Qtm
+
+```{r}
+qtm(geo_metro_shapes)
+```
+
 
 ## Data cleaning (non-existing)
 
