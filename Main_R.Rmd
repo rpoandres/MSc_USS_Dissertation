@@ -1610,7 +1610,7 @@ for (i in names(items)) {
 Creates zipfile
 
 ```{r}
-zip(zipfile = "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip", files = list.files("Data/Preprocessed/Metro/GTFS/Inputs/", full.names = TRUE),include_directories = FALSE)
+zip(zipfile = "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip", files = list.files("Data/Preprocessed/Metro/GTFS/Inputs/", full.names = TRUE),mode = "cherry-pick")
 
 ```
 
@@ -1653,43 +1653,54 @@ plot_str(metro_gtfs)
 
 ### Review
 
-Agency
+#### Agency
 
 ```{r}
 head(metro_gtfs$agency)
 ```
-Routes
+#### Routes
 
 ```{r}
 head(metro_gtfs$routes)
 ```
 
-Trips
+#### Trips
 
 ```{r}
 metro_gtfs$trips
 ```
 
-Stops
+#### Stops
 
 ```{r}
 metro_gtfs$stops
 ```
 
-Calendar
+#### Calendar
 
 ```{r}
 metro_gtfs$calendar
 ```
 
-Calendar dates
+#### Calendar dates
 
 ```{r}
 metro_gtfs$calendar_dates
 ```
 
-__Error in date column__
+#### Shapes
 
+Dataframe
+
+```{r}
+metro_gtfs$shapes
+```
+
+Geometry
+
+```{r}
+geo_metro_shapes <- gtfstools::get_trip_geometry(metro_gtfs, file = "shapes")
+```
 
 ## Data cleaning (non-existing)
 
