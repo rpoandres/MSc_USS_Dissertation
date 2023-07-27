@@ -2518,6 +2518,7 @@ Review
 ```{r}
 head(access_comparison[, .(id, r5r_access, accessibility_access)])
 ```
+
 Results consistent across methods.
 
 ### Spatial distribution
@@ -2574,7 +2575,154 @@ Plotting of BRT Network
 
 ## Metro only scenario
 
+### Setup
 
+```{r}
+r5r_metro <- setup_r5("Accessibility/Metro", verbose = FALSE)
+```
+
+Centroids of hexagons
+
+```{r}
+hex_points_main <- data.table::fread("Accessibility/Metro/hex9_points_LU.csv")
+```
+
+### Time travel matrix
+
+Without erasing geometries
+
+```{r}
+ttm_metro <- travel_time_matrix(
+  r5r_metro,
+  origins = hex_points_main,
+  destinations = hex_points_main,
+  mode = c("WALK", "TRANSIT"),
+  departure_datetime = as.POSIXct(
+    "06-06-2023 8:00:00",
+    format = "%d-%m-%Y %H:%M:%S"
+  ),
+  max_walk_time = 30,
+  max_trip_duration = 120,
+  verbose = FALSE,
+  progress = FALSE
+)
+```
+
+Rename columns of time travel output
+
+```{r}
+data.table::setnames(ttm_metro, "travel_time_p50", "travel_time")
+```
+
+### Accessibility package
+
+#### Cumulative opportunities measure
+
+High street retail opportunities
+
+```{r}
+cum_opportunities_metro <- cumulative_cutoff(
+  ttm_metro,
+  land_use_data = hex_points_main,
+  opportunity = "LU_COD_21",
+  travel_cost = "travel_time",
+  cutoff = 30
+)
+```
+
+
+Review
+
+```{r}
+head(cum_opportunities_metro)
+```
+
+#### Minimum travel cost
+
+To high street retail opportunities
+
+```{r}
+min_time_metro <- cost_to_closest(
+  ttm_metro,
+  land_use_data = hex_points_main,
+  opportunity = "LU_COD_21",
+  travel_cost = "travel_time"
+)
+```
+
+Review
+
+```{r}
+head(min_time_metro)
+```
+
+### R5R package
+
+```{r}
+r5r_access_metro <- accessibility(
+  r5r_metro,
+  origins = hex_points_main,
+  destinations = hex_points_main,
+  opportunities_colname = "LU_COD_21",
+  decay_function = "step",
+  cutoffs = 30,
+  mode = c("WALK", "TRANSIT"),
+  departure_datetime = as.POSIXct(
+    "06-06-2023 8:00:00",
+    format = "%d-%m-%Y %H:%M:%S"
+  ),
+  max_walk_time = 30,
+  max_trip_duration = 120,
+  verbose = FALSE,
+  progress = FALSE
+)
+```
+
+Review
+
+```{r}
+head(r5r_access_metro)
+```
+### Results comparison
+
+Using accessibility package
+
+```{r}
+cum_cutoff_29_metro <- cumulative_cutoff(
+  ttm_metro,
+  land_use_data = hex_points_main,
+  opportunity = "LU_COD_21",
+  travel_cost = "travel_time",
+  cutoff = 29
+)
+```
+
+Merge results
+
+```{r}
+access_comparison_metro <- merge(
+  r5r_access_metro,
+  cum_cutoff_29_metro,
+  by = "id"
+)
+```
+
+
+Setting columns names accross methods
+
+```{r}
+data.table::setnames(
+  access_comparison_metro,
+  old = c("accessibility", "LU_COD_21"),
+  new = c("r5r_access", "accessibility_access")
+)
+```
+
+Review
+
+```{r}
+head(access_comparison_metro[, .(id, r5r_access, accessibility_access)])
+```
 
 
 ## Alternative scenario
