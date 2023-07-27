@@ -1679,7 +1679,7 @@ metro_gtfs$stops$stop_lat = as.numeric(as.character(metro_gtfs$stops$stop_lat))
 metro_gtfs$stops$stop_lon = as.numeric(as.character(metro_gtfs$stops$stop_lon))
 ```
 
-
+Dataframe
 
 ```{r}
 metro_gtfs$stops
@@ -1723,6 +1723,22 @@ Qtm
 
 ```{r}
 qtm(geo_metro_shapes)
+```
+
+#### Stop times
+
+Dataframe
+
+```{r}
+metro_gtfs$stop_times
+```
+
+#### Frequencies
+
+Dataframe
+
+```{r}
+metro_gtfs$frequencies
 ```
 
 
