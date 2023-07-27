@@ -2315,14 +2315,18 @@ Creates before and after directories
 
 ```{r}
 before_dir <- file.path(access_dir, "Before")
+metro_dir <- file.path(access_dir, "Metro")
 after_dir <- file.path(access_dir, "After")
 
 dir.create(before_dir)
+dir.create(metro_dir)
 dir.create(after_dir)
+
 ```
 
 Copy input files to before directory
 
+Before data
 
 ```{r}
 # BRT GTFS data
@@ -2336,6 +2340,22 @@ file.copy(from = "Data/Preprocessed/Grid/Hex9_grid_LU.csv", to = file.path(befor
 
 ```
 
+Metro data
+
+```{r}
+
+# Metro GTFS data
+file.copy(from = "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip", to = file.path(metro_dir, "metro_gtfs.zip"))
+
+# OSM Street network
+file.copy(from = "Data/Raw/Transport/OSM/Bogota_general_network.osm.pbf", to = file.path(metro_dir, "street_network.osm.pbf"))
+
+# Hexagon opportunities data based on hexagon grid
+file.copy(from = "Data/Preprocessed/Grid/Hex9_grid_LU.csv", to = file.path(metro_dir, "hex9_points_LU.csv"))
+
+
+```
+
 Visualize directory
 
 ```{r}
@@ -2344,7 +2364,7 @@ fs::dir_tree(access_dir)
 
 
 
-## Current scenario
+## Base scenario
 
 It does not have the future metro data.
 
@@ -2387,8 +2407,6 @@ Rename columns of time travel output
 data.table::setnames(ttm, "travel_time_p50", "travel_time")
 ```
 
-
-## Base scenario
 
 ### Accessibility package
 
@@ -2546,13 +2564,16 @@ spatial_access %>%
            "Hex9_spatial_access",
            delete_layer=TRUE)
 ```
-__Save in different directory__
+
 
 Plotting of BRT Network
 
 ```{r}
 
 ```
+
+## Metro only scenario
+
 
 
 
