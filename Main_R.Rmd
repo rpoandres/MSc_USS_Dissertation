@@ -700,7 +700,6 @@ Sorting by trip id
 brt_gtfs$stop_times[order(trip_id)]
 ```
 
-**Review suffix structure**
 
 #### Stop sequence
 
@@ -829,7 +828,6 @@ ggplot() +
   geom_sf(data = geo_case_3) +
   theme_minimal()
 ```
-__Non-continous geometry__
 
 
 ### Frequencies (blank)
@@ -1725,6 +1723,17 @@ Qtm
 qtm(geo_metro_shapes)
 ```
 
+##### Saving
+
+```{r}
+geo_metro_shapes %>%
+  st_write("Data/Preprocessed/Metro/Network/Metro_Network.gpkg",
+           "Main",
+           delete_layer=TRUE)
+```
+
+
+
 #### Stop times
 
 Dataframe
@@ -2385,11 +2394,11 @@ hex_points_main <- data.table::fread("Accessibility/Before/hex9_points_LU.csv")
 Without erasing geometries
 
 ```{r}
-ttm <- travel_time_matrix(
+ttm_brt <- travel_time_matrix(
   r5r_before,
   origins = hex_points_main,
   destinations = hex_points_main,
-  mode = c("WALK", "TRANSIT"),
+  mode = c("WALK", "BUS"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
@@ -2404,7 +2413,7 @@ ttm <- travel_time_matrix(
 Rename columns of time travel output
 
 ```{r}
-data.table::setnames(ttm, "travel_time_p50", "travel_time")
+data.table::setnames(ttm_brt, "travel_time_p50", "travel_time")
 ```
 
 
@@ -2415,8 +2424,8 @@ data.table::setnames(ttm, "travel_time_p50", "travel_time")
 High street retail opportunities
 
 ```{r}
-cum_opportunities <- cumulative_cutoff(
-  ttm,
+cum_opportunities_brt <- cumulative_cutoff(
+  ttm_brt,
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
@@ -2428,7 +2437,7 @@ cum_opportunities <- cumulative_cutoff(
 Review
 
 ```{r}
-head(cum_opportunities)
+head(cum_opportunities_brt)
 ```
 
 #### Minimum travel cost
@@ -2436,8 +2445,8 @@ head(cum_opportunities)
 To high street retail opportunities
 
 ```{r}
-min_time <- cost_to_closest(
-  ttm,
+min_time_brt <- cost_to_closest(
+  ttm_brt,
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time"
@@ -2447,13 +2456,13 @@ min_time <- cost_to_closest(
 Review
 
 ```{r}
-head(min_time)
+head(min_time_brt)
 ```
 
 ### R5R package
 
 ```{r}
-r5r_access <- accessibility(
+r5r_access_brt <- accessibility(
   r5r_before,
   origins = hex_points_main,
   destinations = hex_points_main,
@@ -2475,7 +2484,7 @@ r5r_access <- accessibility(
 Review
 
 ```{r}
-head(r5r_access)
+head(r5r_access_brt)
 ```
 
 ### Results comparison
@@ -2483,8 +2492,8 @@ head(r5r_access)
 Using accessibility package
 
 ```{r}
-cum_cutoff_29 <- cumulative_cutoff(
-  ttm,
+cum_cutoff_29_brt <- cumulative_cutoff(
+  ttm_brt,
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
@@ -2495,9 +2504,9 @@ cum_cutoff_29 <- cumulative_cutoff(
 Merge results
 
 ```{r}
-access_comparison <- merge(
-  r5r_access,
-  cum_cutoff_29,
+access_comparison_brt <- merge(
+  r5r_access_brt,
+  cum_cutoff_29_brt,
   by = "id"
 )
 ```
@@ -2507,7 +2516,7 @@ Setting columns names accross methods
 
 ```{r}
 data.table::setnames(
-  access_comparison,
+  access_comparison_brt,
   old = c("accessibility", "LU_COD_21"),
   new = c("r5r_access", "accessibility_access")
 )
@@ -2516,7 +2525,7 @@ data.table::setnames(
 Review
 
 ```{r}
-head(access_comparison[, .(id, r5r_access, accessibility_access)])
+head(access_comparison_brt[, .(id, r5r_access, accessibility_access)])
 ```
 
 Results consistent across methods.
@@ -2526,9 +2535,9 @@ Results consistent across methods.
 Merging accessibility results with hexagon grid
 
 ```{r}
-spatial_access <- merge(
+spatial_access_brt <- merge(
   hex_grid_9,
-  cum_opportunities,
+  cum_opportunities_brt,
   by.x = "h3_index",
   by.y = "id"
 )
@@ -2539,7 +2548,7 @@ Plotting
 Inferno Viridis color scheme
 
 ```{r}
-ggplot(spatial_access) +
+ggplot(spatial_access_brt) +
   geom_sf(aes(fill = LU_COD_21), color = NA) +
   scale_fill_viridis_c(option = "inferno") +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -2550,7 +2559,7 @@ ggplot(spatial_access) +
 Regular Vidiris color scheme
 
 ```{r}
-ggplot(spatial_access) +
+ggplot(spatial_access_brt) +
   geom_sf(aes(fill = LU_COD_21), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -2560,18 +2569,16 @@ ggplot(spatial_access) +
 Save results in geopackage
 
 ```{r}
-spatial_access %>%
+spatial_access_brt %>%
   st_write("Data/Results/Before/Grid/Hex9_grid.gpkg",
-           "Hex9_spatial_access",
+           "Hex9_spatial_access_brt",
            delete_layer=TRUE)
 ```
 
 
-Plotting of BRT Network
+__Plotting of BRT Network?__
 
-```{r}
 
-```
 
 ## Metro only scenario
 
@@ -2596,7 +2603,7 @@ ttm_metro <- travel_time_matrix(
   r5r_metro,
   origins = hex_points_main,
   destinations = hex_points_main,
-  mode = c("WALK", "TRANSIT"),
+  mode = c("WALK", "SUBWAY"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
@@ -2758,6 +2765,15 @@ ggplot(spatial_access_metro) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
   theme_minimal()
+```
+
+Save results in geopackage
+
+```{r}
+spatial_access_metro %>%
+  st_write("Data/Results/Metro/Grid/Hex9_grid.gpkg",
+           "Hex9_spatial_access_metro",
+           delete_layer=TRUE)
 ```
 
 
