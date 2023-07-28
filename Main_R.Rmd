@@ -2364,6 +2364,23 @@ file.copy(from = "Data/Preprocessed/Grid/Hex9_grid_LU.csv", to = file.path(metro
 
 
 ```
+After data
+
+```{r}
+
+# BRT GTFS data
+file.copy(from = "Data/Raw/Transport/BRT/GTFS-2023-06-21.zip", to = file.path(after_dir, "brt_gtfs.zip"))
+
+# Metro GTFS data
+file.copy(from = "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip", to = file.path(after_dir, "metro_gtfs.zip"))
+
+# OSM Street network
+file.copy(from = "Data/Raw/Transport/OSM/Bogota_general_network.osm.pbf", to = file.path(after_dir, "street_network.osm.pbf"))
+
+# Hexagon opportunities data based on hexagon grid
+file.copy(from = "Data/Preprocessed/Grid/Hex9_grid_LU.csv", to = file.path(after_dir, "hex9_points_LU.csv"))
+```
+
 
 Visualize directory
 
@@ -2469,7 +2486,7 @@ r5r_access_brt <- accessibility(
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
   cutoffs = 30,
-  mode = c("WALK", "TRANSIT"),
+  mode = c("WALK","BUS"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
@@ -2673,7 +2690,7 @@ r5r_access_metro <- accessibility(
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
   cutoffs = 30,
-  mode = c("WALK", "TRANSIT"),
+  mode = c("WALK", "SUBWAY"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
@@ -2773,6 +2790,199 @@ Save results in geopackage
 spatial_access_metro %>%
   st_write("Data/Results/Metro/Grid/Hex9_grid.gpkg",
            "Hex9_spatial_access_metro",
+           delete_layer=TRUE)
+```
+## BRT and metro scenario
+
+### Setup
+
+```{r}
+r5r_after <- setup_r5("Accessibility/After", verbose = FALSE)
+```
+
+Centroids of hexagons
+
+```{r}
+hex_points_main <- data.table::fread("Accessibility/After/hex9_points_LU.csv")
+```
+
+### Time travel matrix
+
+Without erasing geometries
+
+```{r}
+ttm_full <- travel_time_matrix(
+  r5r_after,
+  origins = hex_points_main,
+  destinations = hex_points_main,
+  mode = c("WALK", "SUBWAY", "BUS"),
+  departure_datetime = as.POSIXct(
+    "06-06-2023 8:00:00",
+    format = "%d-%m-%Y %H:%M:%S"
+  ),
+  max_walk_time = 30,
+  max_trip_duration = 120,
+  verbose = FALSE,
+  progress = FALSE
+)
+```
+
+Rename columns of time travel output
+
+```{r}
+data.table::setnames(ttm_full, "travel_time_p50", "travel_time")
+```
+
+### Accessibility package
+
+#### Cumulative opportunities measure
+
+High street retail opportunities
+
+```{r}
+cum_opportunities_full <- cumulative_cutoff(
+  ttm_full,
+  land_use_data = hex_points_main,
+  opportunity = "LU_COD_21",
+  travel_cost = "travel_time",
+  cutoff = 30
+)
+```
+
+
+Review
+
+```{r}
+head(cum_opportunities_full)
+```
+
+#### Minimum travel cost
+
+To high street retail opportunities
+
+```{r}
+min_time_full <- cost_to_closest(
+  ttm_full,
+  land_use_data = hex_points_main,
+  opportunity = "LU_COD_21",
+  travel_cost = "travel_time"
+)
+```
+
+Review
+
+```{r}
+head(min_time_full)
+```
+
+### R5R package
+
+```{r}
+r5r_access_full <- accessibility(
+  r5r_after,
+  origins = hex_points_main,
+  destinations = hex_points_main,
+  opportunities_colname = "LU_COD_21",
+  decay_function = "step",
+  cutoffs = 30,
+  mode = c("WALK", "SUBWAY", "BUS"),
+  departure_datetime = as.POSIXct(
+    "06-06-2023 8:00:00",
+    format = "%d-%m-%Y %H:%M:%S"
+  ),
+  max_walk_time = 30,
+  max_trip_duration = 120,
+  verbose = FALSE,
+  progress = FALSE
+)
+```
+
+Review
+
+```{r}
+head(r5r_access_full)
+```
+### Results comparison
+
+Using accessibility package
+
+```{r}
+cum_cutoff_29_full <- cumulative_cutoff(
+  ttm_full,
+  land_use_data = hex_points_main,
+  opportunity = "LU_COD_21",
+  travel_cost = "travel_time",
+  cutoff = 29
+)
+```
+
+Merge results
+
+```{r}
+access_comparison_full <- merge(
+  r5r_access_full,
+  cum_cutoff_29_full,
+  by = "id"
+)
+```
+
+
+Setting columns names accross methods
+
+```{r}
+data.table::setnames(
+  access_comparison_full,
+  old = c("accessibility", "LU_COD_21"),
+  new = c("r5r_access", "accessibility_access")
+)
+```
+
+Review
+
+```{r}
+head(access_comparison_full[, .(id, r5r_access, accessibility_access)])
+```
+### Spatial distribution
+
+Merging accessibility results with hexagon grid
+
+```{r}
+spatial_access_full <- merge(
+  hex_grid_9,
+  cum_opportunities_full,
+  by.x = "h3_index",
+  by.y = "id"
+)
+```
+
+Plotting
+
+Inferno Viridis color scheme
+
+```{r}
+ggplot(spatial_access_full) +
+  geom_sf(aes(fill = LU_COD_21), color = NA) +
+  scale_fill_viridis_c(option = "inferno") +
+  labs(fill = "Accessible\nHigh Street Retail") +
+  theme_minimal()
+```
+
+Regular Vidiris color scheme
+
+```{r}
+ggplot(spatial_access_full) +
+  geom_sf(aes(fill = LU_COD_21), color = NA) +
+  scale_fill_viridis_c() +
+  labs(fill = "Accessible\nHigh Street Retail") +
+  theme_minimal()
+```
+
+Save results in geopackage
+
+```{r}
+spatial_access_full %>%
+  st_write("Data/Results/After/Grid/Hex9_grid.gpkg",
+           "Hex9_spatial_access_full",
            delete_layer=TRUE)
 ```
 
