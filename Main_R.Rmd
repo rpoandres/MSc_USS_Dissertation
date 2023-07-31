@@ -2549,12 +2549,12 @@ Results consistent across methods.
 
 ### Spatial distribution
 
-Merging accessibility results with hexagon grid
+Merging r5r results with hexagon grid
 
 ```{r}
-spatial_access_brt <- merge(
+spatial_r5r_brt <- merge(
   hex_grid_9,
-  cum_opportunities_brt,
+  r5r_access_brt,
   by.x = "h3_index",
   by.y = "id"
 )
@@ -2576,9 +2576,9 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
-ggplot(spatial_access_brt) +
+ggplot(spatial_r5r_brt) +
   ggtitle("BRT accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") + 
-  geom_sf(aes(fill = LU_COD_21), color = NA) +
+  geom_sf(aes(fill = accessibility), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
   #theme_minimal() + 
@@ -2590,9 +2590,9 @@ ggsave("BRT_base.png", path = "Data/Results/Images/")
 Save results in geopackage
 
 ```{r}
-spatial_access_brt %>%
+spatial_r5r_brt %>%
   st_write("Data/Results/Before/Grid/Hex9_grid.gpkg",
-           "Hex9_spatial_access_brt",
+           "Hex9_spatial_r5r_brt",
            delete_layer=TRUE)
 ```
 
@@ -2757,9 +2757,9 @@ head(access_comparison_metro[, .(id, r5r_access, accessibility_access)])
 Merging accessibility results with hexagon grid
 
 ```{r}
-spatial_access_metro <- merge(
+spatial_r5r_metro <- merge(
   hex_grid_9,
-  cum_opportunities_metro,
+  r5r_access_metro,
   by.x = "h3_index",
   by.y = "id"
 )
@@ -2785,9 +2785,9 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
-ggplot(spatial_access_metro) +
+ggplot(spatial_r5r_metro) +
   ggtitle("Metro accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") +
-  geom_sf(aes(fill = LU_COD_21), color = NA) +
+  geom_sf(aes(fill = accessibility), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
   #theme_minimal()
@@ -2799,9 +2799,9 @@ ggsave("Metro_base.png", path = "Data/Results/Images/")
 Save results in geopackage
 
 ```{r}
-spatial_access_metro %>%
+spatial_r5r_metro %>%
   st_write("Data/Results/Metro/Grid/Hex9_grid.gpkg",
-           "Hex9_spatial_access_metro",
+           "Hex9_spatial_r5r_metro",
            delete_layer=TRUE)
 ```
 ## BRT and metro scenario
@@ -2959,9 +2959,9 @@ head(access_comparison_full[, .(id, r5r_access, accessibility_access)])
 Merging accessibility results with hexagon grid
 
 ```{r}
-spatial_access_full <- merge(
+spatial_r5r_full <- merge(
   hex_grid_9,
-  cum_opportunities_full,
+  r5r_access_full,
   by.x = "h3_index",
   by.y = "id"
 )
@@ -2982,9 +2982,9 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
-ggplot(spatial_access_full) +
+ggplot(spatial_r5r_full) +
   ggtitle("BRT and Metro accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") + 
-  geom_sf(aes(fill = LU_COD_21), color = NA) +
+  geom_sf(aes(fill = accessibility), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
   #theme_minimal()
@@ -2998,7 +2998,7 @@ Save results in geopackage
 ```{r}
 spatial_access_full %>%
   st_write("Data/Results/After/Grid/Hex9_grid.gpkg",
-           "Hex9_spatial_access_full",
+           "Hex9_spatial_r5r_full",
            delete_layer=TRUE)
 ```
 ## Modified parameters
