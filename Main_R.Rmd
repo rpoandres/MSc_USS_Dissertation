@@ -2996,7 +2996,7 @@ ggsave("BRT_Metro_base.png", path = "Data/Results/Images/")
 Save results in geopackage
 
 ```{r}
-spatial_access_full %>%
+spatial_r5r_full %>%
   st_write("Data/Results/After/Grid/Hex9_grid.gpkg",
            "Hex9_spatial_r5r_full",
            delete_layer=TRUE)
@@ -3155,7 +3155,7 @@ Regular Vidiris color scheme
 
 ```{r}
 ggplot(spatial_r5r_full_1) +
-  ggtitle("Metro accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 60") + 
+  ggtitle("BRT and Metro accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 60") + 
   geom_sf(aes(fill = accessibility), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -3173,7 +3173,7 @@ ggsave("BRT_Metro_C1.png", path = "Data/Results/Images/")
 Max duration: 120 min
 
 ```{r}
-median(spatial_access_brt$LU_COD_21)
+median(spatial_r5r_brt$accessibility)
 ```
 Max duration: 60 min
 
@@ -3185,12 +3185,12 @@ median(spatial_r5r_brt_1$accessibility)
 Max duration: 120 min
 
 ```{r}
-median(spatial_access_metro$LU_COD_21)
+median(spatial_r5r_metro$accessibility)
 ```
 Max duration: 60 min
 
 ```{r}
-median(r5r_access_metro_1$accessibility)
+median(spatial_r5r_metro_1$accessibility)
 ```
 
 ### BRT + Metro
@@ -3198,12 +3198,12 @@ median(r5r_access_metro_1$accessibility)
 Max duration: 120 min
 
 ```{r}
-median(spatial_access_full$LU_COD_21)
+median(spatial_r5r_full$accessibility)
 ```
 Max duration: 60 min
 
 ```{r}
-median(r5r_access_full_1$accessibility)
+median(spatial_r5r_full_1$accessibility)
 ```
 
 
