@@ -3165,12 +3165,51 @@ ggplot(spatial_r5r_full_1) +
 ggsave("BRT_Metro_C1.png", path = "Data/Results/Images/")
 ```
 
+## Hexagon measure compilation
+
+Main result matrix
+
+```{r}
+
+```
+
+
+### BRT
+
+Merging results
+
+Cuttoffs: 30 min
+
+```{r}
+main_results_hex9 <- merge(
+  hex_grid_9,
+  r5r_access_brt,
+  by.x = "h3_index",
+  by.y = "id"
+)
+```
+
+Rename column
+
+```{r}
+
+```
+
+
+
+
+### Metro
+
+### BRT and Metro
+
+
+
 
 ## Global measure comparison
 
 ### BRT
 
-Max duration: 120 min
+Cuttoffs: 30 min
 
 ```{r}
 median(spatial_r5r_brt$accessibility)
@@ -3182,12 +3221,12 @@ median(spatial_r5r_brt_1$accessibility)
 ```
 ### Metro
 
-Max duration: 120 min
+Cuttoffs: 30 min
 
 ```{r}
 median(spatial_r5r_metro$accessibility)
 ```
-Max duration: 60 min
+Cuttoffs: 60 min
 
 ```{r}
 median(spatial_r5r_metro_1$accessibility)
@@ -3195,12 +3234,12 @@ median(spatial_r5r_metro_1$accessibility)
 
 ### BRT + Metro
 
-Max duration: 120 min
+Cuttoffs: 30 min
 
 ```{r}
 median(spatial_r5r_full$accessibility)
 ```
-Max duration: 60 min
+Cuttoffs: 60 min
 
 ```{r}
 median(spatial_r5r_full_1$accessibility)
