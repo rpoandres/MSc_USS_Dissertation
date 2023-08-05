@@ -2408,6 +2408,8 @@ hex_points_main <- data.table::fread("Accessibility/Before/hex9_points_LU.csv")
 
 ### Time travel matrix
 
+#### BRT
+
 Without erasing geometries
 
 ```{r}
@@ -2432,6 +2434,56 @@ Rename columns of time travel output
 ```{r}
 data.table::setnames(ttm_brt, "travel_time_p50", "travel_time")
 ```
+
+
+#### Walking
+
+```{r}
+ttm_walk <- travel_time_matrix(
+  r5r_before,
+  origins = hex_points_main,
+  destinations = hex_points_main,
+  mode = "WALK",
+  departure_datetime = as.POSIXct(
+    "06-06-2023 8:00:00",
+    format = "%d-%m-%Y %H:%M:%S"
+  ),
+  max_walk_time = 30,
+  max_trip_duration = 120,
+  verbose = FALSE,
+  progress = FALSE
+)
+```
+
+Rename columns of time travel output
+
+```{r}
+data.table::setnames(ttm_walk, "travel_time_p50", "travel_time")
+```
+
+Creates a new matrix object
+
+
+```{r}
+main_ttm_hex9 <- rename(ttm_walk, walk_tt = travel_time)
+```
+
+Merging
+
+```{r}
+main_ttm_hex9 <- merge(
+  main_ttm_hex9,
+  ttm_brt,
+  by = c("from_id","to_id"),
+)
+```
+
+Rename column
+
+```{r}
+main_ttm_hex9 <- rename(main_ttm_hex9, brt_tt = travel_time)
+```
+
 
 
 ### Accessibility package
@@ -2667,6 +2719,24 @@ Rename columns of time travel output
 data.table::setnames(ttm_metro, "travel_time_p50", "travel_time")
 ```
 
+
+Merge
+
+```{r}
+main_ttm_hex9 <- merge(
+  main_ttm_hex9,
+  ttm_metro,
+  by = c("from_id","to_id"),
+)
+```
+
+Rename column
+
+```{r}
+main_ttm_hex9 <- rename(main_ttm_hex9, metro_tt = travel_time)
+```
+
+
 ### Accessibility package
 
 #### Cumulative opportunities measure
@@ -2879,6 +2949,25 @@ Rename columns of time travel output
 data.table::setnames(ttm_full, "travel_time_p50", "travel_time")
 ```
 
+Merging ttm results
+
+
+```{r}
+main_ttm_hex9 <- merge(
+  main_ttm_hex9,
+  ttm_full,
+  by = c("from_id","to_id"),
+)
+```
+
+Rename column
+
+```{r}
+main_ttm_hex9 <- rename(main_ttm_hex9, brt_metro_tt = travel_time)
+```
+
+
+
 ### Accessibility package
 
 #### Cumulative opportunities measure
@@ -3057,6 +3146,81 @@ Save results in geopackage (not in use, save at the end)
 #            "Hex9_spatial_r5r_full",
 #            delete_layer=TRUE)
 ```
+## Time travel matrix
+
+Time travel matrix review
+
+Head
+
+```{r}
+head(main_ttm_hex9)
+```
+
+Summary
+
+```{r}
+summary(main_ttm_hex9)
+```
+### Extreme cases
+
+
+#### BRT
+
+Maximum travel time
+
+```{r}
+main_ttm_hex9 %>%
+  filter(brt_tt == max(brt_tt))
+```
+Minimum travel time
+
+```{r}
+main_ttm_hex9 %>%
+  filter(brt_tt == min(brt_tt))
+```
+
+#### Metro
+
+Maximum travel time
+
+```{r}
+main_ttm_hex9 %>%
+  filter(metro_tt == max(metro_tt))
+```
+Minimum travel time
+
+```{r}
+main_ttm_hex9 %>%
+  filter(metro_tt == min(metro_tt))
+```
+
+#### BRT + Metro
+
+Maximum travel time
+
+```{r}
+main_ttm_hex9 %>%
+  filter(brt_metro_tt == max(brt_metro_tt))
+```
+Minimum travel time
+
+```{r}
+main_ttm_hex9 %>%
+  filter(brt_metro_tt == min(brt_metro_tt))
+```
+
+
+### Sampled examples
+
+Review of consistency of merge and values of ttm values across scenarios
+
+
+
+
+
+
+
+
 ## Modified parameters
 
 ### Case 1
@@ -3283,9 +3447,20 @@ ggsave("BRT_Metro_C1.png", path = "Data/Results/Images/")
 
 ## Global measure comparison
 
+### Summary
+
 ```{r}
 summary(main_results_hex9)
 ```
+### Write geopackage
+
+```{r}
+main_results_hex9 %>%
+  st_write("Data/Results/After/Grid/Hex9_grid.gpkg",
+           "Hex9_r5r_full",
+           delete_layer=TRUE)
+```
+
 
 ## Hexagon measure comparison
 
