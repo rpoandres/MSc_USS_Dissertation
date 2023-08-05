@@ -2549,16 +2549,41 @@ Results consistent across methods.
 
 ### Spatial distribution
 
-Merging r5r results with hexagon grid
+Merging r5r results with hexagon grid (not in use)
 
 ```{r}
-spatial_r5r_brt <- merge(
+# spatial_r5r_brt <- merge(
+#   hex_grid_9,
+#   r5r_access_brt,
+#   by.x = "h3_index",
+#   by.y = "id"
+# )
+```
+
+Merging with main results matrix
+
+```{r}
+main_results_hex9 <- merge(
   hex_grid_9,
   r5r_access_brt,
   by.x = "h3_index",
   by.y = "id"
 )
 ```
+
+Rename column
+
+```{r}
+main_results_hex9<- rename(main_results_hex9, b_brt_30 = accessibility)
+```
+
+Drop cutoff and percentile column
+
+```{r}
+main_results_hex9 <- main_results_hex9 %>%
+  dplyr::select(!c(cutoff,percentile))
+```
+
 
 Plotting
 
@@ -2576,9 +2601,9 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
-ggplot(spatial_r5r_brt) +
+ggplot(main_results_hex9) +
   ggtitle("BRT accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") + 
-  geom_sf(aes(fill = accessibility), color = NA) +
+  geom_sf(aes(fill = b_brt_30), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
   #theme_minimal() + 
@@ -2587,13 +2612,13 @@ ggplot(spatial_r5r_brt) +
 ggsave("BRT_base.png", path = "Data/Results/Images/")
 ```
 
-Save results in geopackage
+Save results in geopackage (not ar use)
 
 ```{r}
-spatial_r5r_brt %>%
-  st_write("Data/Results/Before/Grid/Hex9_grid.gpkg",
-           "Hex9_spatial_r5r_brt",
-           delete_layer=TRUE)
+# main_results_hex9 %>%
+#   st_write("Data/Results/Before/Grid/Hex9_grid.gpkg",
+#            "Hex9_spatial_r5r_brt",
+#            delete_layer=TRUE)
 ```
 
 
@@ -2765,6 +2790,26 @@ spatial_r5r_metro <- merge(
 )
 ```
 
+
+Merging with main results matrix
+
+
+```{r}
+main_results_hex9 <- merge(
+  main_results_hex9,
+  r5r_access_metro[,c("id","accessibility")],
+  by.x = "h3_index",
+  by.y = "id"
+)
+```
+
+Rename column
+
+```{r}
+main_results_hex9<- rename(main_results_hex9, m_metro_30 = accessibility)
+```
+
+
 Plotting
 
 Inferno Viridis color scheme
@@ -2785,9 +2830,9 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
-ggplot(spatial_r5r_metro) +
+ggplot(main_results_hex9) +
   ggtitle("Metro accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") +
-  geom_sf(aes(fill = accessibility), color = NA) +
+  geom_sf(aes(fill = m_metro_30), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
   #theme_minimal()
@@ -3043,6 +3088,15 @@ spatial_r5r_brt_1 <- merge(
 )
 ```
 
+
+Merging results with main result matrix
+
+```{r}
+
+```
+
+
+
 Plotting
 
 Regular Vidiris color scheme
@@ -3165,7 +3219,7 @@ ggplot(spatial_r5r_full_1) +
 ggsave("BRT_Metro_C1.png", path = "Data/Results/Images/")
 ```
 
-## Hexagon measure compilation
+## Hexagon measure compilation (to be moved to every section)
 
 Main result matrix
 
@@ -3181,12 +3235,12 @@ Merging results
 Cuttoffs: 30 min
 
 ```{r}
-main_results_hex9 <- merge(
-  hex_grid_9,
-  r5r_access_brt,
-  by.x = "h3_index",
-  by.y = "id"
-)
+# main_results_hex9 <- merge(
+#   hex_grid_9,
+#   r5r_access_brt,
+#   by.x = "h3_index",
+#   by.y = "id"
+# )
 ```
 
 Rename column
