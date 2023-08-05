@@ -2422,8 +2422,8 @@ ttm_brt <- travel_time_matrix(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 120,
+  max_walk_time = 60,
+  max_trip_duration = 150,
   verbose = FALSE,
   progress = FALSE
 )
@@ -2448,8 +2448,8 @@ ttm_walk <- travel_time_matrix(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 120,
+  max_walk_time = 60,
+  max_trip_duration = 150,
   verbose = FALSE,
   progress = FALSE
 )
@@ -2706,8 +2706,8 @@ ttm_metro <- travel_time_matrix(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 120,
+  max_walk_time = 60,
+  max_trip_duration = 150,
   verbose = FALSE,
   progress = FALSE
 )
@@ -2936,8 +2936,8 @@ ttm_full <- travel_time_matrix(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 120,
+  max_walk_time = 60,
+  max_trip_duration = 150,
   verbose = FALSE,
   progress = FALSE
 )
@@ -3161,7 +3161,26 @@ Summary
 ```{r}
 summary(main_ttm_hex9)
 ```
+__Maximum Walking time extremely low__
+
+
 ### Extreme cases
+
+#### Walk
+
+Maximum travel time
+
+```{r}
+main_ttm_hex9 %>%
+  filter(walk_tt == max(walk_tt))
+```
+Minimum travel time
+
+```{r}
+main_ttm_hex9 %>%
+  filter(walk_tt == min(walk_tt))
+```
+
 
 
 #### BRT
