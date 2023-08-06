@@ -2292,9 +2292,6 @@ Save point data as csv
 ```
 
 
-
-
-
 # Spatial analysis (Pending)
 
 # Accessiblity modelling
@@ -2382,15 +2379,15 @@ Parameters value in accessibility modelling
 
 ```{r}
 # Time travel parameters
-ttm_global_cutoff <- 180 # minutes
+ttm_global_cutoff <- 120 # minutes
 ttm_max_walk_time <- 120 # minutes
-ttm_max_trip_duration <- 180 # minutes
+ttm_max_trip_duration <- 120 # minutes
 
 
 # R5R parameters
-r5r_global_cutoff <- 180 # minutes
-r5r_max_walk_time <- 120 # minutes
-r5r_max_trip_duration <- 180 # minutes
+r5r_global_cutoff <- 60 # minutes
+r5r_max_walk_time <- 60 # minutes
+r5r_max_trip_duration <- 60 # minutes
 ```
 
 ## Walking mode
@@ -3483,10 +3480,74 @@ Review of consistency of merge and values of ttm values across scenarios
 
 ```{r}
 # R5R parameters
-r5r_1_global_cutoff <- 60 # minutes
-r5r_1_max_walk_time <- 30 # minutes
-r5r_1_max_trip_duration <- 60 # minutes
+r5r_1_global_cutoff <- 120 # minutes
+r5r_1_max_walk_time <- 120 # minutes
+r5r_1_max_trip_duration <- 120 # minutes
 
+```
+
+
+#### Walking 
+
+##### R5R package
+
+
+```{r}
+r5r_access_walk_1 <- accessibility(
+  r5r_walk,
+  origins = hex_points_main,
+  destinations = hex_points_main,
+  opportunities_colname = "LU_COD_21",
+  decay_function = "step",
+  cutoffs = r5r_1_global_cutoff,
+  mode = "WALK",
+  departure_datetime = as.POSIXct(
+    "06-06-2023 8:00:00",
+    format = "%d-%m-%Y %H:%M:%S"
+  ),
+  max_walk_time = r5r_1_max_walk_time,
+  max_trip_duration = r5r_1_max_trip_duration,
+  verbose = FALSE,
+  progress = FALSE
+)
+```
+
+##### Spatial distribution
+
+
+Merging with main results matrix
+
+
+```{r}
+main_results_hex9 <- merge(
+  main_results_hex9,
+  r5r_access_walk_1[,c("id","accessibility")],
+  by.x = "h3_index",
+  by.y = "id"
+)
+```
+
+Rename column
+
+```{r}
+main_results_hex9<- rename(main_results_hex9, b_walk_x = accessibility)
+```
+
+
+Plotting
+
+Regular Vidiris color scheme
+
+```{r}
+ggplot(main_results_hex9) +
+  ggtitle("BRT accessibility: cutoffs = 60  max_walk_time = 30, max_trip_duration = 60") + 
+  geom_sf(aes(fill = b_walk_x), color = NA) +
+  scale_fill_viridis_c() +
+  labs(fill = "Accessible\nHigh Street Retail") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Walk_C1.png", path = "Data/Results/Images/")
 ```
 
 
@@ -3544,7 +3605,7 @@ main_results_hex9 <- merge(
 Rename column
 
 ```{r}
-main_results_hex9<- rename(main_results_hex9, b_brt_60 = accessibility)
+main_results_hex9<- rename(main_results_hex9, b_brt_x = accessibility)
 ```
 
 
@@ -3556,7 +3617,7 @@ Regular Vidiris color scheme
 ```{r}
 ggplot(main_results_hex9) +
   ggtitle("BRT accessibility: cutoffs = 60  max_walk_time = 30, max_trip_duration = 60") + 
-  geom_sf(aes(fill = b_brt_60), color = NA) +
+  geom_sf(aes(fill = b_brt_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
   #theme_minimal()
@@ -3617,7 +3678,7 @@ main_results_hex9 <- merge(
 Rename column
 
 ```{r}
-main_results_hex9<- rename(main_results_hex9, m_metro_60 = accessibility)
+main_results_hex9<- rename(main_results_hex9, m_metro_x = accessibility)
 ```
 
 
@@ -3628,7 +3689,7 @@ Regular Vidiris color scheme
 ```{r}
 ggplot(main_results_hex9) +
   ggtitle("Metro accessibility: cutoffs = 60  max_walk_time = 30, max_trip_duration = 60") + 
-  geom_sf(aes(fill = m_metro_60), color = NA) +
+  geom_sf(aes(fill = m_metro_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
   #theme_minimal()
@@ -3688,7 +3749,7 @@ main_results_hex9 <- merge(
 Rename column
 
 ```{r}
-main_results_hex9<- rename(main_results_hex9, a_brt_metro_60 = accessibility)
+main_results_hex9<- rename(main_results_hex9, a_brt_metro_x = accessibility)
 ```
 
 
@@ -3700,7 +3761,7 @@ Regular Vidiris color scheme
 ```{r}
 ggplot(main_results_hex9) +
   ggtitle("BRT and Metro accessibility: cutoffs = 60  max_walk_time = 30, max_trip_duration = 60") + 
-  geom_sf(aes(fill = a_brt_metro_60), color = NA) +
+  geom_sf(aes(fill = a_brt_metro_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
   #theme_minimal()
