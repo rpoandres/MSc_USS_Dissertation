@@ -3166,6 +3166,82 @@ __Maximum Walking time extremely low__
 
 ### Extreme cases
 
+#### Descriptive statistics
+
+Descriptive statistics of ttm by mode
+
+```{r}
+sta_ttm_hex9 <- main_ttm_hex9 %>%
+  group_by(from_id) %>%
+  summarise(across(contains("tt"), list(
+    Min = min,
+    Max = max,
+    Mean = mean,
+    Median = median,
+    SD = sd
+  )))
+```
+
+Merging with results matrix
+
+```{r}
+main_results_hex9 <- merge(
+  main_results_hex9,
+  sta_ttm_hex9,
+  by.x = "h3_index",
+  by.y = "from_id"
+)
+```
+#### Plotting
+
+Median walking time
+
+```{r}
+ggplot(main_results_hex9) +
+  ggtitle("Time travel results") + 
+  geom_sf(aes(fill = walk_tt_Median), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Median walking time") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
+Median BRT time
+
+```{r}
+ggplot(main_results_hex9) +
+  ggtitle("Time travel results") + 
+  geom_sf(aes(fill = brt_tt_Median), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Median BRT time") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
+Median Metro time
+
+```{r}
+ggplot(main_results_hex9) +
+  ggtitle("Time travel results") + 
+  geom_sf(aes(fill = metro_tt_Median), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Median Metro time") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
+
+
+
+Median BRT + Metro time
+
+```{r}
+ggplot(main_results_hex9) +
+  ggtitle("Time travel results") + 
+  geom_sf(aes(fill = brt_metro_tt_Median), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Median BRT + Metro time") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
+
 #### Walk
 
 Maximum travel time
@@ -3182,10 +3258,10 @@ main_ttm_hex9 %>%
 ```
 
 
-
 #### BRT
 
 ##### Maximum travel time (change to use median in filtering)
+
 
 ```{r}
 main_ttm_hex9 %>%
