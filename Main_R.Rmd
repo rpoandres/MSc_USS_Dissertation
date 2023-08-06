@@ -2387,6 +2387,15 @@ Visualize directory
 ```{r}
 fs::dir_tree(access_dir)
 ```
+## Parameters
+
+Parameters value in accessibility modelling
+
+```{r}
+ttm_max_walk_time <- 60 # minutes
+ttm_max_trip_duration <- 150 # minutes
+global_cutoff <- 30 # minutes
+```
 
 
 
@@ -2600,17 +2609,6 @@ head(access_comparison_brt[, .(id, r5r_access, accessibility_access)])
 Results consistent across methods.
 
 ### Spatial distribution
-
-Merging r5r results with hexagon grid (not in use)
-
-```{r}
-# spatial_r5r_brt <- merge(
-#   hex_grid_9,
-#   r5r_access_brt,
-#   by.x = "h3_index",
-#   by.y = "id"
-# )
-```
 
 Merging with main results matrix
 
@@ -3192,7 +3190,7 @@ main_results_hex9 <- merge(
   by.y = "from_id"
 )
 ```
-#### Plotting
+#### Plotting modes
 
 Median walking time
 
@@ -3242,7 +3240,7 @@ ggplot(main_results_hex9) +
   theme(plot.title = element_text(size = 8, face = "bold"))
 ```
 
-#### Walk
+### Walk
 
 Maximum travel time
 
@@ -3258,89 +3256,25 @@ main_ttm_hex9 %>%
 ```
 
 
-#### BRT
+### BRT
 
-##### Maximum travel time (change to use median in filtering)
-
+Maximum travel time
 
 ```{r}
 main_ttm_hex9 %>%
   filter(brt_tt == max(brt_tt))
 ```
-Ploting
 
-```{r}
-ttm_walk_max<- main_ttm_hex9 %>%
-  filter(walk_tt == max(walk_tt))
-  #list_ttm_walk_max <- list(main_ttm_hex9$from_id)
-```
-
-List
-
-```{r}
-list_ttm_walk_max <- as.list(ttm_walk_max$from_id)
-```
-
-Subsetting main reuslts
-
-```{r}
-main_results_hex9[main_results_hex9$h3_index %in% list_ttm_walk_max, ]
-```
-
-
-```{r}
-ggplot(main_results_hex9[main_results_hex9$h3_index %in% list_ttm_walk_max, ]) +
-  ggtitle("Hexagons with max ttm in walking") + 
-  geom_sf(aes(fill = a_brt_metro_60), color = NA) +
-  scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail") +
-  #theme_minimal()
-  theme(plot.title = element_text(size = 8, face = "bold"))
-```
-
-
-##### Minimum travel time
+Minimum travel time
 
 ```{r}
 main_ttm_hex9 %>%
   filter(walk_tt == min(walk_tt))
 ```
 
-Ploting
-
-```{r}
-ttm_walk_min<- main_ttm_hex9 %>%
-  filter(walk_tt == min(walk_tt))
-  #list_ttm_walk_max <- list(main_ttm_hex9$from_id)
-```
-
-List
-
-```{r}
-list_ttm_walk_min <- as.list(ttm_walk_min$from_id)
-```
-
-Subsetting main reuslts
-
-```{r}
-main_results_hex9[main_results_hex9$h3_index %in% list_ttm_walk_min, ]
-```
 
 
-```{r}
-ggplot(main_results_hex9[main_results_hex9$h3_index %in% list_ttm_walk_min, ]) +
-  ggtitle("Hexagons with max ttm in walking") + 
-  geom_sf(aes(fill = a_brt_metro_60), color = NA) +
-  scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail") +
-  #theme_minimal()
-  theme(plot.title = element_text(size = 8, face = "bold"))
-```
-
-
-
-
-#### Metro
+### Metro
 
 Maximum travel time
 
@@ -3348,6 +3282,7 @@ Maximum travel time
 main_ttm_hex9 %>%
   filter(metro_tt == max(metro_tt))
 ```
+
 Minimum travel time
 
 ```{r}
@@ -3355,7 +3290,7 @@ main_ttm_hex9 %>%
   filter(metro_tt == min(metro_tt))
 ```
 
-#### BRT + Metro
+### BRT + Metro
 
 Maximum travel time
 
@@ -3382,9 +3317,11 @@ Review of consistency of merge and values of ttm values across scenarios
 
 
 
-## Modified parameters
+## Parameters
 
-### Case 1
+### Duration thresholds
+
+
 
 #### BRT
 
