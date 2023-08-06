@@ -2515,7 +2515,7 @@ head(r5r_access_walk)
 Using accessibility package
 
 ```{r}
-cum_cutoff_29_walk <- cumulative_cutoff(
+cum_cutoff_walk <- cumulative_cutoff(
   ttm_walk,
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
@@ -2529,7 +2529,7 @@ Merge results
 ```{r}
 access_comparison_walk <- merge(
   r5r_access_walk,
-  cum_cutoff_29_walk,
+  cum_cutoff_walk,
   by = "id"
 )
 ```
@@ -2738,7 +2738,7 @@ head(r5r_access_brt)
 Using accessibility package
 
 ```{r}
-cum_cutoff_29_brt <- cumulative_cutoff(
+cum_cutoff_brt <- cumulative_cutoff(
   ttm_brt,
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
@@ -2752,7 +2752,7 @@ Merge results
 ```{r}
 access_comparison_brt <- merge(
   r5r_access_brt,
-  cum_cutoff_29_brt,
+  cum_cutoff_brt,
   by = "id"
 )
 ```
@@ -2968,7 +2968,7 @@ head(r5r_access_metro)
 Using accessibility package
 
 ```{r}
-cum_cutoff_29_metro <- cumulative_cutoff(
+cum_cutoff_metro <- cumulative_cutoff(
   ttm_metro,
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
@@ -2982,7 +2982,7 @@ Merge results
 ```{r}
 access_comparison_metro <- merge(
   r5r_access_metro,
-  cum_cutoff_29_metro,
+  cum_cutoff_metro,
   by = "id"
 )
 ```
@@ -3200,7 +3200,7 @@ head(r5r_access_full)
 Using accessibility package
 
 ```{r}
-cum_cutoff_29_full <- cumulative_cutoff(
+cum_cutoff_full <- cumulative_cutoff(
   ttm_full,
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
@@ -3214,7 +3214,7 @@ Merge results
 ```{r}
 access_comparison_full <- merge(
   r5r_access_full,
-  cum_cutoff_29_full,
+  cum_cutoff_full,
   by = "id"
 )
 ```
