@@ -2382,19 +2382,20 @@ Parameters value in accessibility modelling
 
 ```{r}
 # Time travel parameters
-ttm_max_walk_time <- 60 # minutes
-ttm_max_trip_duration <- 150 # minutes
-ttm_global_cutoff <- 30 # minutes
+ttm_global_cutoff <- 180 # minutes
+ttm_max_walk_time <- 120 # minutes
+ttm_max_trip_duration <- 180 # minutes
+
 
 # R5R parameters
-r5r_max_walk_time <- 60 # minutes
-r5r_max_trip_duration <- 150 # minutes
-r5r_global_cutoff <- 30 # minutes
+r5r_global_cutoff <- 180 # minutes
+r5r_max_walk_time <- 120 # minutes
+r5r_max_trip_duration <- 180 # minutes
 ```
 
 ## Walking mode
 
-Considers just walkind mode.
+Considers just walking mode.
 
 ### Setup
 
@@ -3479,8 +3480,6 @@ Review of consistency of merge and values of ttm values across scenarios
 ## Parameters
 
 ### Duration thresholds
-
-__NEW PARAMETERS__
 
 ```{r}
 # R5R parameters
