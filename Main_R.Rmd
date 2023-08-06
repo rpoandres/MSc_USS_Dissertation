@@ -2589,8 +2589,11 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
+plot_title <- paste("Walking accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+
+
 ggplot(main_results_hex9) +
-  ggtitle("Walking accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") +
+  ggtitle(plot_title) +
   geom_sf(aes(fill = b_walk_30), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -2809,8 +2812,12 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
+
+plot_title <- paste("BRT accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+
+
 ggplot(main_results_hex9) +
-  ggtitle("BRT accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") + 
+  ggtitle(plot_title) + 
   geom_sf(aes(fill = b_brt_30), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -3043,8 +3050,12 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
+
+plot_title <- paste("Metro accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+
+
 ggplot(main_results_hex9) +
-  ggtitle("Metro accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") +
+  ggtitle(plot_title) +
   geom_sf(aes(fill = m_metro_30), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -3280,8 +3291,12 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
+plot_title <- paste("BRT and Metro accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+
+
+
 ggplot(main_results_hex9) +
-  ggtitle("BRT and Metro accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") + 
+  ggtitle(plot_title) + 
   geom_sf(aes(fill = a_brt_metro_30), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -3463,7 +3478,7 @@ main_ttm_hex9 %>%
 ```
 
 
-### Sampled examples
+### Sampled examples (pending)
 
 Review of consistency of merge and values of ttm values across scenarios
 
@@ -3483,7 +3498,6 @@ Review of consistency of merge and values of ttm values across scenarios
 r5r_1_global_cutoff <- 120 # minutes
 r5r_1_max_walk_time <- 120 # minutes
 r5r_1_max_trip_duration <- 120 # minutes
-
 ```
 
 
@@ -3539,8 +3553,11 @@ Plotting
 Regular Vidiris color scheme
 
 ```{r}
+plot_title <- paste("Walking accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
+
+
 ggplot(main_results_hex9) +
-  ggtitle("BRT accessibility: cutoffs = 60  max_walk_time = 30, max_trip_duration = 60") + 
+  ggtitle(plot_title) + 
   geom_sf(aes(fill = b_walk_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -3609,14 +3626,18 @@ main_results_hex9<- rename(main_results_hex9, b_brt_x = accessibility)
 ```
 
 
-
 Plotting
 
 Regular Vidiris color scheme
 
 ```{r}
+
+plot_title <- paste("BRT accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
+
+
+
 ggplot(main_results_hex9) +
-  ggtitle("BRT accessibility: cutoffs = 60  max_walk_time = 30, max_trip_duration = 60") + 
+  ggtitle(plot_title) + 
   geom_sf(aes(fill = b_brt_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -3687,8 +3708,12 @@ Plotting
 Regular Vidiris color scheme
 
 ```{r}
+plot_title <- paste("Metro accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
+
+
+
 ggplot(main_results_hex9) +
-  ggtitle("Metro accessibility: cutoffs = 60  max_walk_time = 30, max_trip_duration = 60") + 
+  ggtitle(plot_title) + 
   geom_sf(aes(fill = m_metro_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
@@ -3753,14 +3778,18 @@ main_results_hex9<- rename(main_results_hex9, a_brt_metro_x = accessibility)
 ```
 
 
-
 Plotting
+
 
 Regular Vidiris color scheme
 
 ```{r}
+
+plot_title <- paste("BRT and Metro accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
+
+
 ggplot(main_results_hex9) +
-  ggtitle("BRT and Metro accessibility: cutoffs = 60  max_walk_time = 30, max_trip_duration = 60") + 
+  ggtitle(plot_title) + 
   geom_sf(aes(fill = a_brt_metro_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail") +
