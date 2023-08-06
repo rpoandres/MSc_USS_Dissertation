@@ -2397,7 +2397,163 @@ ttm_max_trip_duration <- 150 # minutes
 global_cutoff <- 30 # minutes
 ```
 
+## Walking mode
 
+Considers just walkind mode.
+
+### Setup
+
+```{r}
+r5r_walk <- setup_r5("Accessibility/Before", verbose = FALSE)
+```
+
+Centroids of hexagons
+
+```{r}
+hex_points_main <- data.table::fread("Accessibility/Before/hex9_points_LU.csv")
+```
+
+
+### Time travel matrix
+
+
+```{r}
+ttm_walk <- travel_time_matrix(
+  r5r_before,
+  origins = hex_points_main,
+  destinations = hex_points_main,
+  mode = "WALK",
+  departure_datetime = as.POSIXct(
+    "06-06-2023 8:00:00",
+    format = "%d-%m-%Y %H:%M:%S"
+  ),
+  max_walk_time = ttm_max_walk_time,
+  max_trip_duration = ttm_max_trip_duration,
+  verbose = FALSE,
+  progress = FALSE
+)
+```
+
+Rename columns of time travel output
+
+```{r}
+data.table::setnames(ttm_walk, "travel_time_p50", "travel_time")
+```
+
+Creates a results matrix object
+
+```{r}
+main_ttm_hex9 <- rename(ttm_walk, walk_tt = travel_time)
+```
+
+### Accessibility package
+
+#### Cumulative opportunities measure
+
+High street retail opportunities
+
+```{r}
+cum_opportunities_walk <- cumulative_cutoff(
+  ttm_walk,
+  land_use_data = hex_points_main,
+  opportunity = "LU_COD_21",
+  travel_cost = "travel_time",
+  cutoff = global_cutoff
+)
+```
+
+
+Review
+
+```{r}
+head(cum_opportunities_walk)
+```
+
+#### Minimum travel cost
+
+To high street retail opportunities
+
+```{r}
+min_time_walk <- cost_to_closest(
+  ttm_walk,
+  land_use_data = hex_points_main,
+  opportunity = "LU_COD_21",
+  travel_cost = "travel_time"
+)
+```
+
+Review
+
+```{r}
+head(min_time_walk)
+```
+### R5R package
+
+```{r}
+r5r_access_walk <- accessibility(
+  r5r_walk,
+  origins = hex_points_main,
+  destinations = hex_points_main,
+  opportunities_colname = "LU_COD_21",
+  decay_function = "step",
+  cutoffs = global_cutoff,
+  mode = "WALK",
+  departure_datetime = as.POSIXct(
+    "06-06-2023 8:00:00",
+    format = "%d-%m-%Y %H:%M:%S"
+  ),
+  max_walk_time = ttm_max_walk_time,
+  max_trip_duration = ttm_max_trip_duration,
+  verbose = FALSE,
+  progress = FALSE
+)
+```
+
+Review
+
+```{r}
+head(r5r_access_walk)
+```
+### Results comparison
+
+Using accessibility package
+
+```{r}
+cum_cutoff_29_walk <- cumulative_cutoff(
+  ttm_walk,
+  land_use_data = hex_points_main,
+  opportunity = "LU_COD_21",
+  travel_cost = "travel_time",
+  cutoff = global_cutoff-1
+)
+```
+
+Merge results
+
+```{r}
+access_comparison_walk <- merge(
+  r5r_access_walk,
+  cum_cutoff_29_walk,
+  by = "id"
+)
+```
+
+
+Setting columns names accross methods
+
+```{r}
+data.table::setnames(
+  access_comparison_walk,
+  old = c("accessibility", "LU_COD_21"),
+  new = c("r5r_access", "accessibility_access")
+)
+```
+
+Review
+
+```{r}
+head(access_comparison_walk[, .(id, r5r_access, accessibility_access)])
+```
 
 ## Base scenario
 
@@ -2417,8 +2573,6 @@ hex_points_main <- data.table::fread("Accessibility/Before/hex9_points_LU.csv")
 
 ### Time travel matrix
 
-#### BRT
-
 Without erasing geometries
 
 ```{r}
@@ -2431,8 +2585,8 @@ ttm_brt <- travel_time_matrix(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 60,
-  max_trip_duration = 150,
+  max_walk_time = ttm_max_walk_time,
+  max_trip_duration = ttm_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -2442,39 +2596,6 @@ Rename columns of time travel output
 
 ```{r}
 data.table::setnames(ttm_brt, "travel_time_p50", "travel_time")
-```
-
-
-#### Walking
-
-```{r}
-ttm_walk <- travel_time_matrix(
-  r5r_before,
-  origins = hex_points_main,
-  destinations = hex_points_main,
-  mode = "WALK",
-  departure_datetime = as.POSIXct(
-    "06-06-2023 8:00:00",
-    format = "%d-%m-%Y %H:%M:%S"
-  ),
-  max_walk_time = 60,
-  max_trip_duration = 150,
-  verbose = FALSE,
-  progress = FALSE
-)
-```
-
-Rename columns of time travel output
-
-```{r}
-data.table::setnames(ttm_walk, "travel_time_p50", "travel_time")
-```
-
-Creates a new matrix object
-
-
-```{r}
-main_ttm_hex9 <- rename(ttm_walk, walk_tt = travel_time)
 ```
 
 Merging
@@ -2507,7 +2628,7 @@ cum_opportunities_brt <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = 30
+  cutoff = global_cutoff
 )
 ```
 
@@ -2546,14 +2667,14 @@ r5r_access_brt <- accessibility(
   destinations = hex_points_main,
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
-  cutoffs = 30,
+  cutoffs = global_cutoff,
   mode = c("WALK","BUS"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 120,
+  max_walk_time = ttm_max_walk_time,
+  max_trip_duration = ttm_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -2575,7 +2696,7 @@ cum_cutoff_29_brt <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = 29
+  cutoff = global_cutoff-1
 )
 ```
 
