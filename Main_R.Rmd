@@ -2098,20 +2098,9 @@ st_crs(geo_zpu_wgs84)
 ```
 Dissolve polygons
 
-Method 1
-
 ```{r}
 geo_zpu_wgs84_mono <- st_union(geo_zpu_wgs84, by_feature = FALSE)
 ```
-
-Method 2
-
-```{r}
-# geo_zpu_wgs84_mono_2 <- geo_zpu_wgs84 %>%
-#   group_by() %>%
-#   summarise()
-```
-
 
 
 ### Hegagonal grid
@@ -2299,7 +2288,7 @@ hex9_points <- hex9_points %>%
 Save point data as csv
 
 ```{r}
-write.csv(hex9_points,file='Data/Preprocessed/Grid/Hex9_grid_LU.csv', row.names=FALSE)
+# write.csv(hex9_points,file='Data/Preprocessed/Grid/Hex9_grid_LU.csv', row.names=FALSE)
 ```
 
 
@@ -2392,9 +2381,15 @@ fs::dir_tree(access_dir)
 Parameters value in accessibility modelling
 
 ```{r}
+# Time travel parameters
 ttm_max_walk_time <- 60 # minutes
 ttm_max_trip_duration <- 150 # minutes
-global_cutoff <- 30 # minutes
+ttm_global_cutoff <- 30 # minutes
+
+# R5R parameters
+r5r_max_walk_time <- 60 # minutes
+r5r_max_trip_duration <- 150 # minutes
+r5r_global_cutoff <- 30 # minutes
 ```
 
 ## Walking mode
@@ -2419,7 +2414,7 @@ hex_points_main <- data.table::fread("Accessibility/Before/hex9_points_LU.csv")
 
 ```{r}
 ttm_walk <- travel_time_matrix(
-  r5r_before,
+  r5r_walk,
   origins = hex_points_main,
   destinations = hex_points_main,
   mode = "WALK",
@@ -2440,7 +2435,7 @@ Rename columns of time travel output
 data.table::setnames(ttm_walk, "travel_time_p50", "travel_time")
 ```
 
-Creates a results matrix object
+Creates a time matrix object
 
 ```{r}
 main_ttm_hex9 <- rename(ttm_walk, walk_tt = travel_time)
@@ -2458,7 +2453,7 @@ cum_opportunities_walk <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = global_cutoff
+  cutoff = ttm_global_cutoff
 )
 ```
 
@@ -2496,14 +2491,14 @@ r5r_access_walk <- accessibility(
   destinations = hex_points_main,
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
-  cutoffs = global_cutoff,
+  cutoffs = r5r_global_cutoff,
   mode = "WALK",
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = ttm_max_walk_time,
-  max_trip_duration = ttm_max_trip_duration,
+  max_walk_time = r5r_max_walk_time,
+  max_trip_duration = r5r_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -2524,7 +2519,7 @@ cum_cutoff_29_walk <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = global_cutoff-1
+  cutoff = ttm_global_cutoff-1
 )
 ```
 
@@ -2553,6 +2548,58 @@ Review
 
 ```{r}
 head(access_comparison_walk[, .(id, r5r_access, accessibility_access)])
+```
+
+### Spatial distribution
+
+Merging with main results matrix
+
+```{r}
+main_results_hex9 <- merge(
+  hex_grid_9,
+  r5r_access_walk,
+  by.x = "h3_index",
+  by.y = "id"
+)
+```
+
+Rename column
+
+```{r}
+main_results_hex9<- rename(main_results_hex9, b_walk_30 = accessibility)
+```
+
+Drop cutoff and percentile column
+
+```{r}
+main_results_hex9 <- main_results_hex9 %>%
+  dplyr::select(!c(cutoff,percentile))
+```
+Plotting
+
+Inferno Viridis color scheme
+
+```{r}
+# ggplot(spatial_access_brt) +
+#   geom_sf(aes(fill = LU_COD_21), color = NA) +
+#   scale_fill_viridis_c(option = "inferno") +
+#   labs(fill = "Accessible\nHigh Street Retail") +
+#   theme_minimal()
+```
+
+
+Regular Vidiris color scheme
+
+```{r}
+ggplot(main_results_hex9) +
+  ggtitle("Walking accessibility: cutoffs = 30  max_walk_time = 30, max_trip_duration = 120") +
+  geom_sf(aes(fill = b_walk_30), color = NA) +
+  scale_fill_viridis_c() +
+  labs(fill = "Accessible\nHigh Street Retail") +
+  #theme_minimal() + 
+    theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Walk_base.png", path = "Data/Results/Images/")
 ```
 
 ## Base scenario
@@ -2615,7 +2662,6 @@ main_ttm_hex9 <- rename(main_ttm_hex9, brt_tt = travel_time)
 ```
 
 
-
 ### Accessibility package
 
 #### Cumulative opportunities measure
@@ -2628,7 +2674,7 @@ cum_opportunities_brt <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = global_cutoff
+  cutoff = ttm_global_cutoff
 )
 ```
 
@@ -2667,14 +2713,14 @@ r5r_access_brt <- accessibility(
   destinations = hex_points_main,
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
-  cutoffs = global_cutoff,
+  cutoffs = r5r_global_cutoff,
   mode = c("WALK","BUS"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = ttm_max_walk_time,
-  max_trip_duration = ttm_max_trip_duration,
+  max_walk_time = r5r_max_walk_time,
+  max_trip_duration = r5r_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -2696,7 +2742,7 @@ cum_cutoff_29_brt <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = global_cutoff-1
+  cutoff = ttm_global_cutoff-1
 )
 ```
 
@@ -2731,12 +2777,13 @@ Results consistent across methods.
 
 ### Spatial distribution
 
+
 Merging with main results matrix
 
 ```{r}
 main_results_hex9 <- merge(
-  hex_grid_9,
-  r5r_access_brt,
+  main_results_hex9,
+  r5r_access_brt[,c("id","accessibility")],
   by.x = "h3_index",
   by.y = "id"
 )
@@ -2747,14 +2794,6 @@ Rename column
 ```{r}
 main_results_hex9<- rename(main_results_hex9, b_brt_30 = accessibility)
 ```
-
-Drop cutoff and percentile column
-
-```{r}
-main_results_hex9 <- main_results_hex9 %>%
-  dplyr::select(!c(cutoff,percentile))
-```
-
 
 Plotting
 
@@ -2793,9 +2832,6 @@ Save results in geopackage (not ar use)
 ```
 
 
-__Plotting of BRT Network?__
-
-
 
 ## Metro only scenario
 
@@ -2825,8 +2861,8 @@ ttm_metro <- travel_time_matrix(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 60,
-  max_trip_duration = 150,
+  max_walk_time = ttm_max_walk_time,
+  max_trip_duration = ttm_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -2868,7 +2904,7 @@ cum_opportunities_metro <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = 30
+  cutoff = ttm_global_cutoff
 )
 ```
 
@@ -2907,14 +2943,14 @@ r5r_access_metro <- accessibility(
   destinations = hex_points_main,
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
-  cutoffs = 30,
+  cutoffs = r5r_global_cutoff,
   mode = c("WALK", "SUBWAY"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 120,
+  max_walk_time = r5r_max_walk_time,
+  max_trip_duration = r5r_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -2925,6 +2961,7 @@ Review
 ```{r}
 head(r5r_access_metro)
 ```
+
 ### Results comparison
 
 Using accessibility package
@@ -2935,7 +2972,7 @@ cum_cutoff_29_metro <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = 29
+  cutoff = ttm_global_cutoff-1
 )
 ```
 
@@ -3027,6 +3064,7 @@ Save results in geopackage (not in use, write just at the end)
 #            "Hex9_spatial_r5r_metro",
 #            delete_layer=TRUE)
 ```
+
 ## BRT and metro scenario
 
 ### Setup
@@ -3055,8 +3093,8 @@ ttm_full <- travel_time_matrix(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 60,
-  max_trip_duration = 150,
+  max_walk_time = ttm_max_walk_time,
+  max_trip_duration = ttm_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -3099,7 +3137,7 @@ cum_opportunities_full <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = 30
+  cutoff = ttm_global_cutoff
 )
 ```
 
@@ -3138,14 +3176,14 @@ r5r_access_full <- accessibility(
   destinations = hex_points_main,
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
-  cutoffs = 30,
+  cutoffs = r5r_global_cutoff,
   mode = c("WALK", "SUBWAY", "BUS"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 120,
+  max_walk_time = r5r_max_walk_time,
+  max_trip_duration = r5r_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -3166,7 +3204,7 @@ cum_cutoff_29_full <- cumulative_cutoff(
   land_use_data = hex_points_main,
   opportunity = "LU_COD_21",
   travel_cost = "travel_time",
-  cutoff = 29
+  cutoff = ttm_global_cutoff-1
 )
 ```
 
@@ -3196,6 +3234,7 @@ Review
 ```{r}
 head(access_comparison_full[, .(id, r5r_access, accessibility_access)])
 ```
+
 ### Spatial distribution
 
 Merging accessibility results with hexagon grid
@@ -3226,9 +3265,6 @@ Rename column
 ```{r}
 main_results_hex9<- rename(main_results_hex9, a_brt_metro_30 = accessibility)
 ```
-
-
-
 
 
 Plotting
@@ -3265,6 +3301,7 @@ Save results in geopackage (not in use, save at the end)
 #            "Hex9_spatial_r5r_full",
 #            delete_layer=TRUE)
 ```
+
 ## Time travel matrix
 
 Time travel matrix review
@@ -3301,22 +3338,23 @@ sta_ttm_hex9 <- main_ttm_hex9 %>%
   )))
 ```
 
-Merging with results matrix
+Merging statistic results with hexagon matrix
 
 ```{r}
-main_results_hex9 <- merge(
-  main_results_hex9,
+geo_sta_ttm_hex9 <- merge(
+  hex_grid_9,
   sta_ttm_hex9,
   by.x = "h3_index",
   by.y = "from_id"
 )
 ```
+
 #### Plotting modes
 
 Median walking time
 
 ```{r}
-ggplot(main_results_hex9) +
+ggplot(geo_sta_ttm_hex9) +
   ggtitle("Time travel results") + 
   geom_sf(aes(fill = walk_tt_Median), color = NA) +
   scale_fill_viridis_c(option = "inferno",direction = -1) +
@@ -3324,10 +3362,11 @@ ggplot(main_results_hex9) +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 ```
+
 Median BRT time
 
 ```{r}
-ggplot(main_results_hex9) +
+ggplot(geo_sta_ttm_hex9) +
   ggtitle("Time travel results") + 
   geom_sf(aes(fill = brt_tt_Median), color = NA) +
   scale_fill_viridis_c(option = "inferno",direction = -1) +
@@ -3335,10 +3374,11 @@ ggplot(main_results_hex9) +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 ```
+
 Median Metro time
 
 ```{r}
-ggplot(main_results_hex9) +
+ggplot(geo_sta_ttm_hex9) +
   ggtitle("Time travel results") + 
   geom_sf(aes(fill = metro_tt_Median), color = NA) +
   scale_fill_viridis_c(option = "inferno",direction = -1) +
@@ -3347,12 +3387,10 @@ ggplot(main_results_hex9) +
   theme(plot.title = element_text(size = 8, face = "bold"))
 ```
 
-
-
 Median BRT + Metro time
 
 ```{r}
-ggplot(main_results_hex9) +
+ggplot(geo_sta_ttm_hex9) +
   ggtitle("Time travel results") + 
   geom_sf(aes(fill = brt_metro_tt_Median), color = NA) +
   scale_fill_viridis_c(option = "inferno",direction = -1) +
@@ -3442,6 +3480,15 @@ Review of consistency of merge and values of ttm values across scenarios
 
 ### Duration thresholds
 
+__NEW PARAMETERS__
+
+```{r}
+# R5R parameters
+r5r_1_global_cutoff <- 60 # minutes
+r5r_1_max_walk_time <- 30 # minutes
+r5r_1_max_trip_duration <- 60 # minutes
+
+```
 
 
 #### BRT
@@ -3455,14 +3502,14 @@ r5r_access_brt_1 <- accessibility(
   destinations = hex_points_main,
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
-  cutoffs = 60,
+  cutoffs = r5r_1_global_cutoff,
   mode = c("WALK", "BUS"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 60,
+  max_walk_time = r5r_1_max_walk_time,
+  max_trip_duration = r5r_1_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -3529,14 +3576,14 @@ r5r_access_metro_1 <- accessibility(
   destinations = hex_points_main,
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
-  cutoffs = 60,
+  cutoffs = r5r_1_global_cutoff,
   mode = c("WALK", "SUBWAY"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 60,
+  max_walk_time = r5r_1_max_walk_time,
+  max_trip_duration = r5r_1_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -3601,14 +3648,14 @@ r5r_access_full_1 <- accessibility(
   destinations = hex_points_main,
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
-  cutoffs = 60,
+  cutoffs = r5r_1_global_cutoff,
   mode = c("WALK", "SUBWAY", "BUS"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
   ),
-  max_walk_time = 30,
-  max_trip_duration = 60,
+  max_walk_time = r5r_1_max_walk_time,
+  max_trip_duration = r5r_1_max_trip_duration,
   verbose = FALSE,
   progress = FALSE
 )
@@ -3671,6 +3718,7 @@ ggsave("BRT_Metro_C1.png", path = "Data/Results/Images/")
 ```{r}
 summary(main_results_hex9)
 ```
+
 ### Write geopackage
 
 ```{r}
