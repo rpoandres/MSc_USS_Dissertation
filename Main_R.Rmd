@@ -1002,8 +1002,8 @@ osm_network <- oe_read("Data/Raw/Transport/OSM/Bogota_general_network.osm.pbf")
 Plotting
 
 ```{r}
-par(mar = rep(0.1, 4))
-plot(sf::st_geometry(osm_network))
+# par(mar = rep(0.001, 4))
+# plot(sf::st_geometry(osm_network))
 ```
 
 ## Data inspection
@@ -3337,7 +3337,87 @@ Summary
 ```{r}
 summary(main_ttm_hex9)
 ```
-__Maximum Walking time extremely low__
+### Variations
+
+```{r}
+main_ttm_hex9 <- main_ttm_hex9 %>%
+  mutate(
+    diff_walk_metro = metro_tt - walk_tt,
+    diff_walk_brt = brt_tt - walk_tt,
+    diff_brt_brt_metro = brt_metro_tt - brt_tt)
+```
+
+Summary after variations
+
+```{r}
+summary(main_ttm_hex9)
+```
+Groping results by origin hexagon
+
+```{r}
+sta_diff_ttm_hex9 <- main_ttm_hex9 %>%
+  group_by(from_id) %>%
+  summarise(across(contains("diff"), list(
+    Min = min,
+    Max = max,
+    Mean = mean,
+    Median = median,
+    SD = sd
+  )))
+```
+
+Merging statistic results with hexagon matrix
+
+```{r}
+geo_sta_diff_ttm_hex9 <- merge(
+  hex_grid_9,
+  sta_diff_ttm_hex9,
+  by.x = "h3_index",
+  by.y = "from_id"
+)
+```
+
+Plotting differences
+
+Walking vs BRT
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: Walking vs BRT") + 
+  geom_sf(aes(fill = diff_walk_brt_Median), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Median walking time") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
+
+
+Walking vs Metro
+
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: Walking vs Metro") + 
+  geom_sf(aes(fill = diff_walk_metro_Median), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Median walking time") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
+
+
+BRT vs BRT + Metro
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: BRT vs BRT + Metro") + 
+  geom_sf(aes(fill = diff_brt_brt_metro_Median), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Median walking time") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
+
 
 
 ### Extreme cases
@@ -3567,7 +3647,7 @@ ggplot(main_results_hex9) +
   ggtitle(plot_title) + 
   geom_sf(aes(fill = b_walk_x), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail") +
+  labs(fill = "Accessible\nHigh Street Retail Opportunities") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
@@ -3647,7 +3727,7 @@ ggplot(main_results_hex9) +
   ggtitle(plot_title) + 
   geom_sf(aes(fill = b_brt_x), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail") +
+  labs(fill = "Accessible\nHigh Street Retail Opportunities") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
@@ -3723,7 +3803,7 @@ ggplot(main_results_hex9) +
   ggtitle(plot_title) + 
   geom_sf(aes(fill = m_metro_x), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail") +
+  labs(fill = "Accessible\nHigh Street Retail Opportunities") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
@@ -3799,7 +3879,7 @@ ggplot(main_results_hex9) +
   ggtitle(plot_title) + 
   geom_sf(aes(fill = a_brt_metro_x), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail") +
+  labs(fill = "Accessible\nHigh Street Retail Opportunities") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
