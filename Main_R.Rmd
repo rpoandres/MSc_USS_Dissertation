@@ -3389,6 +3389,8 @@ ggplot(geo_sta_diff_ttm_hex9) +
   labs(fill = "Median walking time") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_Walk_BRT.png", path = "Data/Results/Images/")
 ```
 
 
@@ -3403,6 +3405,8 @@ ggplot(geo_sta_diff_ttm_hex9) +
   labs(fill = "Median walking time") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_Walk_Metro.png", path = "Data/Results/Images/")
 ```
 
 
@@ -3416,6 +3420,8 @@ ggplot(geo_sta_diff_ttm_hex9) +
   labs(fill = "Median walking time") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_BRT_BRT_Metro.png", path = "Data/Results/Images/")
 ```
 
 
