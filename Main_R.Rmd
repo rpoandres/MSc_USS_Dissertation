@@ -1593,8 +1593,8 @@ metro_stop_times_N <- metro_stop_times_N %>%
 Creates the arrival and departure time columns
 
 ```{r}
-metro_stop_times_N$arrival_time <- as_hms("04:00:00")
-metro_stop_times_N$departure_time <- as_hms("04:00:00")
+metro_stop_times_N$arrival_time <- as_hms("08:00:00")
+metro_stop_times_N$departure_time <- as_hms("08:00:00")
 
 ```
 
@@ -1794,6 +1794,12 @@ Droping periodicity columns
 ```{r}
 metro_frequencies_full <- metro_frequencies_full %>%
   dplyr::select(!c(periodicity))
+```
+
+Creating exact time column
+
+```{r}
+metro_frequencies_full$exact_times <- 0
 ```
 
 
