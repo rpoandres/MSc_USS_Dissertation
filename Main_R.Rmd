@@ -901,6 +901,7 @@ Fare 2 missing
 ```{r}
 length(unique(brt_gtfs$fare_rules$route_id))
 ```
+
 Fare information for 1086 routes.
 
 
@@ -911,7 +912,7 @@ Fare information for 1086 routes.
 Route 6-4, "6-4" in route id field with id 
 
 ```{r}
-brt_gtfs_C1 <- filter_by_route_id(brt_gtfs, "T_1899", keep = TRUE)
+brt_gtfs_C1_1 <- filter_by_route_id(brt_gtfs, "T_1899", keep = TRUE)
 ```
 
 
@@ -1006,6 +1007,87 @@ ggplot() +
   geom_sf(data = geo_brt_gtfs_C1) + 
   theme_minimal()
 ```
+###### Case 1 - 1
+
+```{r}
+brt_gtfs_C1_1 <- filter_by_trip_id(brt_gtfs, "BC4290001-02-3_T_1899", keep = TRUE)
+```
+
+
+###### Testing track and stations and track overlap in brt case
+
+Routes
+
+```{r}
+brt_gtfs_C1_1$routes
+```
+Trips
+
+```{r}
+brt_gtfs_C1_1$trips
+```
+Shape
+
+```{r}
+brt_gtfs_C1_1$shapes
+```
+
+Geometry
+
+```{r}
+geo_brt_gtfs_C1_1 <- gtfstools::get_trip_geometry(brt_gtfs_C1_1,file = "shapes")
+```
+
+Review
+
+```{r}
+geo_brt_gtfs_C1_1
+```
+Stops
+
+```{r}
+brt_gtfs_C1_1$stops
+```
+
+Convert stops to sf
+
+```{r}
+geo_brt_stations_C1_1_sf <- st_as_sf(brt_gtfs_C1_1$stops,coords = c("stop_lon", "stop_lat"), crs = 4326)
+```
+
+Plot stations
+
+```{r}
+geo_brt_stations_C1_1_sf %>%
+  st_geometry() %>%
+  plot()
+```
+Stop time
+
+```{r}
+arrange(brt_gtfs_C1_1$stop_times, trip_id, stop_sequence)
+```
+
+
+
+
+```{r}
+inter_brt_stops_shape_1 <- st_intersection(geo_brt_stations_C1_1_sf,geo_brt_gtfs_C1_1)
+```
+Review
+
+```{r}
+inter_brt_stops_shape_1
+```
+Plotting
+
+```{r}
+ggplot() +
+  geom_sf(data = inter_brt_stops_shape_1) +
+  theme_minimal()
+```
+There is overlaping between stations and trip shape
+
 
 ### Validation
 
