@@ -1293,12 +1293,6 @@ Ordering
 metro_stops <- metro_stops[order(metro_stops$stop_code),]
 ```
 
-Stops as sf object
-
-```{r}
-
-```
-
 
 
 ### Calendar
@@ -1426,6 +1420,72 @@ Droping columns
 metro_shapes <- metro_shapes %>%
   dplyr::select(!c(OBJECTID_1, OBJECTID, NOMBRE, Shape_Leng, z))
 ```
+
+### Stops: Alternative method
+
+
+Intersect with route geometry
+
+```{r}
+inter_metro_stops_alternative <- st_intersection(raw_metro_stations,raw_metro_line)
+```
+Plotting
+
+```{r}
+ggplot() +
+  geom_sf(data = inter_metro_stops_alternative) +
+  theme_minimal()
+```
+Calculates the centroids of every station line
+
+```{r}
+metro_stops_a <- inter_metro_stops_alternative %>%
+  st_centroid() %>%
+  rename(stop_name = RefName) %>%
+  rename(stop_id = NOMBRE) %>%
+  rename(stop_code = NUMERO)
+  
+```
+
+Stops
+
+```{r}
+head(metro_stops_a)
+```
+
+Calculate longitude and latitude coordinates of centroids
+
+```{r}
+metro_stops_a$stop_lon <- st_coordinates(metro_stops_a)[, 1]
+metro_stops_a$stop_lat <- st_coordinates(metro_stops_a)[, 2]
+
+```
+
+Adjust station code, populate location_type and zone_id
+
+```{r}
+metro_stops_a$location_type <- "0"
+metro_stops_a$zone_id <- "0"
+metro_stops_a$stop_id <- gsub("E", "M", metro_stops_a$stop_id)
+```
+
+Dropping columns and geometry and relocating columns
+
+```{r}
+metro_stops_a <- metro_stops_a %>%
+  st_drop_geometry(.) %>%
+  dplyr::select(!c(OBJECTID,TIPO, Shape_Leng, Shape_Area, OBJECTID_1,OBJECTID.1,NOMBRE.1,Shape_Leng.1)) %>%
+  relocate(stop_id) %>%
+  relocate(stop_code, .after = stop_id) %>%
+  relocate(stop_lat, .after = stop_name)
+```
+
+Ordering 
+
+```{r}
+metro_stops_a <- metro_stops_a[order(metro_stops_a$stop_code),]
+```
+
 
 
 ### Stop times
@@ -1753,7 +1813,7 @@ items <- list(
   metro_agency = "agency.txt",
   metro_routes = "routes.txt",
   metro_trips = "trips.txt",
-  metro_stops = "stops.txt",
+  metro_stops_a = "stops.txt",
   metro_calendar = "calendar.txt",
   metro_calendar_dates = "calendar_dates.txt",
   metro_shapes = "shapes.txt",
@@ -1790,7 +1850,6 @@ Creates zipfile
 zip(zipfile = "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip", files = list.files("Data/Preprocessed/Metro/GTFS/Inputs/", full.names = TRUE),mode = "cherry-pick")
 
 ```
-
 
 
 #### Read
