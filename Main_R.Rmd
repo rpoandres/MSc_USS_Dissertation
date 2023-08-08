@@ -1109,7 +1109,7 @@ S: South
 metro_trips <- tibble::tribble(
   ~route_id,  ~service_id,~trip_id, ~shape_id,
   "M1_001", "3", "M1_001_S_3_M1_001", "M1_001",
-  "M1_002", "3", "M1_002_N_3_M1_001", "M1_001")
+  "M1_002", "3", "M1_002_N_3_M1_001", "M1_002")
 ```
 
 Reads it as a table
@@ -1247,28 +1247,69 @@ ggplot() +
   geom_sf(data = raw_metro_line) +
   theme_minimal()
 ```
+#### North direction shape
 
+Create sf for north direction
+
+```{r}
+raw_metro_line_north <- raw_metro_line
+```
 
 
 Create shape id column
 
 ```{r}
-raw_metro_line$shape_id = "M1_001"
+raw_metro_line_north$shape_id = "M1_002"
 ```
 
 Relocate columns
 
 ```{r}
-raw_metro_line <- raw_metro_line  %>%
+raw_metro_line_north <- raw_metro_line_north  %>%
   relocate(shape_id)
 ```
 
 Create shape table from sf object
 
 ```{r}
-metro_shapes <- convert_sf_to_shapes(raw_metro_line, shape_id = NULL)
+metro_shapes_north <- convert_sf_to_shapes(raw_metro_line_north, shape_id = NULL)
 ```
+
 Sequence is build west to east in the shape table.
+
+#### South direction shape
+
+Reverse raw geometry for south direction shape
+
+```{r}
+raw_metro_line_south <- st_reverse(raw_metro_line)
+```
+
+Create shape id column
+
+```{r}
+raw_metro_line_south$shape_id = "M1_001"
+```
+
+Relocate columns
+
+```{r}
+raw_metro_line_south <- raw_metro_line_south  %>%
+  relocate(shape_id)
+```
+
+Create shape table from sf object
+
+```{r}
+metro_shapes_south <- convert_sf_to_shapes(raw_metro_line_south, shape_id = NULL)
+```
+
+#### Apending shapes
+
+```{r}
+metro_shapes <- bind_rows(metro_shapes_south,metro_shapes_north)
+```
+
 
 ### Stop times
 
