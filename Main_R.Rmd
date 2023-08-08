@@ -1310,6 +1310,13 @@ metro_shapes_south <- convert_sf_to_shapes(raw_metro_line_south, shape_id = NULL
 metro_shapes <- bind_rows(metro_shapes_south,metro_shapes_north)
 ```
 
+Droping columns
+
+```{r}
+metro_shapes <- metro_shapes %>%
+  dplyr::select(!c(OBJECTID_1, OBJECTID, NOMBRE, Shape_Leng, z))
+```
+
 
 ### Stop times
 
