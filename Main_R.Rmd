@@ -1243,8 +1243,13 @@ st_crs(raw_metro_line)
 Geometry
 
 ```{r}
-qtm(raw_metro_line)
+ggplot() +
+  geom_sf(data = raw_metro_line) +
+  theme_minimal()
 ```
+
+
+
 Create shape id column
 
 ```{r}
@@ -1263,6 +1268,7 @@ Create shape table from sf object
 ```{r}
 metro_shapes <- convert_sf_to_shapes(raw_metro_line, shape_id = NULL)
 ```
+Sequence is build west to east in the shape table.
 
 ### Stop times
 
@@ -2864,6 +2870,11 @@ Centroids of hexagons
 ```{r}
 hex_points_main <- data.table::fread("Accessibility/Metro/hex9_points_LU.csv")
 ```
+
+### Inputs review
+
+
+
 
 ### Time travel matrix
 
