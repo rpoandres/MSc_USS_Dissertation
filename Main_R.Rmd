@@ -120,11 +120,12 @@ names(brt_gtfs)
 ```{r}
 summary(brt_gtfs)
 ```
+
 ### Validation
 
 ```{r}
 validate_gtfs(
-  "Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip",
+  "Data/Raw/Transport/BRT/GTFS-2023-06-21.zip",
   output_path = "Data/Raw/Transport/BRT/Validation/",
   validator_path = download_validator(tempdir())
 )
@@ -145,6 +146,16 @@ plot_str(brt_gtfs)
 ```{r}
 head(brt_gtfs$agency)
 ```
+```{r}
+Datatypelist_brt_agency <- brt_gtfs$agency %>% 
+  summarise_all(class) %>%
+  pivot_longer(everything(), 
+               names_to="All_variables", 
+               values_to="Variable_class")
+Datatypelist_brt_agency
+```
+
+
 
 ### Routes
 
@@ -500,6 +511,16 @@ head(brt_gtfs$calendar)
 ```
 
 From 1-5, it is the same schedule in the intial data, 2-5 in the new data.
+
+```{r}
+Datatypelist_brt_calendar <- brt_gtfs$calendar %>% 
+  summarise_all(class) %>%
+  pivot_longer(everything(), 
+               names_to="All_variables", 
+               values_to="Variable_class")
+Datatypelist_brt_calendar
+```
+
 
 
 ### Calendar dates
@@ -986,6 +1007,7 @@ ggplot() +
   theme_minimal()
 ```
 
+### Validation
 
 ## Data cleaning (pending)
 
@@ -1109,7 +1131,7 @@ S: South
 metro_trips <- tibble::tribble(
   ~route_id,  ~service_id,~trip_id, ~shape_id,
   "M1_001", "3", "M1_001_S_3_M1_001", "M1_001",
-  "M1_002", "3", "M1_002_N_3_M1_001", "M1_002")
+  "M1_002", "3", "M1_002_N_3_M1_002", "M1_002")
 ```
 
 Reads it as a table
@@ -1187,6 +1209,12 @@ Ordering
 
 ```{r}
 metro_stops <- metro_stops[order(metro_stops$stop_code),]
+```
+
+Stops as sf object
+
+```{r}
+
 ```
 
 
@@ -1619,6 +1647,15 @@ Appends both north and south direction trips
 metro_frequencies_full <- bind_rows(metro_frequencies_S,metro_frequencies_N)
 ```
 
+Droping periodicity columns
+
+```{r}
+metro_frequencies_full <- metro_frequencies_full %>%
+  dplyr::select(!c(periodicity))
+```
+
+
+
 ### Fare attributes (non-existing)
 
 ### Fare rules (non-existing)
@@ -1684,8 +1721,6 @@ metro_gtfs <- read_gtfs("Data/Preprocessed/Metro/GTFS/Final/Metro-GTFS.zip")
 names(metro_gtfs)
 ```
 
-
-
 ## Data inspection
 
 ### Summary
@@ -1716,6 +1751,18 @@ validate_gtfs(
 ```{r}
 head(metro_gtfs$agency)
 ```
+```{r}
+Datatypelist_metro_agency <- metro_gtfs$agency %>% 
+  summarise_all(class) %>%
+  pivot_longer(everything(), 
+               names_to="All_variables", 
+               values_to="Variable_class")
+Datatypelist_metro_agency
+```
+
+
+
+
 #### Routes
 
 ```{r}
@@ -1748,6 +1795,19 @@ metro_gtfs$stops
 ```{r}
 metro_gtfs$calendar
 ```
+Data type
+
+```{r}
+Datatypelist_metro_calendar <- metro_gtfs$calendar %>% 
+  summarise_all(class) %>%
+  pivot_longer(everything(), 
+               names_to="All_variables", 
+               values_to="Variable_class")
+Datatypelist_metro_calendar
+```
+
+
+
 
 #### Calendar dates
 
@@ -1809,6 +1869,64 @@ Dataframe
 ```{r}
 metro_gtfs$frequencies
 ```
+
+#### Detail review
+
+##### Testing track and stations and track overlap in metro case
+
+Geometry of track
+
+```{r}
+geo_metro_shapes <- gtfstools::get_trip_geometry(metro_gtfs, file = "shapes")
+```
+
+Plotting
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_metro_shapes) +
+  theme_minimal()
+```
+
+
+Geometry of stations
+
+```{r}
+geo_metro_stations <- convert_stops_to_sf(metro_gtfs, stop_id = NULL, crs = 4326)
+```
+
+Plotting
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_metro_stations) +
+  theme_minimal()
+```
+
+Overlap of station point
+
+Plotting
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_metro_stations) +
+  geom_sf(data = geo_metro_shapes) + 
+  theme_minimal()
+```
+Intesect
+
+```{r}
+inter_metro_stops_shape <- st_intersection(geo_metro_stations,geo_metro_shapes)
+```
+Review
+
+```{r}
+inter_metro_stops_shape
+```
+__No intersection between stops and track of metro__
+
+
+
 
 
 ## Data cleaning (non-existing)
@@ -3816,7 +3934,7 @@ r5r_access_metro_1 <- accessibility(
   opportunities_colname = "LU_COD_21",
   decay_function = "step",
   cutoffs = r5r_1_global_cutoff,
-  mode = c("WALK", "SUBWAY"),
+  mode = c("WALK", "TRANSIT"),
   departure_datetime = as.POSIXct(
     "06-06-2023 8:00:00",
     format = "%d-%m-%Y %H:%M:%S"
