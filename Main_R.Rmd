@@ -61,7 +61,7 @@ Deletes
 ## Memory setup
 
 ```{r}
-options(java.parameters = "-Xmx6G")
+options(java.parameters = "-Xmx4G")
 ```
 
 # Bus Rapid Transit network (BRT)
@@ -2711,14 +2711,14 @@ Parameters value in accessibility modelling
 
 ```{r}
 # Time travel parameters
-ttm_global_cutoff <- 120 # minutes
-ttm_max_walk_time <- 120 # minutes
-ttm_max_trip_duration <- 120 # minutes
+ttm_global_cutoff <- 60 # minutes
+ttm_max_walk_time <- 30 # minutes
+ttm_max_trip_duration <- 60 # minutes
 
 
 # R5R parameters
 r5r_global_cutoff <- 60 # minutes
-r5r_max_walk_time <- 60 # minutes
+r5r_max_walk_time <- 30 # minutes
 r5r_max_trip_duration <- 60 # minutes
 ```
 
