@@ -3674,6 +3674,7 @@ main_ttm_hex9 <- main_ttm_hex9 %>%
   mutate(
     diff_walk_metro = metro_tt - walk_tt,
     diff_walk_brt = brt_tt - walk_tt,
+     diff_walk_brt_metro = brt_metro_tt - walk_tt,
     diff_brt_brt_metro = brt_metro_tt - brt_tt)
 ```
 
@@ -3707,51 +3708,176 @@ geo_sta_diff_ttm_hex9 <- merge(
 )
 ```
 
-Plotting differences
+#### Plotting
 
-Walking vs BRT
+##### Walking vs BRT
+
+Mean
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: Walking vs BRT") + 
+  geom_sf(aes(fill = diff_walk_brt_Mean), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Mean commuting time difference") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_diff_Walk_BRT_Mean.png", path = "Data/Results/Images/")
+```
+Median
 
 ```{r}
 ggplot(geo_sta_diff_ttm_hex9) +
   ggtitle("Time travel differece: Walking vs BRT") + 
   geom_sf(aes(fill = diff_walk_brt_Median), color = NA) +
   scale_fill_viridis_c(option = "inferno",direction = -1) +
-  labs(fill = "Median walking time") +
+  labs(fill = "Median commuting time difference") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("Ttm_Walk_BRT.png", path = "Data/Results/Images/")
+ggsave("Ttm_diff_Walk_BRT_Median.png", path = "Data/Results/Images/")
+```
+Minimum
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: Walking vs BRT") + 
+  geom_sf(aes(fill = diff_walk_brt_Min), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Minimum commuting time difference") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_diff_Walk_BRT_Min.png", path = "Data/Results/Images/")
+```
+Maximum
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: Walking vs BRT") + 
+  geom_sf(aes(fill = diff_walk_brt_Max), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Maximum commuting time difference") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_diff_Walk_BRT_Max.png", path = "Data/Results/Images/")
 ```
 
 
-Walking vs Metro
 
+##### Walking vs Metro
+
+Mean
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: Walking vs Metro") + 
+  geom_sf(aes(fill = diff_walk_metro_Mean), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Mean commuting time difference") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_diff_Walk_Metro_Mean.png", path = "Data/Results/Images/")
+```
+Median
 
 ```{r}
 ggplot(geo_sta_diff_ttm_hex9) +
   ggtitle("Time travel differece: Walking vs Metro") + 
   geom_sf(aes(fill = diff_walk_metro_Median), color = NA) +
   scale_fill_viridis_c(option = "inferno",direction = -1) +
-  labs(fill = "Median walking time") +
+  labs(fill = "Median commuting time difference") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("Ttm_Walk_Metro.png", path = "Data/Results/Images/")
+ggsave("Ttm_diff_Walk_Metro_Median.png", path = "Data/Results/Images/")
+```
+
+Minimum
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: Walking vs Metro") + 
+  geom_sf(aes(fill = diff_walk_metro_Min), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Minimum commuting time difference") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_diff_Walk_Metro_Min.png", path = "Data/Results/Images/")
+```
+Maximum
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: Walking vs Metro") + 
+  geom_sf(aes(fill = diff_walk_metro_Max), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Maximum commuting time difference") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_diff_Walk_Metro_Max.png", path = "Data/Results/Images/")
 ```
 
 
-BRT vs BRT + Metro
+##### BRT vs BRT + Metro
+
+Mean
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: BRT vs BRT + Metro") + 
+  geom_sf(aes(fill = diff_brt_brt_metro_Mean), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Mean commuting time difference") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_diff_BRT_BRT_Metro_Mean.png", path = "Data/Results/Images/")
+```
+Median
 
 ```{r}
 ggplot(geo_sta_diff_ttm_hex9) +
   ggtitle("Time travel differece: BRT vs BRT + Metro") + 
   geom_sf(aes(fill = diff_brt_brt_metro_Median), color = NA) +
   scale_fill_viridis_c(option = "inferno",direction = -1) +
-  labs(fill = "Median walking time") +
+  labs(fill = "Median commuting time difference") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("Ttm_BRT_BRT_Metro.png", path = "Data/Results/Images/")
+ggsave("Ttm_diff_BRT_BRT_Metro_Median.png", path = "Data/Results/Images/")
+```
+Minimum
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: BRT vs BRT + Metro") + 
+  geom_sf(aes(fill = diff_brt_brt_metro_Min), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Minimum commuting time difference") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_diff_BRT_BRT_Metro_Min.png", path = "Data/Results/Images/")
+```
+
+Maximum
+
+```{r}
+ggplot(geo_sta_diff_ttm_hex9) +
+  ggtitle("Time travel differece: BRT vs BRT + Metro") + 
+  geom_sf(aes(fill = diff_brt_brt_metro_Max), color = NA) +
+  scale_fill_viridis_c(option = "inferno",direction = -1) +
+  labs(fill = "Maximum commuting time difference") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Ttm_diff_BRT_BRT_Metro_Max.png", path = "Data/Results/Images/")
 ```
 
 
