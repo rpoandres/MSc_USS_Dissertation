@@ -2932,7 +2932,7 @@ ggplot(main_results_hex9) +
   #theme_minimal() + 
     theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("Walk_base.png", path = "Data/Results/Images/")
+ggsave("Access_Walk_base.png", path = "Data/Results/Images/")
 ```
 
 ## Base scenario
@@ -3156,7 +3156,7 @@ ggplot(main_results_hex9) +
   #theme_minimal() + 
     theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("BRT_base.png", path = "Data/Results/Images/")
+ggsave("Access_BRT_base.png", path = "Data/Results/Images/")
 ```
 
 Save results in geopackage (not ar use)
@@ -3399,7 +3399,7 @@ ggplot(main_results_hex9) +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("Metro_base.png", path = "Data/Results/Images/")
+ggsave("Access_Metro_base.png", path = "Data/Results/Images/")
 ```
 
 Save results in geopackage (not in use, write just at the end)
@@ -3640,7 +3640,7 @@ ggplot(main_results_hex9) +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("BRT_Metro_base.png", path = "Data/Results/Images/")
+ggsave("Access_BRT_Metro_base.png", path = "Data/Results/Images/")
 ```
 
 Save results in geopackage (not in use, save at the end)
@@ -3881,7 +3881,6 @@ ggsave("Ttm_diff_BRT_BRT_Metro_Max.png", path = "Data/Results/Images/")
 ```
 
 
-
 ### Extreme cases
 
 #### Descriptive statistics
@@ -4113,7 +4112,7 @@ ggplot(main_results_hex9) +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("Walk_C1.png", path = "Data/Results/Images/")
+ggsave("Access_Walk_C1.png", path = "Data/Results/Images/")
 ```
 
 
@@ -4193,7 +4192,7 @@ ggplot(main_results_hex9) +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("BRT_C1.png", path = "Data/Results/Images/")
+ggsave("Access_BRT_C1.png", path = "Data/Results/Images/")
 ```
 #### Metro
 
@@ -4269,7 +4268,7 @@ ggplot(main_results_hex9) +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("Metro_C1.png", path = "Data/Results/Images/")
+ggsave("Access_Metro_C1.png", path = "Data/Results/Images/")
 ```
 #### BRT + Metro
 
@@ -4345,7 +4344,7 @@ ggplot(main_results_hex9) +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("BRT_Metro_C1.png", path = "Data/Results/Images/")
+ggsave("Access_BRT_Metro_C1.png", path = "Data/Results/Images/")
 ```
 
 
@@ -4356,7 +4355,36 @@ ggsave("BRT_Metro_C1.png", path = "Data/Results/Images/")
 ```{r}
 summary(main_results_hex9)
 ```
+## Hexagon measure comparison
 
+
+```{r}
+main_results_hex9 <- main_results_hex9 %>%
+  mutate(
+    diff_b_brt_a_brt_metro = a_brt_metro_30 - b_brt_30)
+  
+```
+
+
+### Plotting
+
+Base
+
+```{r}
+plot_title <- paste("BRT and Metro accessibility variation: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+
+
+
+ggplot(main_results_hex9) +
+  ggtitle(plot_title) + 
+  geom_sf(aes(fill = diff_b_brt_a_brt_metro), color = NA) +
+  scale_fill_viridis_c() +
+  labs(fill = "Accessibility variation\nHigh Street Retail Opportunities") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Access_diff_BRT_Metro_base.png", path = "Data/Results/Images/")
+```
 ### Write geopackage
 
 ```{r}
@@ -4365,10 +4393,6 @@ main_results_hex9 %>%
            "Hex9_r5r_full",
            delete_layer=TRUE)
 ```
-
-
-## Hexagon measure comparison
-
 
 
 ## Alternative scenario
