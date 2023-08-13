@@ -2296,19 +2296,67 @@ plot_missing(survey_raw)
 Missing values on ID fields
 
 ```{r}
-survey_add_raw %>% dplyr::select(directorio, directorio_per, directorio_hog) %>%
+survey_add_raw %>% dplyr::select(directorio, directorio_hog,directorio_per) %>%
   plot_missing(.)
 
 ```
+
+##### Aggregation process
+
+Initial number of rows
+
+```{r}
+nrow(survey_add_raw)
+```
+
+
+Merge with UPZ id variables from main form survey
+
+```{r}
+survey_add <- merge(
+  survey_add_raw,# Additional variables df
+  survey_raw[,c("directorio","cod_upz_grupo","nombre_upz_grupo")], # filtered main form df
+  by = "directorio"
+  )
+```
+
+Review
+
+Number of rows
+
+```{r}
+nrow(survey_add)
+```
+__Issue with the merge process__
+
+```{r}
+head(survey_add)
+```
+
+
+
+##### Homes
+
+```{r}
+
+  
+```
+
+
+
+
+##### ZPU
+
+
 
 ##### Example
 
 directorio = "220102"
 
 ```{r}
-filter(survey_add_raw, directorio == "220102") %>%
+survey_add_raw_E1<- filter(survey_add, directorio == "220102") %>%
   dplyr::select(
-    directorio,directorio_per, # ID
+    directorio,directorio_hog,directorio_per, # ID
     N_fuerza_trabajo, # In labour market
     N_informal, # Informal
     N_analfabeta, # Illiterate
@@ -2317,6 +2365,21 @@ filter(survey_add_raw, directorio == "220102") %>%
     N_INGTOT_PER, # Total income 
     N_pobre_monetario) # Monetary poverty
 ```
+
+Review
+
+```{r}
+survey_add_raw_E1
+```
+
+
+
+Testing descriptive statistics
+
+```{r}
+mean(survey_add_raw_E1$N_INGTOT_PER,na.rm = TRUE)
+```
+
 
 # Land use (in progress)
 
