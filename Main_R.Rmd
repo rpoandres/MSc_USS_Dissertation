@@ -2157,6 +2157,18 @@ CRS
 ```{r}
 st_crs(geo_zpu)
 ```
+New CRS
+
+```{r}
+geo_zpu_wgs84 <- geo_zpu %>%
+  st_transform(.,4326)
+```
+
+Review new CRS
+
+```{r}
+st_crs(geo_zpu_wgs84)
+```
 
 Summary
 
@@ -2308,7 +2320,7 @@ Initial number of rows
 ```{r}
 nrow(survey_add_raw)
 ```
-Erasing duplicates for later merge
+Erasing duplicates of laction id for later merge
 
 ```{r}
 survey_raw_unique <- survey_raw %>%
@@ -2372,19 +2384,74 @@ Number of rows in cleaned add survey data
 nrow(survey_add_clean)
 ```
 
-
 ##### Homes
 
 ```{r}
-
+survey_add_homes <- survey_add_clean %>%
+  group_by(cod_upz_grupo, directorio_hog) %>%
+  summarize(count_income = n(),income_mean = mean(N_INGTOT_PER,na.rm = TRUE), income_median = median(N_INGTOT_PER,na.rm = TRUE))
   
 ```
 
+Review
 
+```{r}
+survey_add_homes
+```
 
 
 ##### ZPU
 
+```{r}
+survey_add_zpu <- survey_add_homes %>%
+  group_by(cod_upz_grupo) %>%
+  summarize(count_homes = n(),income_mean_mean_zpu = mean(income_mean,na.rm = TRUE), income_median_median_zpu = median(income_median,na.rm = TRUE), income_median_mean_zpu = mean(income_median,na.rm = TRUE))
+```
+
+###### Plotting
+
+Left join with ZPU layer
+
+```{r}
+geo_zpu_survey_add <- geo_zpu_wgs84 %>%
+  left_join(survey_add_zpu, by = c("UPZEM" = "cod_upz_grupo"))
+```
+
+Plot
+
+Mean mean
+
+```{r}
+ggplot(geo_zpu_survey_add) +
+  ggtitle("Income by ZPU") +
+  geom_sf(aes(fill = income_mean_mean_zpu), color = NA) +
+  scale_fill_viridis_c() +
+  labs(fill = "Mean household income") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
+Mean median
+
+```{r}
+ggplot(geo_zpu_survey_add) +
+  ggtitle("Income by ZPU") +
+  geom_sf(aes(fill = income_median_mean_zpu), color = NA) +
+  scale_fill_viridis_c() +
+  labs(fill = "Median mean household income") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
+Median median
+
+```{r}
+ggplot(geo_zpu_survey_add) +
+  ggtitle("Income by ZPU") +
+  geom_sf(aes(fill = income_median_median_zpu), color = NA) +
+  scale_fill_viridis_c() +
+  labs(fill = "Median household income") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+```
 
 
 ##### Example
@@ -2512,18 +2579,6 @@ Plotting test
 
 H3 hexagonal grid
 
-Set the polygon object in WGS84 CRS
-
-```{r}
-geo_zpu_wgs84 <- geo_zpu %>%
-  st_transform(.,4326)
-```
-
-New CRS
-
-```{r}
-st_crs(geo_zpu_wgs84)
-```
 Dissolve polygons
 
 ```{r}
