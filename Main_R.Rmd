@@ -2308,16 +2308,26 @@ Initial number of rows
 ```{r}
 nrow(survey_add_raw)
 ```
+Erasing duplicates for later merge
 
+```{r}
+survey_raw_unique <- survey_raw %>%
+  dplyr::select(directorio,cod_upz_grupo,nombre_upz_grupo) %>%
+  distinct(.) %>%
+  na.omit(.)
+```
 
 Merge with UPZ id variables from main form survey
 
 ```{r}
-survey_add <- merge(
+survey_add <- left_join(
   survey_add_raw,# Additional variables df
-  survey_raw[,c("directorio","cod_upz_grupo","nombre_upz_grupo")], # filtered main form df
+  survey_raw_unique, # filtered main form df
   by = "directorio"
-  )
+  ) %>%
+  relocate(directorio) %>%
+  relocate(cod_upz_grupo, .after = directorio_per) %>%
+  relocate(nombre_upz_grupo, .after = cod_upz_grupo)
 ```
 
 Review
@@ -2327,12 +2337,40 @@ Number of rows
 ```{r}
 nrow(survey_add)
 ```
-__Issue with the merge process__
+
+General review
 
 ```{r}
 head(survey_add)
 ```
 
+Example review
+
+```{r}
+filter(survey_raw, directorio == "220102") %>%
+  dplyr::select(
+    directorio,directorio_hog,directorio_per, # ID
+    cod_upz_grupo,
+    nombre_upz_grupo)
+```
+
+Droping rows with no UPZ code and name
+
+```{r}
+columns_to_omit <- c("cod_upz_grupo", "nombre_upz_grupo")
+survey_add_clean <- survey_add[complete.cases(survey_add[, columns_to_omit]),]
+```
+
+Droping review
+
+```{r}
+head(survey_add_clean)
+```
+Number of rows in cleaned add survey data
+
+```{r}
+nrow(survey_add_clean)
+```
 
 
 ##### Homes
@@ -2363,7 +2401,9 @@ survey_add_raw_E1<- filter(survey_add, directorio == "220102") %>%
     N_pobre_ipm, # MPI poor
     N_codigo_upz_trabajo, # ZPU ID of workplace
     N_INGTOT_PER, # Total income 
-    N_pobre_monetario) # Monetary poverty
+    N_pobre_monetario,# Monetary poverty
+    cod_upz_grupo,
+    nombre_upz_grupo) 
 ```
 
 Review
