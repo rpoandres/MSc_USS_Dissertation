@@ -4701,7 +4701,6 @@ ggplot(main_results_hex9_pivot_longer) +
 
 ggsave("Boxplot_Access_All_by_income_decile.png", path = "Data/Results/Images/")
 ```
-__Invert scenario order in last plot__
 
 
 Difference
