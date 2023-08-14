@@ -42,6 +42,7 @@ library(h3)
 library(lubridate) # date data management
 library(hms) # date data management
 library(zip)
+library(viridis)
 ```
 
 ## Temporary directory
@@ -4606,6 +4607,93 @@ ggsave("Demo_income_decile.png", path = "Data/Results/Images/")
 ```
 #### Scarerplot
 
+Before
+
+```{r}
+ggplot(main_results_hex9) +
+  geom_boxplot(
+    aes(
+      x = as.factor(income_decile),
+      y = b_brt_30 / 1000,
+      color = as.factor(income_decile),
+      #group = income_decile
+    ),
+    show.legend = FALSE
+  ) +
+  scale_colour_viridis(discrete = TRUE) +
+  labs(
+    x = "Income decile",
+    y = "High Street Retail Opportunities\n(thousands)") +
+  scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) + 
+  theme_minimal()
+```
+After
+
+```{r}
+ggplot(main_results_hex9) +
+  geom_boxplot(
+    aes(
+      x = as.factor(income_decile),
+      y = a_brt_metro_30 / 1000,
+      color = as.factor(income_decile),
+      #group = income_decile
+    ),
+    show.legend = FALSE
+  ) +
+  scale_colour_viridis(discrete = TRUE) +
+  labs(
+    x = "Income decile",
+    y = "High Street Retail Opportunities\n(thousands)") +
+  scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) + 
+  theme_minimal()
+```
+Before and after
+
+Povit longer
+
+```{r}
+main_results_hex9_pivot_longer <- main_results_hex9[,c("h3_index","b_brt_30", "a_brt_metro_30", "income_decile")] %>%
+    pivot_longer(cols = c("b_brt_30", "a_brt_metro_30"),
+               names_to = "scenario",
+               values_to = "accessible_jobs") %>%
+  st_drop_geometry(.)
+  
+```
+
+Review
+
+```{r}
+filter(main_results_hex9_pivot_longer, h3_index == "8966e082443ffff")
+```
+Plot
+
+```{r}
+ggplot(main_results_hex9_pivot_longer) +
+  geom_boxplot(
+    aes(
+      x = as.factor(income_decile),
+      y = accessible_jobs / 1000,
+      color = as.factor(income_decile),
+      #weight = population,
+      group = income_decile
+    ),
+    show.legend = FALSE
+  ) +
+  facet_wrap(
+    ~ scenario,
+    nrow = 1,
+    labeller = as_labeller(c(b_brt_30 = "Before", a_brt_metro_30 = "After"))
+  ) +
+  scale_colour_viridis(discrete = TRUE) +
+  labs(x = "Income decile", y = "High Street Retail Opportunities (thousands)") +
+  scale_x_discrete(
+    labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")
+  ) +
+  theme_minimal()
+```
+
+
+
 Difference
 
 ```{r}
@@ -4619,13 +4707,15 @@ ggplot(main_results_hex9) +
     ),
     show.legend = FALSE
   ) +
-  scale_colour_brewer(palette = "RdBu") +
+  scale_colour_viridis(discrete = TRUE) +
   labs(
     x = "Income decile",
     y = "High Street Retail Opportunities difference\n(thousands)") +
   scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) + 
   theme_minimal()
 ```
+
+
 
 
 ### Write geopackage
