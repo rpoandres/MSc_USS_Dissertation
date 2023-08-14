@@ -4624,8 +4624,9 @@ ggplot(main_results_hex9) +
   labs(
     x = "Income decile",
     y = "High Street Retail Opportunities\n(thousands)") +
-  scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) + 
-  theme_minimal()
+  scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) # + theme_minimal()
+
+ggsave("Boxplot_Access_B_by_income_decile.png", path = "Data/Results/Images/")
 ```
 After
 
@@ -4644,8 +4645,9 @@ ggplot(main_results_hex9) +
   labs(
     x = "Income decile",
     y = "High Street Retail Opportunities\n(thousands)") +
-  scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) + 
-  theme_minimal()
+  scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) # + theme_minimal()
+
+ggsave("Boxplot_Access_A_by_income_decile.png", path = "Data/Results/Images/")
 ```
 Before and after
 
@@ -4665,6 +4667,13 @@ Review
 ```{r}
 filter(main_results_hex9_pivot_longer, h3_index == "8966e082443ffff")
 ```
+Levels
+
+```{r}
+main_results_hex9_pivot_longer$scenario <- factor(main_results_hex9_pivot_longer$scenario, levels = c("b_brt_30","a_brt_metro_30"))
+```
+
+
 Plot
 
 ```{r}
@@ -4688,10 +4697,11 @@ ggplot(main_results_hex9_pivot_longer) +
   labs(x = "Income decile", y = "High Street Retail Opportunities (thousands)") +
   scale_x_discrete(
     labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")
-  ) +
-  theme_minimal()
-```
+  ) #+ theme_minimal()
 
+ggsave("Boxplot_Access_All_by_income_decile.png", path = "Data/Results/Images/")
+```
+__Invert scenario order in last plot__
 
 
 Difference
@@ -4711,8 +4721,9 @@ ggplot(main_results_hex9) +
   labs(
     x = "Income decile",
     y = "High Street Retail Opportunities difference\n(thousands)") +
-  scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) + 
-  theme_minimal()
+  scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) #+ theme_minimal()
+
+ggsave("Boxplot_Access_diff_by_income_decile.png", path = "Data/Results/Images/")
 ```
 
 
