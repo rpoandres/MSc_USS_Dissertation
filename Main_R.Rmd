@@ -2320,7 +2320,7 @@ Initial number of rows
 ```{r}
 nrow(survey_add_raw)
 ```
-Erasing duplicates of laction id for later merge
+Erasing duplicates of location id for later merge
 
 ```{r}
 survey_raw_unique <- survey_raw %>%
@@ -2615,20 +2615,20 @@ There are holes in the grid with a 9 resolution.
 Intersecting grids
 
 ```{r}
-intergrid_8 <- polyfill(geo_zpu_wgs84_mono, res = 8)
+# intergrid_8 <- polyfill(geo_zpu_wgs84_mono, res = 8)
 ```
 H3 id to sf
 
 ```{r}
-hex_grid_8 <- h3_to_geo_boundary_sf(intergrid_8)
+# hex_grid_8 <- h3_to_geo_boundary_sf(intergrid_8)
 ```
 
 Basic geo map
 
 ```{r}
-ggplot() +
-  geom_sf(data = hex_grid_8) +
-  theme_minimal()
+# ggplot() +
+#   geom_sf(data = hex_grid_8) +
+#   theme_minimal()
 ```
 
 There are not holes with 8 resolution value.
@@ -4589,6 +4589,8 @@ main_results_hex9 <- merge(
 )
 ```
 
+#### ZPU Map
+
 Plot income decile
 
 ```{r}
@@ -4601,6 +4603,28 @@ ggplot(main_results_hex9) +
   theme(plot.title = element_text(size = 8, face = "bold"))
 
 ggsave("Demo_income_decile.png", path = "Data/Results/Images/")
+```
+#### Scarerplot
+
+Difference
+
+```{r}
+ggplot(main_results_hex9) +
+  geom_boxplot(
+    aes(
+      x = as.factor(income_decile),
+      y = diff_b_brt_a_brt_metro / 1000,
+      color = as.factor(income_decile),
+      #group = income_decile
+    ),
+    show.legend = FALSE
+  ) +
+  scale_colour_brewer(palette = "RdBu") +
+  labs(
+    x = "Income decile",
+    y = "High Street Retail Opportunities difference\n(thousands)") +
+  scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) + 
+  theme_minimal()
 ```
 
 
