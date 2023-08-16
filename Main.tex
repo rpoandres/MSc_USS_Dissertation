@@ -5,7 +5,7 @@
 \usepackage[a4paper, total={6.25in, 8.25in}]{geometry} %%%%%% CHECK MARGIN REQ. 8.25 in?
 \input{Packages.tex}
 \usepackage{multicol}
-\hypersetup{pdftitle = Project Report, pdfauthor = {First Last}, pdfstartview=FitH, pdfkeywords = essay, pdfpagemode = FullScreen, colorlinks, anchorcolor = black, citecolor = blue, urlcolor = blue, filecolor = green, linkcolor = blue, plainpages = false}
+\hypersetup{pdftitle = Project Report, pdfauthor = {First Last}, pdfstartview=FitH, pdfkeywords = essay, pdfpagemode = FullScreen, colorlinks, anchorcolor = black, citecolor = black, urlcolor = blue, filecolor = green, linkcolor = blue, plainpages = false}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\pagestyle{fancy}
 \rhead{}
@@ -44,7 +44,7 @@ This dissertation is submitted in part requirement for \\the \textit{MSc Urban S
 % \\Disclaimer:This report is submitted as part requirement for the MSc in Robotics  and Computation at University College London. It is substantially the result of my own work except where explicitly indicated in the text.The report may be freely copied and distributed provided the source is explicitly acknowledged.
 % September 2022
 }
-\hypersetup{citecolor=black}
+%\hypersetup{citecolor=black}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 %Adjust logo positions here
@@ -169,7 +169,7 @@ The first metro line will have a 23,9-kilometre length overground track with 16 
 
 \section{Importance}
 
-The improvement of the current transport infrastructure system in Colombia's capitals aims to impact a significant share of Bogot\'{a}'s population, as 1 on every 3 trips in the city relies on public transportation. According to Bogot\'{a} City Council, BRT is the primary mode of commuting, with 4,8 million trips a day \citep{alcaldiadebogotaEncuestaMovilidad20192019}. From the total of 13.4 million daily trips, BRT accounts for 36\% total trips, followed by walking\footnote{Pedestrian trips with length greater or equal to 15 minutes} and privately owned cars, with 24\% and 15\% of total trips, respectively.
+The improvement of the current transport infrastructure system in Colombia's capitals aims to impact a significant share of Bogot\'{a}'s population, as 1 in every 3 trips in the city relies on public transportation. According to Bogot\'{a} City Council, BRT is the primary mode of commuting, with 4,8 million trips a day \citep{alcaldiadebogotaEncuestaMovilidad20192019}. From the total of 13.4 million daily trips, BRT accounts for 36\% total trips, followed by walking\footnote{Pedestrian trips with length greater or equal to 15 minutes} and privately owned cars, with 24\% and 15\% of total trips, respectively.
 
 
 
@@ -178,7 +178,7 @@ The improvement of the current transport infrastructure system in Colombia's cap
 \item Congested BRT Network
 
 \item Brief intro to Bogota as a city and centre of economic and decision-making processes
-\item How it contribute or prevent people to have better life quality
+\item How does it contribute or prevent people to have better life quality
 \item It takes advantage of the use of publicly available data from transport and local authorities (spatial and non-spatial)
   \item Provide technical tools to assess transport planning decision
   \item Baseline reference for future or similar transport public policy decision making
@@ -232,7 +232,7 @@ The use of modelling tools in the urban environment has gained popularity for an
 
 Regarding the urban modelling process as a discipline both, \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018}, presented past references to grasp a general notion of its historic evolution. On one hand, \cite{battyUrbanModeling2009a} stated how the first formal contributions on the topic go back to \cite{alonsoLocationLandUse1964}, the basis of the so-called new urban economics. Batty included a model-building process overview listing the main scientific and mathematics principles to consider. On the other hand, \cite{wilsonScienceCitiesRegions2012} highlighted the influence of \cite{lowryModelMetropolis1964} as a milestone in the urban modelling evolution and uses it as an example to explain urban modelling together with a full historical review of the field.
 
-Taking \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018} as reference, the urban models can be grouped into three main categories: 
+Taking \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018} as references, the urban models can be grouped into three main categories: 
 
 \begin{enumerate}
   \item Land-use transportation: Conceptually based on the gravitational model \citep{battyUrbanModellingAlgorithms1976}, it aims to predict the spatial interaction (flows) between land use, economic activity and the inherent transportation costs of spatial units within the area of study. Leveraging on the principles of Newton's model, these models forecast how spatial units would  interact with one another considering the cost of interaction and attractiveness between them.
@@ -277,9 +277,27 @@ Furthermore, \cite{battyUrbanModeling2009a} clarified that apart from the comput
 
 Geographic information can be defined as the result of combining non-spatial data with their location in space. \cite{longleyGeographicInformationScience2015} defined geographic information as data that represents the 'what' and the 'where' features of anything. The 'what' component of the data would account for the attributes or non-spatial data captured and the 'when' is responsible for holding the coordinates that symbolise a specific location on earth.
 
-According to \cite{maclachlanAppliedGeographicInformation2022}
+According to \cite{maclachlanAppliedGeographicInformation2022} geographic information can be divided into two main data types:
 
-Geogprahic model
+\begin{enumerate}
+  \item Vector: Geographic vector data typically includes points, lines, polygons, grids and hexagons.
+  \item Raster: The raster format consists of a set of cell grids in which each cell holds a specific value. 
+\end{enumerate}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=15cm]{Centrality_Results.jpg}
+    \caption{Result of centrality measure in the topological network}
+    \label{fig:centrality_results}
+\end{figure}
+
+Include image of types of data: Look in \cite{longleyGeographicInformationScience2015} or use image from Andys book
+
+The main use of geographic information is to represent the relative locations of features through a schematic and visual geographic model. With a certain level of abstraction, detail and scale, geographic modelling (mapping) produces knowledge related to the location and the features of the subject of study \citep{longleyGeographicInformationScience2015}.
+
+Hence, a geographic information system (GIS), consists of the systematic collection of geo-referenced attribute data. Gifted with powerful processing capabilities, 'GI systems are computer-based tools for collecting, storing, processing, analyzing, and visualizing geographic information' \citep{longleyGeographicInformationScience2015}.
+
+Geographic model
 
 enables one to record and represent the location  
 
@@ -345,7 +363,7 @@ Map as a model to represent reality
 
 
 \renewcommand{\bibname}{References}
-\bibliographystyle{abbrvnat}
+\bibliographystyle{agsm}
 %\bibliography{Bibliography.bib}
 \bibliography{references.bib}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
