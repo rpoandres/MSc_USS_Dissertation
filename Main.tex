@@ -5,7 +5,7 @@
 \usepackage[a4paper, total={6.25in, 8.25in}]{geometry} %%%%%% CHECK MARGIN REQ. 8.25 in?
 \input{Packages.tex}
 \usepackage{multicol}
-\hypersetup{pdftitle = Project Report, pdfauthor = {First Last}, pdfstartview=FitH, pdfkeywords = essay, pdfpagemode = FullScreen, colorlinks, anchorcolor = black, citecolor = black, urlcolor = blue, filecolor = green, linkcolor = blue, plainpages = false}
+\hypersetup{pdftitle = Project Report, pdfauthor = {First Last}, pdfstartview=FitH, pdfkeywords = essay, pdfpagemode = FullScreen, colorlinks, anchorcolor = black, citecolor = black, urlcolor = blue, filecolor = green, linkcolor = black, plainpages = false}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\pagestyle{fancy}
 \rhead{}
@@ -239,7 +239,7 @@ Taking \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018} 
 
 \begin{enumerate}
   \item Land-use transportation: Conceptually based on the gravitational model \citep{battyUrbanModellingAlgorithms1976}, it aims to predict the spatial interaction (flows) between land use, economic activity and the inherent transportation costs of spatial units within the area of study. Leveraging on the principles of Newton's model, these models forecast how spatial units would  interact with one another considering the cost of interaction and attractiveness between them.
-  \item Urban dynamics: Built on the principles used in ecological dynamic models and system dynamics, the urban dynamics models intend to derive through time the aggregate future dynamic activity or state that may result within an urban system.
+  \item Urban dynamics: Built on the principles used in ecological dynamic models and system dynamics, the urban dynamics models intend to derive the aggregate future dynamic activity or state that may result within an urban system through time.
   \item Cellular automata and agent-based modelling: They aim to simulate the emergent aggregate result of individual agent-level actions in a system, as agents interact with both the environment and other agents.
   \item Network analysis: It allows to study of the connections patterns that may arise between components to systematically assess the collective behaviour of components as a whole \citep{newmanNetworksIntroduction2010}.
 \end{enumerate}
@@ -248,7 +248,7 @@ With the emergence of computational modelling, \cite{battyUrbanModeling2009a} de
 
 % Refernce to the futuro portraid by Wilson
 
-In a more prospective and industry-related exercise, \cite{wilsonFutureUrbanModelling2018} presented his view on how urban modelling will develop and prosper in the future. Regarding tools and the inputs to further urban modelling development, \cite{wilsonFutureUrbanModelling2018} mentioned how big data and technological advancements will enable new capacities and new input data to apply modelling in the urban context. Apart from the already relatively well-developed urban modelling tools designed for transport assessment and retail location intelligence, \cite{wilsonFutureUrbanModelling2018} listed other industries that could expand the use of spatial modelling to support their location decision-making processes. Among the high-use modelling potential situations, \cite{wilsonFutureUrbanModelling2018} mentioned the energy sector, global trading models and the defence and security industry.
+In a more prospective and industry-related exercise, \cite{wilsonFutureUrbanModelling2018} presented his view on how urban modelling will develop and prosper in the future. Regarding tools and the inputs to further urban modelling development, \cite{wilsonFutureUrbanModelling2018} mentioned how big data and technological advancements will enable new capacities and new input data to apply modelling in the urban context. Apart from the already relatively well-developed urban modelling tools designed for transport assessment and retail location intelligence, \cite{wilsonFutureUrbanModelling2018} listed other industries that could expand spatial modelling to support their location decision-making processes. Among the high-use modelling potential situations, \cite{wilsonFutureUrbanModelling2018} mentioned the energy sector, global trading models and the defence and security industry.
 
 % Move to other section
 % Technological information developments for the last decades have enabled greater capture, storing and processing capacities \citep{krainesIntegratingDistributedComputational2011}, a more multidisciplinary and robust approach is now available when addressing built environment-related phenomena. 
@@ -455,6 +455,46 @@ Subsequently, \cite{guzmanAccessibilityAffordabilityEquity2018} carried out a tr
 
 \section{Summary}
 
+
+\begin{table}[H]
+\label{tab:Data_summary}
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llll}
+\hline
+\multicolumn{1}{c}{\textbf{Component}} &
+  \multicolumn{1}{c}{\textbf{Sub-component}} &
+  \multicolumn{1}{c}{\textbf{Description}} &
+  \multicolumn{1}{c}{\textbf{Source}} \\ \hline
+\multirow{3}{*}{\begin{tabular}[c]{@{}l@{}}Transport \\ infrastructure\end{tabular}} &
+  BRT system &
+  Static transit information of the  BRT current system &
+  Source \\
+             & Road and walking network & Street network                         & Source \\
+             & Metro system             & Track and station data of future metro & Source \\ \hline
+Land use     & Predominant land use     & Predominant use terrain level data     & Source \\ \hline
+Demographics & Multipurpose survey      & Anonymized survey data                 & Source \\ \hline
+\end{tabular}}
+\caption{Input data summary.}
+\end{table}
+
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+
+
+
+
+
+
+
+
 \section{Transport infrastructure}
 
 \subsection{BRT network}
@@ -484,11 +524,13 @@ Subsequently, \cite{guzmanAccessibilityAffordabilityEquity2018} carried out a tr
 
 \section{Accessibility modelling}
 
+\subsection{Computational method}
+
 \subsection{Inputs}
 
 \subsection{Parameters}
 
-\subsection{Computational method}
+
 
 
 
