@@ -1142,8 +1142,11 @@ There is overlaping between stations and trip shape
 Appending different sf object
 
 ```{r}
-# geo_shapes_complete <- bind_rows()
+geo_shapes_complete <- bind_rows(geo_shapes_main, geo_shapes_urban, geo_shapes_feeder,geo_shapes_feeder_v, geo_shapes_special, geo_shapes_comp)
 ```
+
+Erasing duplicates rows
+
 
 
 
