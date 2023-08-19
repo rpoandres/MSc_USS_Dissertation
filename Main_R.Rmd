@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(r5r)
 library(accessibility)
 library(ggplot2)
+library(ggspatial)
 library(aopdata)
 library(gtfstools)
 library(readr)
@@ -214,6 +215,12 @@ Geometry of subsetted routes
 geo_shapes_main <- gtfstools::get_trip_geometry(brt_gtfs_main, file = "shapes")
 ```
 
+Create route type id field
+
+```{r}
+geo_shapes_main$route_desc <- "Main"
+```
+
 
 ##### Urban
 
@@ -234,6 +241,13 @@ Geometry of subsetted routes
 geo_shapes_urban <- gtfstools::get_trip_geometry(brt_gtfs_urban, file = "shapes")
 ```
 
+Create route type id field
+
+```{r}
+geo_shapes_urban$route_desc <- "Urban"
+```
+
+
 ##### Feeder
 
 ```{r}
@@ -252,6 +266,13 @@ Geometry of subsetted routes
 ```{r}
 geo_shapes_feeder <- gtfstools::get_trip_geometry(brt_gtfs_feeder, file = "shapes")
 ```
+
+Create route type id field
+
+```{r}
+geo_shapes_feeder$route_desc <- "Feeder"
+```
+
 
 ##### Feeder_V
 
@@ -272,6 +293,11 @@ Geometry of subsetted routes
 geo_shapes_feeder_v <- gtfstools::get_trip_geometry(brt_gtfs_feeder_v, file = "shapes")
 ```
 
+Create route type id field
+
+```{r}
+geo_shapes_feeder_v$route_desc <- "Feeder"
+```
 
 ##### Complementary
 
@@ -292,6 +318,13 @@ Geometry of subsetted routes
 geo_shapes_comp <- gtfstools::get_trip_geometry(brt_gtfs_comp, file = "shapes")
 ```
 
+Create route type id field
+
+```{r}
+geo_shapes_comp$route_desc <- "Complementary"
+```
+
+
 ##### Special
 
 ```{r}
@@ -310,6 +343,13 @@ Geometry of subsetted routes
 ```{r}
 geo_shapes_special <- gtfstools::get_trip_geometry(brt_gtfs_special, file = "shapes")
 ```
+
+Create route type id field
+
+```{r}
+geo_shapes_special$route_desc <- "Special"
+```
+
 
 ##### Saving 
 
@@ -1093,6 +1133,33 @@ There is overlaping between stations and trip shape
 ### Validation
 
 ## Data cleaning (pending)
+
+
+## Mapping
+
+### Appeding
+
+Appending different sf object
+
+```{r}
+# geo_shapes_complete <- bind_rows()
+```
+
+
+
+### Plotting
+
+Main onlyvi
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_shapes_main) + 
+  ggtitle("Bus Rapit Transit system", subtitle = "Routes by type")+
+  theme(panel.grid.major = element_line(color = gray(0.5), linetype = "dashed",size = 0.5),panel.background = element_rect(fill = "aliceblue")) +
+  xlab("Longitude") + ylab("Latitude") + 
+  annotation_scale(location = "br", width_hint = 0.2)
+  #theme_minimal()
+```
 
 # OSM network
 
