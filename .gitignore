@@ -8,7 +8,11 @@
 .rar
 .zip
 # Directories
-Data/
+Data/Preprocessed/
+Data/Raw/
+Data/Results/After/
+Data/Results/Before/
+Data/Results/Metro/
 Test/
 Accessibility/
 # Jupyter Notebook records
