@@ -215,6 +215,16 @@ Geometry of subsetted routes
 geo_shapes_main <- gtfstools::get_trip_geometry(brt_gtfs_main, file = "shapes")
 ```
 
+Remove duplicated geometries
+
+```{r}
+geo_shapes_main <- geo_shapes_main %>%
+  group_by(geometry) %>%
+  filter(row_number() == 1) %>%
+  ungroup()
+```
+
+
 Create route type id field
 
 ```{r}
@@ -240,6 +250,16 @@ Geometry of subsetted routes
 ```{r}
 geo_shapes_urban <- gtfstools::get_trip_geometry(brt_gtfs_urban, file = "shapes")
 ```
+
+Remove duplicated geometries
+
+```{r}
+geo_shapes_urban <- geo_shapes_urban %>%
+  group_by(geometry) %>%
+  filter(row_number() == 1) %>%
+  ungroup()
+```
+
 
 Create route type id field
 
@@ -267,6 +287,16 @@ Geometry of subsetted routes
 geo_shapes_feeder <- gtfstools::get_trip_geometry(brt_gtfs_feeder, file = "shapes")
 ```
 
+Remove duplicated geometries
+
+```{r}
+geo_shapes_feeder <- geo_shapes_feeder %>%
+  group_by(geometry) %>%
+  filter(row_number() == 1) %>%
+  ungroup()
+```
+
+
 Create route type id field
 
 ```{r}
@@ -293,6 +323,16 @@ Geometry of subsetted routes
 geo_shapes_feeder_v <- gtfstools::get_trip_geometry(brt_gtfs_feeder_v, file = "shapes")
 ```
 
+Remove duplicated geometries
+
+```{r}
+geo_shapes_feeder_v <- geo_shapes_feeder_v %>%
+  group_by(geometry) %>%
+  filter(row_number() == 1) %>%
+  ungroup()
+```
+
+
 Create route type id field
 
 ```{r}
@@ -317,6 +357,17 @@ Geometry of subsetted routes
 ```{r}
 geo_shapes_comp <- gtfstools::get_trip_geometry(brt_gtfs_comp, file = "shapes")
 ```
+
+Remove duplicated geometries
+
+```{r}
+geo_shapes_comp <- geo_shapes_comp %>%
+  group_by(geometry) %>%
+  filter(row_number() == 1) %>%
+  ungroup()
+```
+
+
 
 Create route type id field
 
@@ -343,6 +394,16 @@ Geometry of subsetted routes
 ```{r}
 geo_shapes_special <- gtfstools::get_trip_geometry(brt_gtfs_special, file = "shapes")
 ```
+
+Remove duplicated geometries
+
+```{r}
+geo_shapes_special <- geo_shapes_special %>%
+  group_by(geometry) %>%
+  filter(row_number() == 1) %>%
+  ungroup()
+```
+
 
 Create route type id field
 
@@ -1152,17 +1213,20 @@ Erasing duplicates rows
 
 ### Plotting
 
-Main onlyvi
+General
 
 ```{r}
 ggplot() +
-  geom_sf(data = geo_shapes_main) + 
+  geom_sf(data = geo_shapes_complete, aes(color= route_desc), alpha = 0.8) +
   ggtitle("Bus Rapit Transit system", subtitle = "Routes by type")+
   theme(panel.grid.major = element_line(color = gray(0.5), linetype = "dashed",size = 0.5),panel.background = element_rect(fill = "aliceblue")) +
   xlab("Longitude") + ylab("Latitude") + 
   annotation_scale(location = "br", width_hint = 0.2)
   #theme_minimal()
 ```
+
+
+
 
 # OSM network
 
