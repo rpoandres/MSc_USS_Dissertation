@@ -580,11 +580,25 @@ Figure \ref{fig:Metro_Network} presents the track locations, stations, and Bogot
 
 \section{Land use}
 
-Land use data allows classifying properties according to their predominant economic use. Through terrain spatial data published by \cite{alcaldiadebogotad.c.DestinoEconomicoPredominante2022} it is possible to compute the spatial distribution of properties by their primary land use. 
+Land use data allows classifying properties according to their predominant economic use. Through terrain spatial data published by \cite{alcaldiadebogotad.c.DestinoEconomicoPredominante2022} it is possible to compute the spatial distribution of properties by their primary land use. Figure \ref{fig:Land_Use_Commercial} shows the spatial distribution of terrains in bogotá classified as commercial corridor land use, with clusters mainly in the east zone of Bogotá. 
 
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=15cm]{Data/Results/Images/Land_Use_Commercial_Corridor_Terrain.png}
+    \caption{Terrains with commercial corridor land use \citep{alcaldiadebogotad.c.DestinoEconomicoPredominante2022}}
+    \label{fig:Land_Use_Commercial}
+\end{figure}
 
 \section{Demographics}
+
+% Reference to the survey
+% Reference to the GIS layer
+
+With a multipurpose approach, \cite{secretariadistritaldeplaneacionCapaGeograficaEncuesta2023} gathered information through a survey from Bogotá's households. The multipurpose survey captured multiple variables at a residential, household and personal level of Bogotá's population. Among the topics covered in the survey, it included variables related to living conditions, housing, utilities, health, education and demographics.
+
+The survey data has been gone through an anonymization procedure done by \cite{secretariadistritaldeplaneacionMicrodatosEncuestaMultiproposito2023} to keep non-spatial and spatial attributes unexposed. The residential location of the public surveyed is not published. However, the data can be spatially aggregated by the zoning planning unit (ZPU) used by Bogotá City Council as a spatial-administrative subdivision of their main boroughs. As the survey microdata contains the corresponding ZPU where each survey was collected, it is possible to aggregate the results spatially. 
+
+Figure XX present the median household income by ZPU in Bogotá.
 
 
 
