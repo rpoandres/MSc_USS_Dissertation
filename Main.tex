@@ -131,6 +131,8 @@ Add signature png here.
   \sortitem{GTFS: General transit feed specification}
   \sortitem{GDP: Gross domestic product}
   \sortitem{SDP: Sustainability development goal}
+  \sortitem{OSM: Open Street Map}
+  \sortitem{PBF: Protocol Binary Format}
   \end{sortedlist}
 % \end{singlespace}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -528,15 +530,33 @@ fare\_rules     & Fare class description    & Class and fare parameters         
 \end{table}
 
 % map of BRT geometries
-Figure XX shows that Bogotá's BRT network comprises a multilevel route network. Apart from the main corridor BRT network, the system has been expanded into additional complementary routes. 
+Figure \ref{fig:BRT_route_type} shows that Bogotá's BRT network comprises a multilevel route network. Apart from the main corridor BRT network, the system has been expanded into additional complementary routes that are described next:
 
+\begin{itemize}
+  \item Main: The route under the main category consists of the exclusive lane routes in the main corridors of the system.
+  \item Feeder: The feeder routes are bus routes that use non-exclusive lanes in the road network. Their main role in the system is to connect nearby areas with the main corridors.
+  \item Urban: The urban routes offers bus transit services across the city using non-exclusive road lanes.
+  \item Complementary and Special: These routes also use non-exclusive lanes from the road network and their grouping category is more related to system operation management.
+\end{itemize}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=15cm]{Data/Results/Images/BRT_Network_Route.png}
+    \caption{BRT network by route type \citep{transmilenios.a.GTFSEstaticos202306212023}}
+    \label{fig:BRT_route_type}
+\end{figure}
 
 \subsection{Road and walking network}
 
-As commuting practices rely upon more than one mode of transportation, the modelling process requires considering the mode available to reach the desired destinations from the trip's origin. Either to access a motorized transport mode or to do complete mono mode trips, walking constitutes an essential element when modelling commuting trips, therefore, in the accessibility modelling process.
+As commuting practices rely upon more than one mode of transportation, the modelling process requires considering the mode available to reach the desired destinations from the trip's origin. To access a motorized transport mode or make complete mono mode trips, walking constitutes an essential element when modelling commuting trips, therefore, in the accessibility modelling process.
 
-The road and walking network 
+The road and walking network of Bogotá was taken\footnote{Extracted data dated 01/07/2023.} from Open Street Map (OSM) available through \cite{hotexporttoolHOTExportTool2023}. All the transport-related available features were extracted to replicate the possible physical infrastructure for walking. The data format in which the data was downloaded is Protocol Binary Format (PBF), the OSM native vector data format.
+
+Figure XX shows an overview of the transport-related infrastructure of Bogotá extracted from OSM. 
+
+% no subsetting
+% Closest to reality
+% Refence to vector data
 
 \subsection{Metro network}
 
