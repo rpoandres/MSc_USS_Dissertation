@@ -2589,7 +2589,7 @@ survey_add_homes
 ```{r}
 survey_add_zpu <- survey_add_homes %>%
   group_by(cod_upz_grupo) %>%
-  summarize(count_homes = n(),income_mean_mean_zpu = mean(income_mean,na.rm = TRUE), income_median_median_zpu = median(income_median,na.rm = TRUE), income_median_mean_zpu = mean(income_median,na.rm = TRUE))
+  summarize(count_homes = n(),income_mean_mean_zpu = mean(income_mean,na.rm = TRUE), income_median_median_zpu = median(income_median,na.rm = TRUE), income_median_mean_zpu = mean(income_median,na.rm = TRUE), income_mean_median_zpu = median(income_mean,na.rm = TRUE))
 ```
 
 ###### Plotting
@@ -2607,34 +2607,51 @@ Mean mean
 
 ```{r}
 ggplot(geo_zpu_survey_add) +
-  ggtitle("Income by ZPU") +
   geom_sf(aes(fill = income_mean_mean_zpu), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Mean household income") +
+  labs(fill = "Mean household income\nColombian Pesos") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Demo_Income_UPZ_Mean_Mean.png", path = "Data/Results/Images/")
+```
+
+Median mean
+
+```{r}
+ggplot(geo_zpu_survey_add) +
+  geom_sf(aes(fill = income_median_mean_zpu), color = NA) +
+  scale_fill_viridis_c() +
+  labs(fill = "Median mean household income\nColombian Pesos") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Demo_Income_UPZ_Median_Mean.png", path = "Data/Results/Images/")
+```
+
+Median median
+
+```{r}
+ggplot(geo_zpu_survey_add) +
+  geom_sf(aes(fill = income_median_median_zpu), color = NA) +
+  scale_fill_viridis_c() +
+  labs(fill = "Median household income\nColombian Pesos") +
+  #theme_minimal()
+  theme(plot.title = element_text(size = 8, face = "bold"))
+
+ggsave("Demo_Income_UPZ_Median_Median.png", path = "Data/Results/Images/")
 ```
 Mean median
 
 ```{r}
 ggplot(geo_zpu_survey_add) +
-  ggtitle("Income by ZPU") +
-  geom_sf(aes(fill = income_median_mean_zpu), color = NA) +
+  geom_sf(aes(fill = income_mean_median_zpu), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Median mean household income") +
+  labs(fill = "Median household income\nColombian Pesos") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
-```
-Median median
 
-```{r}
-ggplot(geo_zpu_survey_add) +
-  ggtitle("Income by ZPU") +
-  geom_sf(aes(fill = income_median_median_zpu), color = NA) +
-  scale_fill_viridis_c() +
-  labs(fill = "Median household income") +
-  #theme_minimal()
-  theme(plot.title = element_text(size = 8, face = "bold"))
+ggsave("Demo_Income_UPZ_Mean_Median.png", path = "Data/Results/Images/")
 ```
 
 
@@ -2672,7 +2689,7 @@ mean(survey_add_raw_E1$N_INGTOT_PER,na.rm = TRUE)
 ```
 
 
-# Land use (in progress)
+# Land use 
 
 ## Data reading
 
@@ -2682,7 +2699,7 @@ land_use_terrain <- st_read("Data/Raw/Land_use/Terrain/DestinoSHP/Destino.shp")
 Geometry
 
 ```{r}
-# qtm(land_use_terrain)
+#qtm(land_use_terrain)
 ```
 
 Invalid poligons
@@ -3025,7 +3042,30 @@ ggplot() +
   geom_sf(data = raw_metro_stations, aes(color = "Metro Stations"), lwd=1.6) +
   theme_minimal() +
   scale_color_manual(values = legend_data$color, labels = legend_data$label) + labs(color=NULL)
+
+ggsave("Metro_Network.png", path = "Data/Results/Images/")
 ```
+### Land use
+
+
+```{r}
+ggplot() +
+  geom_sf(data = land_use_terrain84, aes(fill = factor(DESTINOCOD == "21")), color = NA) +
+  scale_fill_manual(values = c("TRUE" = "#43a2ca", "FALSE" = "#e0f3db")) +
+  labs(color = NULL) +
+  theme_minimal() +
+  guides(fill = "none")
+
+ggsave("Land_Use_Commercial_Corridor_Terrain.png", path = "Data/Results/Images/")
+```
+### Demographics
+
+#### Income
+
+```{r}
+
+```
+
 
 
 # Accessiblity modelling
