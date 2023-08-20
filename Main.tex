@@ -491,18 +491,52 @@ The following sections contain a general description of each input data used to 
 
 \subsection{BRT network}
 
-The transit information from the current BRT network systematically both the infrastructure and the transport operation. As the entity responsible for managing the operation of the BRT system, Transmilenio S.A. has published their transit using a GTFS\footnote{GTFS: General transport feed specification} format. The GTFS format is an open-source standardized format that describes transport operations' main features. Numerous transport agencies are currently using this format as it integrates spatial data, fleet, fare and timetables \citep{pereiraIntroductionUrbanAccessibility2023a, mobiltydataGeneralTransitFeed2023}.
+The transit information from the current BRT network systematically both the infrastructure and the transport operation. As the entity responsible for managing the operation of the BRT system, Transmilenio S.A. has published\footnote{Transit information dated 21/06/2023} their transit using a GTFS\footnote{GTFS: General transport feed specification} format. The GTFS format is an open-source standardized format that describes transport operations' main features. Numerous transport agencies are currently using this format as it integrates spatial data, fleet, fare and timetables \citep{pereiraIntroductionUrbanAccessibility2023a, mobiltydataGeneralTransitFeed2023}.
 
-GTFS data is composed of a set of tables that contain spatial and non-spatial features of the transportation system. Through key fields to trace relationships between the multiple tables, GTFS characterises multimode systems, their routes, fares, frequencies, and timetables among other features. As an example, Figure XX illustrates the general structure of GTFS data and how the tables relate to each other. 
+GTFS data comprises tables containing spatial and non-spatial features of the transportation system. Through key fields to trace relationships between the multiple tables, GTFS characterises multimode systems, their routes, fares, frequencies, and timetables, among other features. For example, Figure \ref{fig:GTFS_structure} illustrates the general structure of GTFS data and how the tables relate. Similarly, Table \ref{tab:GTFS_description}, describes the main features of every table in the GTFS data structure.
 
-\begin{figure}[htp]
+Important to note the relation between route and trip information in the GTFS data structure, presented in \ref{tab:GTFS_description}. The route table indicates the routes that compose the transport system. In a similar matter but at a lower transport system hierarchy level, trips should be understood as transport service units comprising each route \citep{pereiraIntroductionUrbanAccessibility2023a}. In other words, the trip service units are how the transport operation of each route materializes.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=6cm]{Images/Fig_Types_Geodata.png}
-    \caption{Vector and raster geographical representation \citep{saabConceptualizingSpaceMapping2003}}
-    \label{fig:Fig_data_types}
+    \includegraphics[width=10cm]{Images/GTFS-data-format.png}
+    \caption{GTFS data structure (\cite{pereiraExploringTimeGeography2023} cited by \cite{pereiraIntroductionUrbanAccessibility2023a})}
+    \label{fig:GTFS_structure}
 \end{figure}
 
+\begin{table}[htp]
+\centering
+\renewcommand{\arraystretch}{1.5} % Adjust the row height
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lll}
+\hline
+\multicolumn{1}{c}{\textbf{Table name}} & \multicolumn{1}{c}{\textbf{Topic}} & \multicolumn{1}{c}{\textbf{Description}}                  \\ \hline
+agency                                  & Transport providers                & General transport providers data including transport mode \\ \hline
+routes          & Routes information        & Transit routes of the system                     \\ \hline
+trips           & Trips information         & Unit of transit service for routes of the system \\ \hline
+shapes          & Route geometry            & Route path spatial information                   \\ \hline
+stops           & Stations                  & Spatial location of stations                     \\ \hline
+stops\_times                            & Trip schedule                      & Arrival and departure time of trips in each station       \\ \hline
+frequencies     & Frequencies of trips      & Service frequencies of each trip                 \\ \hline
+calendar        & General calendar schedule & Weekday general service scheduling               \\ \hline
+calendar\_dates                         & Specific calendar schedule         & Special inclusions or exceptions in service scheduling    \\ \hline
+fare\_attibutes & Fare description          & General fare conditions                          \\ \hline
+fare\_rules     & Fare class description    & Class and fare parameters                        \\ \hline
+\end{tabular}}
+\caption{GTFS tables general description \citep{mobiltydataGeneralTransitFeed2023}}
+\label{tab:GTFS_description}
+\end{table}
+
+% map of BRT geometries
+Figure XX shows that Bogotá's BRT network comprises a multilevel route network. Apart from the main corridor BRT network, the system has been expanded into additional complementary routes. 
+
+
+
 \subsection{Road and walking network}
+
+As commuting practices rely upon more than one mode of transportation, the modelling process requires considering the mode available to reach the desired destinations from the trip's origin. Either to access a motorized transport mode or to do complete mono mode trips, walking constitutes an essential element when modelling commuting trips, therefore, in the accessibility modelling process.
+
+The road and walking network 
 
 \subsection{Metro network}
 
