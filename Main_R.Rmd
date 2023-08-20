@@ -1225,6 +1225,30 @@ ggplot() +
   #theme_minimal()
 ```
 
+Plot by route type
+
+Levels
+
+```{r}
+geo_shapes_complete$route_desc <- factor(geo_shapes_complete$route_desc, levels = c("Main","Feeder", "Urban", "Complementary", "Special"))
+```
+
+
+Plot
+
+```{r}
+ggplot() +
+  geom_sf(data = geo_shapes_complete, aes(color= route_desc), alpha = 0.8) +
+  facet_wrap(
+    ~ route_desc,
+    nrow = 1)  + theme(legend.position = "none",
+        axis.title = element_blank(),  # Remove axis titles
+        axis.text = element_blank(),   # Remove axis labels
+        axis.ticks = element_blank())
+# + ggtitle("Bus Rapit Transit system", subtitle = "Routes by type")
+
+ggsave("BRT_Network_Route.png", path = "Data/Results/Images/")
+```
 
 
 
@@ -1238,12 +1262,29 @@ Open Street Map Data downloaded from: <https://export.hotosm.org/es/v3/>
 osm_network <- oe_read("Data/Raw/Transport/OSM/Bogota_general_network.osm.pbf") 
 ```
 
-Plotting
+### Plotting
+
+General
 
 ```{r}
-# par(mar = rep(0.001, 4))
-# plot(sf::st_geometry(osm_network))
+par(mar = rep(0.001, 4))
+plot(sf::st_geometry(osm_network))
 ```
+Subsetting
+
+ZPU box
+
+xmin: -74.22358 ymin: 4.45786 xmax: -74.00978 ymax: 4.830661
+
+```{r}
+ggplot() +
+  geom_sf(data = osm_network, alpha = 0.3) +
+  coord_sf(xlim = c(-74.2259, -74.00978), ylim = c(4.45786, 4.830661))
+
+ggsave("OSM_Network.png", path = "Data/Results/Images/")
+```
+
+
 
 ## Data inspection
 
@@ -1943,6 +1984,7 @@ metro_frequencies_full$exact_times <- 0
 
 ### Fare rules (non-existing)
 
+
 ### Compilation
 
 #### Write
@@ -2298,6 +2340,13 @@ New CRS
 geo_zpu_wgs84 <- geo_zpu %>%
   st_transform(.,4326)
 ```
+
+Map
+
+```{r}
+qtm(geo_zpu_wgs84)
+```
+
 
 Review new CRS
 
@@ -2948,7 +2997,36 @@ Save point data as csv
 ```
 
 
-# Spatial analysis (Pending)
+# Pre modelling plotting
+
+## Transport infrastructure
+
+### Metro
+
+Fill in polygon
+
+
+```{r}
+geo_zpu_wgs84_mono_fill <- st_make_valid(geo_zpu_wgs84_mono)
+```
+
+
+Plotting
+
+```{r}
+legend_data <- data.frame(
+  label = c("Metro Lines", "Metro Stations"),
+  color = c("#5ab4ac", "#d8b365")
+)
+
+ggplot() +
+  geom_sf(data = geo_zpu_wgs84_mono_fill) + 
+  geom_sf(data = raw_metro_line, aes(color = "Metro Lines"), lwd = 1.1) +
+  geom_sf(data = raw_metro_stations, aes(color = "Metro Stations"), lwd=1.6) +
+  theme_minimal() +
+  scale_color_manual(values = legend_data$color, labels = legend_data$label) + labs(color=NULL)
+```
+
 
 # Accessiblity modelling
 
@@ -4801,6 +4879,7 @@ Review
 ```{r}
 filter(main_results_hex9_pivot_longer, h3_index == "8966e082443ffff")
 ```
+
 Levels
 
 ```{r}
