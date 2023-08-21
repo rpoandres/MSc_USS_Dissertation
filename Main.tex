@@ -255,7 +255,7 @@ In a more prospective and industry-related exercise, \cite{wilsonFutureUrbanMode
 
 Given these points, it was highlighted by \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018} how these modelling tools hold great value for both policymakers and private parties, as they manage to integrate theoretical constructs or business strategies and put them to the test through computational modelling \citep{battyUrbanModeling2009a}. Either from a public, private or research perspective, modelling tools applied to the urban context could provide decision-makers with new innovative insights and possible solutions to the numerous challenges that cities and society currently face across the globe.
 
-Furthermore, \cite{battyUrbanModeling2009a} clarified that apart from the computational models above mentioned, GIS-based models are also part of the urban modelling domain and will be described in the next section of the present document.
+Furthermore, \cite{battyUrbanModeling2009a} clarified that apart from the computational models mentioned above, GIS-based models are also part of the urban modelling domain and will be described in the next section of the present document.
 
 % Mention to the groups described by Batty, complemented with the ones described by Clarke's article
 
@@ -423,7 +423,7 @@ In the urban development field, there is an extended list of references related 
 
 Colombia's capital, Bogot\'{a} has been an area of study of multiple transport and accessibility-related research exercises. That should not come as a surprise considering the population growth that Bogot\'{a} and her surrounding municipalities have experienced over the last couple of decades. By 2017, Bogot\'{a} had almost doubled its population during the last 30 years and similarly did the near municipalities by increasing their population by almost 3 times during the same time period \citep{guzmanCityProfileBogota2017}.
 
-A milestone in Bogotá's transportation history was the operation start of its current BRT 'Transmilenio' system by the beginning of the 21st century \citep{rodriguezValueAccessibilityBogota2004}. Derived from the deployment and the integration of collective bus services in Bogotá, the resulting accessibility effect of the BRT system has been a popular element of study among transport and development-related researchers. The next paragraph intends to list the previous research exercises that have expanded on the topic of interest of the present research, however, there are clearly other valuable contributions that could not be included due to practical limitations.
+A milestone in Bogotá's transportation history was the operation start of its current BRT 'Transmilenio' system by the beginning of the 21st century \citep{rodriguezValueAccessibilityBogota2004}. Derived from the deployment and the integration of collective bus services in Bogotá, the resulting accessibility effect of the BRT system has been a popular element of study among transport and development-related researchers. The next paragraph intends to explore the previous research exercises that have expanded on the topic of interest of the present research. However, there are clearly other valuable contributions that could not be included due to practical limitations.
 
 % It is clear that the BRT system provided the city with a functioning solution to integrate most of the collective bus services.
 
@@ -806,11 +806,36 @@ M1\_001 & 31.84 & -74.06051 & 4.667098 &   6 \\
 
 \subsection{Stops}
 
+The stops table in the GTFS data structure stores the location and identification data from the stations where the transport user can begin or end using the metro transportation mode. Again, the stop data is generated based on the locations of stations contained in the spatial station's data public by the Bogotá Metro.
 
+After converting from a spatial data structure to a GTFS data structure, Table \ref{tab:Metro_Stops} shows the stops table from the metro GTFS data.
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllllll}
+  \hline
+stop\_id & stop\_code & stop\_name & stop\_lat & stop\_lon & location\_type & zone\_id \\ 
+  \hline
+M01 & 01 & Cra 96-01 & 4.640571 & -74.17746 & 0 & 0 \\ 
+M02 & 02 & Portal de las Américas-02 & 4.630021 & -74.17186 & 0 & 0 \\ 
+M03 & 03 & Carrera 80-03 & 4.622248 & -74.16671 & 0 & 0 \\ 
+M04 & 04 & Calle 42 Sur-04 & 4.615737 & -74.16042 & 0 & 0 \\ 
+M05 & 05 & Kennedy-05 & 4.617298 & -74.15159 & 0 & 0 \\ 
+M06 & 06 & Av Boyaca-06 & 4.618484 & -74.14063 & 0 & 0 \\ 
+   \hline
+\end{tabular}}
+\caption{Metro stops table.}
+\label{tab:Metro_Stops}
+\end{table}
 
 \subsection{Stop times}
 
-The stops times table indicates the arrival and departure time of a 
+The stops times table indicates the arrival and departure times at every station a trip goes through. Although the local authorities or the metro company have not published specific timetables for future trips, the general scheduling and time between stations can be inferred from the available data.
+
+The metro company, jointly with Bogotá's city council, have stated that the metro line will travel at an average speed of 43 km/h, allowing the Bogotá population to travel from the station on the south edge of the line to the last station on the opposite north edge in 27 minutes .
+
+
 
 
 \subsection{Frequencies}
