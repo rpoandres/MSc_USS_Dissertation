@@ -44,6 +44,7 @@ library(lubridate) # date data management
 library(hms) # date data management
 library(zip)
 library(viridis)
+library(xtable)
 ```
 
 ## Temporary directory
@@ -1244,7 +1245,7 @@ ggplot() +
     nrow = 1)  + theme(legend.position = "none",
         axis.title = element_blank(),  # Remove axis titles
         axis.text = element_blank(),   # Remove axis labels
-        axis.ticks = element_blank())
+        axis.ticks = element_blank()) #+ theme_minimal()
 # + ggtitle("Bus Rapit Transit system", subtitle = "Routes by type")
 
 ggsave("BRT_Network_Route.png", path = "Data/Results/Images/")
@@ -3012,6 +3013,58 @@ Save point data as csv
 ```{r}
 # write.csv(hex9_points,file='Data/Preprocessed/Grid/Hex9_grid_LU.csv', row.names=FALSE)
 ```
+
+# Pre modelling tables
+
+## Transport infrastructure
+
+### Metro
+
+#### Agency
+
+```{r}
+xtable(metro_agency)
+```
+#### Routes
+
+```{r}
+xtable(metro_routes)
+```
+#### Trips
+
+```{r}
+xtable(metro_trips)
+```
+
+#### Calendar
+
+```{r}
+xtable(metro_calendar)
+```
+
+
+#### Calendar dates
+
+```{r}
+xtable(head(metro_calendar_dates))
+```
+#### Shapes
+
+
+```{r}
+metro_shapes_table <- metro_shapes
+
+
+metro_shapes_table$shape_pt_lon <- format(metro_shapes_table$shape_pt_lon, nsmall = 4)
+metro_shapes_table$shape_pt_lat<- format(metro_shapes_table$shape_pt_lat, nsmall = 4)
+
+
+xtable_obj <- xtable(head(metro_shapes_table))
+
+
+print(xtable_obj)
+```
+
 
 
 # Pre modelling plotting
