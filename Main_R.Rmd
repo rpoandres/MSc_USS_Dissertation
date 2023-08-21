@@ -1661,7 +1661,7 @@ metro_stops <- metro_stops %>%
 Ordering 
 
 ```{r}
-metro_stops <- metro_stops[order(metro_stops_a$stop_code),]
+metro_stops <- metro_stops[order(metro_stops$stop_code),]
 ```
 
 
@@ -3065,6 +3065,58 @@ xtable_obj <- xtable(head(metro_shapes_table))
 
 print(xtable_obj)
 ```
+#### Stops
+
+```{r}
+metro_stops_table <- metro_stops
+
+
+metro_stops_table$stop_lon <- format(metro_stops_table$stop_lon, nsmall = 4)
+metro_stops_table$stop_lat<- format(metro_stops_table$stop_lat, nsmall = 4)
+
+
+xtable_obj <- xtable(head(metro_stops_table))
+
+
+print(xtable_obj)
+```
+
+#### Stop times
+
+
+
+```{r}
+metro_stop_times_full_table <- metro_stop_times_full 
+
+
+metro_stop_times_full_table$arrival_time <- as.character(metro_stop_times_full_table$arrival_time)
+
+metro_stop_times_full_table$departure_time <- as.character(metro_stop_times_full_table$departure_time)
+
+metro_stop_times_full_table$stop_sequence <- as.integer(metro_stop_times_full_table$stop_sequence)
+
+metro_stop_times_full_table$timepoint <- as.integer(metro_stop_times_full_table$timepoint)
+
+xtable(head(metro_stop_times_full_table,5))
+```
+#### Frequencies
+
+```{r}
+metro_frequencies_full_table <- metro_frequencies_full 
+
+
+metro_frequencies_full_table$start_time <- as.character(metro_frequencies_full_table$start_time)
+
+metro_frequencies_full_table$end_time <- as.character(metro_frequencies_full_table$end_time)
+
+metro_frequencies_full_table$exact_times <- as.integer(metro_frequencies_full_table$exact_times)
+
+metro_frequencies_full_table$headway_secs <- as.integer(metro_frequencies_full_table$headway_secs)
+
+
+xtable(head(metro_frequencies_full_table,5))
+```
+
 
 
 
