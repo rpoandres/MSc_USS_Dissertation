@@ -1598,25 +1598,26 @@ metro_shapes <- metro_shapes %>%
   dplyr::select(!c(OBJECTID_1, OBJECTID, NOMBRE, Shape_Leng, z))
 ```
 
-### Stops: Alternative method
+### Stops
 
 
 Intersect with route geometry
 
 ```{r}
-inter_metro_stops_alternative <- st_intersection(raw_metro_stations,raw_metro_line)
+inter_metro_stops <- st_intersection(raw_metro_stations,raw_metro_line)
 ```
 Plotting
 
 ```{r}
 ggplot() +
-  geom_sf(data = inter_metro_stops_alternative) +
+  geom_sf(data = inter_metro_stops) +
   theme_minimal()
 ```
+
 Calculates the centroids of every station line
 
 ```{r}
-metro_stops_a <- inter_metro_stops_alternative %>%
+metro_stops <- inter_metro_stops %>%
   st_centroid() %>%
   rename(stop_name = RefName) %>%
   rename(stop_id = NOMBRE) %>%
@@ -1627,29 +1628,29 @@ metro_stops_a <- inter_metro_stops_alternative %>%
 Stops
 
 ```{r}
-head(metro_stops_a)
+head(metro_stops)
 ```
 
 Calculate longitude and latitude coordinates of centroids
 
 ```{r}
-metro_stops_a$stop_lon <- st_coordinates(metro_stops_a)[, 1]
-metro_stops_a$stop_lat <- st_coordinates(metro_stops_a)[, 2]
+metro_stops$stop_lon <- st_coordinates(metro_stops)[, 1]
+metro_stops$stop_lat <- st_coordinates(metro_stops)[, 2]
 
 ```
 
 Adjust station code, populate location_type and zone_id
 
 ```{r}
-metro_stops_a$location_type <- "0"
-metro_stops_a$zone_id <- "0"
-metro_stops_a$stop_id <- gsub("E", "M", metro_stops_a$stop_id)
+metro_stops$location_type <- "0"
+metro_stops$zone_id <- "0"
+metro_stops$stop_id <- gsub("E", "M", metro_stops$stop_id)
 ```
 
 Dropping columns and geometry and relocating columns
 
 ```{r}
-metro_stops_a <- metro_stops_a %>%
+metro_stops <- metro_stops %>%
   st_drop_geometry(.) %>%
   dplyr::select(!c(OBJECTID,TIPO, Shape_Leng, Shape_Area, OBJECTID_1,OBJECTID.1,NOMBRE.1,Shape_Leng.1)) %>%
   relocate(stop_id) %>%
@@ -1660,7 +1661,7 @@ metro_stops_a <- metro_stops_a %>%
 Ordering 
 
 ```{r}
-metro_stops_a <- metro_stops_a[order(metro_stops_a$stop_code),]
+metro_stops <- metro_stops[order(metro_stops_a$stop_code),]
 ```
 
 
@@ -1997,7 +1998,7 @@ items <- list(
   metro_agency = "agency.txt",
   metro_routes = "routes.txt",
   metro_trips = "trips.txt",
-  metro_stops_a = "stops.txt",
+  metro_stops = "stops.txt",
   metro_calendar = "calendar.txt",
   metro_calendar_dates = "calendar_dates.txt",
   metro_shapes = "shapes.txt",
