@@ -459,7 +459,7 @@ Considering the main components that influence the accessibility measures \citep
 
 \begin{table}[H]
 \centering
-\renewcommand{\arraystretch}{1.5} % Adjust the row height
+\renewcommand{\arraystretch}{1.6} % Adjust the row height
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llll}
 \hline
@@ -648,6 +648,8 @@ The geographical analysis unit used in this study is a hexagon grid. The hexagon
 
 \section{Workflow for data preparation}
 
+To correctly model accessibility, transport infrastructure data, land use data and demographic data should be all combined in the same framework, as they are the main element influencing urban accessibility \citep{pereiraIntroductionUrbanAccessibility2023a}. Figure \ref{fig:Workflow_Summary} summarises the preprocessing workflow to transform the input data into the appropriate format data for the accessibility modelling. As described in Table \ref{tab:Data_summary}, the BRT data, the street network and the metro data will comprise the transport infrastructure component, while the land use data and the survey data will form the land use and demographic component, respectively.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=13cm]{Images/Workflow_summary.png}
@@ -655,8 +657,161 @@ The geographical analysis unit used in this study is a hexagon grid. The hexagon
     \label{fig:Workflow_Summary}
 \end{figure}
 
+\section{GTFS data generation}
 
-% Process digram
+As this research aims to assess the accessibility impact of the future metro operation, the modelling process requires combining both modes of transportation in the same modelling exercise. Although the metro system is not yet operational, the metro transit data must be generated to be considered an available mode in the modelling process. Therefore, the metro transit information must be created with information about the infrastructure and the transit service published by the local authorities.
+
+As the current BRT transit information is already published in GTFS format by \citep{alcaldiadebogotad.c.EstacionesPrimeraLinea2022,alcaldiadebogotad.c.TrazadoPrimeraLinea2022} and previous reference of GTFS data for multimode transport modelling exercises \citep{pereiraIntroductionUrbanAccessibility2023a}, the metro transit data must be structured in GTFS format. The next subsections highlight the main spatial and alphanumeric procedures to generate the GTFS data for future metro transit operations, as presented in Figure \ref{fig:GTFS_structure}.
+
+The structuring and generation of the GTFS table was made considering the official GTFS specification \citep{mobiltydataGeneralTransitFeed2023} and previous application made by \cite{pereiraIntroductionUrbanAccessibility2023a}.
+
+\subsection{Agency}
+
+The agency table in the GTFS data structure contains general information on the provider entity of the transit services. As Bogotá Metro company already exists, the agency table contains their already known information.
+
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{llllll}
+  \hline
+  agency\_id & agency\_name & agency\_url & agency\_timezone & agency\_lang & agency\_phone \\ 
+  \hline
+  1 & Metro de Bogota & https://www.metrodebogota.gov.co/ & America/Bogota & es & (+57)601-555-33-33 \\ 
+  \hline
+\end{tabular}}
+\caption{Metro agency table.}
+\label{tab:Metro_Agency}
+\end{table}
+
+\subsection{Routes}
+
+The scope of the current metro construction project includes the metro infrastructure for the first line, and so does the scope of this research. The track of the metro line draws a line in a north-south line in the east zone of Bogotá to further go to the southwest of the city, as shown in Figure \ref{fig:Metro_Network} . For modelling purposes, this research will consider to possible routes:
+
+\begin{itemize}
+\item South route: The southern route will begin in the station located further southwest of the city and finish in the station located further north.
+\item North route: The northern route will start in the further north located station and end at the station further southwest in Bogotá.
+\end{itemize}
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllllll}  % <--- Changed column specification, removed "r"
+  \hline
+  route\_id & route\_short\_name & route\_long\_name & route\_desc & agency\_id & route\_color & route\_text\_color & route\_type \\ 
+  \hline
+  M1\_001 & S\_001 & South & Main & 1 & FFFFFF & 000000 & 1 \\ 
+  M1\_002 & N\_001 & North & Main & 1 & FFFFFF & 000000 & 1 \\ 
+  \hline
+\end{tabular}}
+\caption{Metro routes table.}
+\label{tab:Metro_Routes}
+\end{table}
+
+As shown in Table \ref{tab:Metro_Routes}, the route must include the general identification data from each route, together with the provider entity and the mode of transport of the transit service, in the agency\_id and route\_type fields, respectively. The agency\_id field has a "1" value, consequently with the value given with the agency\_id field in \ref{tab:Metro_Agency} to the service provided. In like manner, the value "1" in the route\_type field indicates the mode of transport of the route metro or subway \citep{mobiltydataGeneralTransitFeed2023}. 
+
+\subsection{Trips}
+
+The trips represent the service unit of the transit service. A trip for each route will be considered in the modelling as shown in Table \ref{tab:Metro_Trips}. Apart from the identification data from each trip, the trip data also include a reference to the shape table in the shape\_id field, which will be explained later.
+
+
+
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.5}
+%\resizebox{\textwidth}{!}{%
+\begin{tabular}{llll}
+  \hline
+  route\_id & service\_id & trip\_id & shape\_id \\ 
+  \hline
+  M1\_001 & 3 & M1\_001\_S\_3\_M1\_001 & M1\_001 \\ M1\_002 & 3 & M1\_002\_N\_3\_M1\_002 & M1\_002 \\ 
+   \hline
+\end{tabular}%}
+\caption{Metro trips table.}
+\label{tab:Metro_Trips}
+\end{table}
+
+\subsection{Calendar and Calendar Dates}
+
+The calendar and calendar date table allows the transit planning practitioners to schedule with days of the week when will the service of a trip operates and what particular date can be a service included or omitted from the operation. The scheduling structure of the metro service was based on the published schedule of the current BRT service. Both tables for the metro service are presented in Table \ref{tab:Metro_Calendar} and Table \ref{tab:Metro_Calendar_Dates}, respectively.
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrll}
+  \hline
+  service\_id & monday & tuesday & wednesday & thursday & friday & saturday & sunday & start\_date & end\_date \\ 
+  \hline
+  1 &   0 &   0 &   0 &   0 &   0 &   0 &   1 & 20000101 & 20990101 \\ 
+  2 &   1 &   1 &   1 &   1 &   1 &   0 &   0 & 20000101 & 20990101 \\ 
+  3 &   1 &   1 &   1 &   1 &   1 &   0 &   0 & 20000101 & 20990101 \\ 
+  4 &   1 &   1 &   1 &   1 &   1 &   0 &   0 & 20000101 & 20990101 \\ 
+  5 &   1 &   1 &   1 &   1 &   1 &   0 &   0 & 20000101 & 20990101 \\ 
+  6 &   1 &   1 &   1 &   1 &   1 &   0 &   0 & 20000101 & 20990101 \\ 
+  7 &   1 &   1 &   1 &   1 &   1 &   1 &   0 & 20000101 & 20990101 \\ 
+   \hline
+\end{tabular}}
+\caption{Metro calendar table.}
+\label{tab:Metro_Calendar}
+\end{table}
+
+Using the service\_id field, the calendar table allows to establish different types of service scheduling by weekday in a specific date range. Similarly, the calendar dates table can add or remove a service from a specific date, according to the value in the exception\_type field.
+
+\begin{table}[ht]
+\centering
+%\resizebox{\textwidth}{!}{%
+\begin{tabular}{llr}
+  \hline
+ service\_id & date & exception\_type \\ 
+  \hline
+1 & 20220101 &   1 \\ 
+2 & 20220101 &   2 \\ 
+3 & 20220101 &   2 \\ 
+4 & 20220101 &   2 \\ 
+5 & 20220101 &   2 \\ 
+6 & 20220101 &   2 \\ 
+   \hline
+\end{tabular}%}
+\caption{Metro calendar date table.}
+\label{tab:Metro_Calendar_Dates}
+\end{table}
+
+\subsection{Shapes}
+
+The shape table contains the geometry of the path of the trip. As the track path of the future metro has already been published in a spatial format, the shape table data will be structured based on the publicly available geometry of the metro track. As the modelling will be based on the assumption of one trip for each of the north and south routes, the geometry of the trips will only differ in the sequential order in which they travel the path.
+
+Table \ref{tab:Metro_Shapes} shows a preview of the result of converting the spatial data of the track path into the shape table GTFS format. The shapes table contains the longitude and latitude coordinates of the path in the shape\_pt\_lon and shape\_pt\_lat fields, respectively. Equally important, the table indicates the sequential order in which the transit service will travel the path with an ascending integer values sequence in the shape\_pt\_sequence field.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrllr}
+  \hline
+shape\_id & shape\_dist\_traveled & shape\_pt\_lon & shape\_pt\_lat & shape\_pt\_sequence \\ 
+  \hline
+M1\_001 & 0.00 & -74.06046 & 4.667379 &   1 \\ 
+M1\_001 & 30.15 & -74.06051 & 4.667112 &   2 \\ 
+M1\_001 & 30.57 & -74.06051 & 4.667109 &   3 \\ 
+M1\_001 & 30.99 & -74.06051 & 4.667105 &   4 \\ 
+M1\_001 & 31.42 & -74.06051 & 4.667101 &   5 \\ 
+M1\_001 & 31.84 & -74.06051 & 4.667098 &   6 \\ 
+   \hline
+\end{tabular}
+\caption{Metro shapes table.}
+\label{tab:Metro_Shapes}
+\end{table}
+
+
+\subsection{Stop times}
+\subsection{Frequencies}
+\subsection{Other GTFS tables}
+
+% reference to the main route and the related GTFS table
+
+
 
 \section{Accessibility measure}
 
