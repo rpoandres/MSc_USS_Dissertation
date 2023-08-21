@@ -598,7 +598,7 @@ With a multipurpose approach, \cite{secretariadistritaldeplaneacionCapaGeografic
 
 The survey data has been gone through an anonymization procedure done by \cite{secretariadistritaldeplaneacionMicrodatosEncuestaMultiproposito2023} to keep non-spatial and spatial attributes unexposed. The residential location of the public surveyed is not published. However, the data can be spatially aggregated by the zoning planning unit (ZPU) used by Bogotá City Council as a spatial-administrative subdivision of their main boroughs. As the survey microdata contains the corresponding ZPU where each survey was collected, it is possible to aggregate the results spatially. 
 
-Figure \ref{fig:Demo_Income_ZPU} present the median household income by ZPU in Bogotá.
+Figure \ref{fig:Demo_Income_ZPU} present the median household income by ZPU in Bogotá. The highest median income values are registered in the northeast part of the city, while the lowest are found in the south and southwest area.
 
 \begin{figure}[H]
     \centering
@@ -610,9 +610,26 @@ Figure \ref{fig:Demo_Income_ZPU} present the median household income by ZPU in B
 
 \chapter{Methodology} \label{Chap4}
 
+% Introduction to methodollgy chapter
+
 \section{Ethics}
 
+This research aims to provide urban accessibility-based measurements in a future transport infrastructure scenario to showcase the value of accessibility in transport planning practices and assess the accessibility impact of Bogotá's future metro system.
+
+The information used in this research was publicly available except for a spatial ZPU layer \citep{secretariadistritaldeplaneacionMicrodatosEncuestaMultiproposito2023} from the Multipurpose Survey \citep{secretariadistritaldeplaneacionCapaGeograficaEncuesta2023} which contains demographic information of Bogotá's inhabitants. The geographic ZPU layer was provided directly by Bogotá's Planning Department after formally requesting it for research purposes. The research used the ZPU layer to spatially aggregate demographic data, which will be further used to assess the accessibility result in different population groups.
+
+Neither the survey microdata nor the spatial layer contained traceable data from individuals. In the first place, before publically sharing the results \cite{secretariadistritaldeplaneacionMicrodatosEncuestaMultiproposito2023} performed a spatial and non-spatial anonymization procedure on the survey microdata so the individual information exposure risks were mitigated. In like manner, the GIS layer only contained identification data from the ZPU polygons but not individual-specific data.
+
+This study's aimed contributions fall in the university research domain and pose low ethical risks. In compliance with the ethical risks screening procedure, the
+The Departmental Ethics Committee assessed, reviewed and successfully approved\footnote{Approval number CASA23/5032971/1} the data and method considered in this research. 
+
 \section{Area of study}
+
+The geographical area of study is Bogotá City, Colombia's capital. The boundary of Bogotá's capital district will be the physical limit that encloses the spatial study area of this research exercise.
+
+% Refernece consistency with GIS layer from survey
+
+
 
 \section{Spatial analysis unit}
 
@@ -645,8 +662,10 @@ Figure \ref{fig:Demo_Income_ZPU} present the median household income by ZPU in B
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % APPENDIX
 \begin{appendices}
-\chapter{Source code and data} \label{System Requirements}
+\chapter{Source code and data} \label{Source_Code}
 Source code and data for all of the methods implemented in Chap. \ref{Chap4} for the project can be found in the remote repository: \href{https://github.com/rpoandres/MSc_USS_Dissertation}{GitHub}
+
+% \chapter{Ethics review} \label{Ethics_Review}
 
 
 
