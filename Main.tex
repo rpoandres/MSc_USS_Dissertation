@@ -925,31 +925,62 @@ The aggregation of demographic data to the hexagon would allow the assessment of
 
 The income data used in this study was initially in a non-spatial format. First, it was grouped and georeferenced using the ZPU that \cite{secretariadistritaldeplaneacionMicrodatosEncuestaMultiproposito2023} provided. Second, the household average income was calculated considering the a household could have multiple members that generate income. Third, the overall ZPU income average vas calculated and integrated with the corresponding ZPU spatial layer. Finally, the mean hexagon income was computed using an area-weighted average. As the boundaries of the ZPU are disparate and uneven, the income value computed for the hexagon results from a weighted average using the income value of each ZPU and the percentage or intersection area of each ZPU, respectively. 
 
-Figure XX shows the resulting hexagon grid after the spatial aggregation and after grouping the hexagons by income deciles.
+Figure \ref{fig:Income_Decile_Hex} shows the resulting hexagon grid after the spatial aggregation and after grouping the hexagons by income deciles.
 
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=13cm]{Data/Results/Images/Demo_income_decile_discrete.png}
+    \caption{Resulting hexagon grid average household income decile}
+    \label{fig:Income_Decile_Hex}
+\end{figure}
 
 
 \section{Accessibility measure}
 
+The accessibility measure chosen to model is a cumulative active accessibility measure. The cumulative accessibility measure accounts for the number of opportunities a person can reach from a given origin location without surpassing the predefined threshold. In other, word cumulative accessibility measures how many opportunities a person can access given their location, the opportunities for spatial distribution and the transit operation.
+
+According to \cite{pereiraIntroductionUrbanAccessibility2023a}, the cumulative accessibility measure can be fine as follows:
+
+\[A_{i}=\sum_{j=1}^{n} O_{j} \times f(c_{ij})\]
+
+\[f(c_{ij})=\begin{cases}
+1, & \text{if $c_{ij}$ < $C$}.\\
+0, & \text{Otherwise}.
+  \end{cases}
+\]
+
+where
+
+\begin{itemize}
+    \item $A_{i}$ in the accessibility at origin location $i$.
+    \item $O_{j}$ is the number of opportunities located at destination $j$.
+    \item $n$ is the total number of destinations.
+    \item $f(c_{ij})$ is a function that takes 0 or 1 values if the travel cost $c_{ij}$ value from origin $i$ to destination $j$ has exceeded the $C$ travel cost limit. 
+\end{itemize}
+
+
 \section{Scenarios}
 
-The scenarios that this study examined were the current and future accessibility scenarios \ref{fig:Method_Summary}. On the one hand, the current scenario consists of the current transit operation and infrastructure composed of the BRT and street networks. On the other hand, the future scenario will include the BRT and street network, together with the future transit operation and infrastructure for the metro.
+This study examined the current and future accessibility scenarios \ref{fig:Method_Summary}. On the one hand, the current scenario consists of the current transit operation and infrastructure composed of the BRT and street networks. On the other hand, the future scenario will include the BRT and street network, together with the future transit operation and infrastructure for the metro.
 
-Important to notice that the street network was used to have street infrastructure through which the modelling could compute travel by walking. It does not consider any other type of motorized transportation use apart from the BRT network.
+Important to notice that the street network was used to have street infrastructure through which the modelling could compute travel by walking. It does not consider any other type of motorized transportation use apart from the BRT network. Additionally, single-mode scenarios were also considered in the accessibility modelling. For control purposes, accessibility for BRT, metro and walking modes was calculated individually to assess accessibility in a disaggregated manner.
+
+
 
 \section{Accessibility modelling}
 
-The accessibility measure chosen to model is a cumulative active accessibility measure. The cumulative accessibility measure accounts for the number of opportunities a person can reach from a given origin location without surpassing the predefined threshold. In other, word cumulative accessibility measures how many opportunities a person can access given their location, the opportunities for spatial distribution and the transit operation.
+The cumulative accessibility modelling was calculated using the R5R library with R Programing Language. The library calculates accessibility by performing tree procedures. Next, each procedure is described indicating the inputs required for each one:
 
+\begin{enumerate}
+    \item Building multi-mode network: Based on the GTFS data and the street network, a multi-transport mode is built to connect origins and destinations according to the infrastructure available.
+    \item Time travel matrix computation: The travel time between all origin and destination combinations is computed, favouring the fastest mode combination available.
+    \item Apply cost travel thresholds: According to the threshold parameters, the destination locations are filtered so the accessibility results account for only the destination within the travel cost limits.
+\end{enumerate}
 
-
-
-
-
-\subsection{Computational method}
 
 \subsection{Inputs}
+
+
 
 \subsection{Parameters}
 
