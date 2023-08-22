@@ -213,7 +213,8 @@ The present research aims to address:
 % Current one
 
 \begin{center}
-    \textit{How would Bogot\'{a}\textquotesingle s future metro lines contribute to improving access to opportunities? How would the public transportation accessibility spatially vary with the construction of Bogot\'{a}\textquotesingle s future metro system?}
+    \textit{How would Bogot\'{a}\textquotesingle s future metro line contribute to improving access to opportunities?} 
+    %How would the public transportation accessibility spatially vary with the construction of Bogot\'{a}\textquotesingle s future metro system?}
 \end{center}
 
 
@@ -223,8 +224,6 @@ The present research aims to address:
 % \paragraph{Parragraph}
 % \lipsum[5]
 % Testing \Gls{raster}
-
-Testing footnote\footnote{Capion of footnote!}
 
 
 \chapter{Literature review} \label{Chap2}
@@ -622,7 +621,7 @@ Hence, this study measured urban accessibility for the current and future metro 
     \centering
     \includegraphics[width=16cm]{Images/Method_Summary.png}
     \caption{Method summary diagram}
-    \label{fig:Method_Sumarry}
+    \label{fig:Method_Summary}
 \end{figure}
 
 First, this study generated projected transit data for the metro system based on the main features and spatial data already published by Bogotá's local authorities. Second, land use and demographic data are integrated into a spatial framework to track the spatial distribution of economic activity and to assess living conditions in Bogotá's inhabitants spatially. Finally, by integrating transit information from before and after scenarios, the study maps how the accessibility levels will spatially vary by population groups of interest with the construction and operation of the new metro system. The analysis, preprocessing, modelling and visualization process was conducted using R Programming Language. For the accessibility modelling process, the study used the R5R library to produce the results and the accessibility library as a control method.
@@ -909,19 +908,43 @@ The study uses a hexagon grid as a common spatial observation unit for both the 
 
 The land use data published by \cite{alcaldiadebogotad.c.DestinoEconomicoPredominante2022} is a spatial shapefile format containing the registered perimeter boundary of all terrains. Each feature represented the geometry of the terrain, and the land use category was stored in a character column in the spatial dataset.
 
-To aggregate land use data to the hexagon grid, the intersecting geometries of every terrain were counted and grouped by their respective land use case to count for the number of each land use terrain location within each hexagon grid. Henceforth, the resulting grid contained the terrain for every land use category. As the hexagon grid has a homogeneous area, the results can be interpreted as the terrain density by hexagon for the land use category of interest. Figure XX presents the resulting hexagon grid for the commercial corridor land use density.
+To aggregate land use data to the hexagon grid, the intersecting geometries of every terrain were counted and grouped by their respective land use case to count for the number of each land use terrain location within each hexagon grid. Henceforth, the resulting grid contained the terrain for every land use category. As the hexagon grid has a homogeneous area, the results can be interpreted as the terrain density by hexagon for the land use category of interest. Figure \ref{fig:Opportunities_Spatial} presents the resulting hexagon grid for the commercial corridor land use density.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=13cm]{Data/Results/Images/Opportunities_COD_21.png}
+    \caption{Spatial commercial corridor land use density}
+    \label{fig:Opportunities_Spatial}
+\end{figure}
 
+% Refefence of where are the opportunities in bogota
 
 \subsection{Demographics}
 
-% Refernece to weighted average
+The aggregation of demographic data to the hexagon would allow the assessment of socioeconomic variables of Bogotá's inhabitants across space. This study will incorporate income data gathered by \cite{secretariadistritaldeplaneacionMicrodatosEncuestaMultiproposito2023} to the hexagon grid.
+
+The income data used in this study was initially in a non-spatial format. First, it was grouped and georeferenced using the ZPU that \cite{secretariadistritaldeplaneacionMicrodatosEncuestaMultiproposito2023} provided. Second, the household average income was calculated considering the a household could have multiple members that generate income. Third, the overall ZPU income average vas calculated and integrated with the corresponding ZPU spatial layer. Finally, the mean hexagon income was computed using an area-weighted average. As the boundaries of the ZPU are disparate and uneven, the income value computed for the hexagon results from a weighted average using the income value of each ZPU and the percentage or intersection area of each ZPU, respectively. 
+
+Figure XX shows the resulting hexagon grid after the spatial aggregation and after grouping the hexagons by income deciles.
+
+
+
 
 \section{Accessibility measure}
 
 \section{Scenarios}
 
+The scenarios that this study examined were the current and future accessibility scenarios \ref{fig:Method_Summary}. On the one hand, the current scenario consists of the current transit operation and infrastructure composed of the BRT and street networks. On the other hand, the future scenario will include the BRT and street network, together with the future transit operation and infrastructure for the metro.
+
+Important to notice that the street network was used to have street infrastructure through which the modelling could compute travel by walking. It does not consider any other type of motorized transportation use apart from the BRT network.
+
 \section{Accessibility modelling}
+
+The accessibility measure chosen to model is a cumulative active accessibility measure. The cumulative accessibility measure accounts for the number of opportunities a person can reach from a given origin location without surpassing the predefined threshold. In other, word cumulative accessibility measures how many opportunities a person can access given their location, the opportunities for spatial distribution and the transit operation.
+
+
+
+
 
 
 \subsection{Computational method}
