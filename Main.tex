@@ -610,7 +610,19 @@ Figure \ref{fig:Demo_Income_ZPU} present the median household income by ZPU in B
 
 \chapter{Methodology} \label{Chap4}
 
-% Introduction to methodollgy chapter
+
+\section{Overview}
+
+The literature explored above presents an overview of how urban modelling enables future scenario assessment that can reorient transport-related planning practices by introducing accessibility measures. Strictly mobility-based transport policymaking practices can fall short of fully assessing the real tangible benefits of transport infrastructure projects. Additionally, inhabitants' spatial distribution and socioeconomic conditions can differ dramatically within the urban context. As a result, the accessibility measurement result denotes a different level of deprivation and urgency outlook depending on the living conditions identified in the location of interest. Therefore, apart from introducing accessibility-based measures when assessing transport infrastructure projects, the results should be disaggregated into population groups of interest who might be experiencing the most precarious living conditions. For this reason, prioritizing relative accessibility improvements across population groups experiencing a higher degree of deprivation or vulnerability should be considered when promoting any transport-related initiative.
+
+
+Hence, this study measured urban accessibility for the current and future metro scenario in Bogotá, Colombia. Using a before and after comparison analysis, this research calculated the accessibility improvement derived from the future transit operation of Bogotá's metro system, combined with the current functioning BRT network.
+
+First, this study generated projected transit data for the metro system based on the main features and spatial data already published by Bogotá's local authorities. Second, land use and demographic data are integrated into a spatial framework to track the spatial distribution of economic activity and to assess living conditions in Bogotá's inhabitants spatially. Finally, by integrating transit information from before and after scenarios, the study maps how the accessibility levels will spatially vary by population groups of interest with the construction and operation of the new metro system. The analysis, preprocessing, modelling and visualization process was conducted using R Programming Language. For the accessibility modelling process, the study used the R5R library to produce the results and the accessibility library as a control method.
+
+
+% general Diagram with the accessibily process like in the power point slide
+
 
 \section{Ethics}
 
@@ -622,13 +634,6 @@ Neither the survey microdata nor the spatial layer contained traceable data from
 
 This study's aimed contributions fall in the university research domain and pose low ethical risks. In compliance with the ethical risks screening procedure, the
 The Departmental Ethics Committee assessed, reviewed and successfully approved\footnote{Approval number CASA23/5032971/1} the data and method considered in this research. 
-
-\section{Overview}
-
-% general Diagram with the accessibily process like in the power point slide
-
-% before and adter diafram
-% reference ti summary of the literature review
 
 
 \section{Area of study}
@@ -669,9 +674,9 @@ To correctly model accessibility, transport infrastructure data, land use data a
 
 As this research aims to assess the accessibility impact of the future metro operation, the modelling process requires combining both modes of transportation in the same modelling exercise. Although the metro system is not yet operational, the metro transit data must be generated to be considered an available mode in the modelling process. Therefore, the metro transit information must be created with information about the infrastructure and the transit service published by the local authorities.
 
-As the current BRT transit information is already published in GTFS format by \citep{alcaldiadebogotad.c.EstacionesPrimeraLinea2022,alcaldiadebogotad.c.TrazadoPrimeraLinea2022} and previous reference of GTFS data for multimode transport modelling exercises \citep{pereiraIntroductionUrbanAccessibility2023a}, the metro transit data must be structured in GTFS format. The next subsections highlight the main spatial and alphanumeric procedures to generate the GTFS data for future metro transit operations, as presented in Figure \ref{fig:GTFS_structure}.
+The current BRT transit information is already published in GTFS format by \citep{alcaldiadebogotad.c.EstacionesPrimeraLinea2022,alcaldiadebogotad.c.TrazadoPrimeraLinea2022} and previous reference of GTFS data for multimode transport modelling exercises \citep{pereiraIntroductionUrbanAccessibility2023a}, the metro transit data must be structured in GTFS format. The next subsections highlight the main spatial and alphanumeric procedures to generate the man tables of the GTFS data for future metro transit operations, as presented in Figure \ref{fig:GTFS_structure}.
 
-The structuring and generation of the GTFS table was made considering the official GTFS specification \citep{mobiltydataGeneralTransitFeed2023} and previous application made by \cite{pereiraIntroductionUrbanAccessibility2023a}.
+The structuring and generation of the GTFS table were made considering the official GTFS specification \citep{mobiltydataGeneralTransitFeed2023} and the previous application made by \cite{pereiraIntroductionUrbanAccessibility2023a}.
 
 \subsection{Agency}
 
@@ -883,13 +888,12 @@ The frequencies table accounts for how often the trips depart from their respect
 \label{tab:Metro_Frequencies}
 \end{table}
 
-\subsection{Other GTFS tables}
-
-
-
-% reference to the main route and the related GTFS table
 
 \section{Spatial aggregation}
+
+\subsection{Land use}
+
+\subsection{Demographics}
 
 \section{Accessibility measure}
 
