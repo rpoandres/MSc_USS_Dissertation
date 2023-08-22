@@ -45,6 +45,7 @@ library(hms) # date data management
 library(zip)
 library(viridis)
 library(xtable)
+library(RColorBrewer)
 ```
 
 ## Temporary directory
@@ -4962,17 +4963,65 @@ main_results_hex9 <- merge(
 
 Plot income decile
 
+continuous scale
+
 ```{r}
 ggplot(main_results_hex9) +
-  ggtitle("Mean income") + 
+  #ggtitle("Mean income") + 
   geom_sf(aes(fill = income_decile), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Income decile") +
+  labs(fill = "Mean household Income decile") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
-ggsave("Demo_income_decile.png", path = "Data/Results/Images/")
+ggsave("Demo_income_decile_cont.png", path = "Data/Results/Images/")
 ```
+
+
+
+Discrete scale
+
+```{r}
+viridis_pal_d <- viridis_pal(option = "D", direction = 1)
+
+
+ggplot(main_results_hex9) +
+  geom_sf(aes(fill = factor(income_decile)), color = NA) +  
+  scale_fill_manual(
+    values = viridis_pal_d(10),  
+    labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")  # Decile labels
+  ) +
+  labs(fill = "Mean household Income decile") +
+  #theme_minimal() +
+  theme(
+    plot.title = element_text(size = 8, face = "bold")
+  )
+
+
+ggsave("Demo_income_decile_discrete.png", path = "Data/Results/Images/")
+```
+
+
+```{r}
+
+Working
+
+# # Create the plot
+# p <- ggplot(main_results_hex9) +
+#   geom_sf(aes(fill = factor(income_decile)), color = NA) +
+#   scale_fill_viridis_d() +
+#   labs(fill = "Income Decile") +
+#   theme_minimal() +
+#   theme(legend.position = "bottom") +
+#   guides(fill = guide_legend(nrow = 1))
+# 
+# # Save the plot to an image file
+# ggsave("Data/Results/Images/Demo_income_decile.png", plot = p, width = 7, height = 7)
+
+```
+
+
+
 #### Scarerplot
 
 Before
