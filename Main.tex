@@ -623,6 +623,14 @@ Neither the survey microdata nor the spatial layer contained traceable data from
 This study's aimed contributions fall in the university research domain and pose low ethical risks. In compliance with the ethical risks screening procedure, the
 The Departmental Ethics Committee assessed, reviewed and successfully approved\footnote{Approval number CASA23/5032971/1} the data and method considered in this research. 
 
+\section{Overview}
+
+% general Diagram with the accessibily process like in the power point slide
+
+% before and adter diafram
+% reference ti summary of the literature review
+
+
 \section{Area of study}
 
 The geographical area of study is Bogotá City, Colombia's capital. The boundary of Bogotá's capital district will be the physical limit that encloses the spatial study area of this research exercise. Figure \ref{fig:Study_Area_ZPU} presents Bogotá's capital district boundary with the local ZPU\footnote{For consistency purposes, the map shows 96 ZPU as aggregated in the Muliprpuse Survey, although there are official 112 \citep{secretariadistritaldegobiernoCaracterizacionUsuarios20212021}} limits.
@@ -806,9 +814,7 @@ M1\_001 & 31.84 & -74.06051 & 4.667098 &   6 \\
 
 \subsection{Stops}
 
-The stops table in the GTFS data structure stores the location and identification data from the stations where the transport user can begin or end using the metro transportation mode. Again, the stop data is generated based on the locations of stations contained in the spatial station's data public by the Bogotá Metro.
-
-After converting from a spatial data structure to a GTFS data structure, Table \ref{tab:Metro_Stops} shows the stops table from the metro GTFS data.
+The stops table in the GTFS data structure stores the location and identification data from the stations where the transport user can begin or end using the metro transportation mode. Again, the stop data is generated based on the locations of stations contained in the spatial station's data public by the Bogotá Metro. After converting from a spatial data structure to a GTFS data structure, Table \ref{tab:Metro_Stops} shows the stops table from the metro GTFS data.
 
 \begin{table}[ht]
 \centering
@@ -833,17 +839,57 @@ M06 & 06 & Av Boyaca-06 & 4.618484 & -74.14063 & 0 & 0 \\
 
 The stops times table indicates the arrival and departure times at every station a trip goes through. Although the local authorities or the metro company have not published specific timetables for future trips, the general scheduling and time between stations can be inferred from the available data.
 
-The metro company, jointly with Bogotá's city council, have stated that the metro line will travel at an average speed of 43 km/h, allowing the Bogotá population to travel from the station on the south edge of the line to the last station on the opposite north edge in 27 minutes .
+The metro company, jointly with Bogotá's city council, have stated that the metro line will travel at an average speed of 43 km/h, allowing the Bogotá population to travel from the station on the south edge of the line to the last station on the opposite north edge in 27 minutes \citep{metrodebogotaPrimeraLineaMetro2022}. After calculating the distance between the stations' locations and the average travel speed of the metro, it is possible to establish the estimated arrival and departure time at every station for every trip. As the trips differ in the order they go through the stations, the data generation process is essentially the same but sequentially inverted. Table \ref{tab:Metro_Stop_Times} shows an overview of the stop times table of a trip from the north route, coupled with the stop\_sequence field that indicates the order of the stations.
 
 
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllrr} % Removed the "r" column specifier
+  \hline
+  trip\_id & arrival\_time & departure\_time & stop\_id & stop\_sequence & timepoint \\ 
+  \hline
+  M1\_002\_N\_3\_M1\_002 & 08:00:00 & 08:00:00 & M01 & 1 & 0 \\ 
+  M1\_002\_N\_3\_M1\_002 & 08:01:52 & 08:01:52 & M02 & 2 & 0 \\ 
+  M1\_002\_N\_3\_M1\_002 & 08:03:19 & 08:03:19 & M03 & 3 & 0 \\ 
+  M1\_002\_N\_3\_M1\_002 & 08:04:44 & 08:04:44 & M04 & 4 & 0 \\ 
+  M1\_002\_N\_3\_M1\_002 & 08:06:08 & 08:06:08 & M05 & 5 & 0 \\ 
+  \hline
+\end{tabular}}
+\caption{Metro stop times table.}
+\label{tab:Metro_Stop_Times}
+\end{table}
 
+Important to realize that the arrival and departure times listed in Table \ref{tab:Metro_Stop_Times} assume that the transit user would be aboard instantly. Although unrealistic, this was kept intentionally in this matter. After reviewing the BRT GTFS data \citep{transmilenios.a.GTFSEstaticos202306212023}, the arrival and departure time of all BRT transit presented the same behaviour. Hence, for modelling proposes, the resulting metro GTFS data will reflect this similarly to prevent artificially affecting the competitiveness between modes.
 
 \subsection{Frequencies}
+
+The frequencies table accounts for how often the trips depart from their respective first station during the day. The frequency of travel will vary depending on the current commuting temporal patterns in Bogotá. According to \cite{alcaldiadebogotad.c.EncuestaMovilidad20192019}, the schedule will assume a peak hour between 5:30 and 9:00 am and 4:00 and 7:00 pm. During the peak and non-peak hours, the frequencies of the trips will be one every 3 minutes and one every 15 minutes, respectively. The seconds' values in the headwat\_secs field express the hourly differentiated schedule for the time ranges established in the start\_time and end\_time fields.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllrr} % Removed the "r" column specifier
+  \hline
+  trip\_id & start\_time & end\_time & headway\_secs & exact\_times \\ 
+  \hline
+  M1\_001\_S\_3\_M1\_001 & 00:00:00 & 05:29:59 & 900 & 0 \\ 
+  M1\_001\_S\_3\_M1\_001 & 05:30:00 & 08:59:59 & 180 & 0 \\ 
+  M1\_001\_S\_3\_M1\_001 & 09:00:00 & 15:59:59 & 900 & 0 \\ 
+  M1\_001\_S\_3\_M1\_001 & 16:00:00 & 18:59:59 & 180 & 0 \\ 
+  M1\_001\_S\_3\_M1\_001 & 19:00:00 & 23:59:59 & 900 & 0 \\ 
+  \hline
+\end{tabular}
+\caption{Metro frequencies table.}
+\label{tab:Metro_Frequencies}
+\end{table}
+
 \subsection{Other GTFS tables}
+
+
 
 % reference to the main route and the related GTFS table
 
-
+\section{Spatial aggregation}
 
 \section{Accessibility measure}
 
@@ -858,8 +904,6 @@ The metro company, jointly with Bogotá's city council, have stated that the met
 
 \subsection{Parameters}
 
-
-\section{Scenarios}
 
 \chapter{Results} \label{Chap5}
 \chapter{Discussion} \label{Chap6}
