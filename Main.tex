@@ -898,9 +898,24 @@ The frequencies table accounts for how often the trips depart from their respect
 
 \section{Spatial aggregation}
 
+% Refence to the hexagon grid
+
+The study uses a hexagon grid as a common spatial observation unit for both the inputs and results of the accessibility modelling process. With the spatial land use information, the location of opportunities can be geographically represented using the hexagon according to the activity related to a land use category of interest. Similarly, the demographic data available can describe socioeconomic and living conditions features of the inhabitant's location in a given hexagon grid.
+
 \subsection{Land use}
 
+% Reference to spatial join + count
+% Include map
+
+The land use data published by \cite{alcaldiadebogotad.c.DestinoEconomicoPredominante2022} is a spatial shapefile format containing the registered perimeter boundary of all terrains. Each feature represented the geometry of the terrain, and the land use category was stored in a character column in the spatial dataset.
+
+To aggregate land use data to the hexagon grid, the intersecting geometries of every terrain were counted and grouped by their respective land use case to count for the number of each land use terrain location within each hexagon grid. Henceforth, the resulting grid contained the terrain for every land use category. As the hexagon grid has a homogeneous area, the results can be interpreted as the terrain density by hexagon for the land use category of interest. Figure XX presents the resulting hexagon grid for the commercial corridor land use density.
+
+
+
 \subsection{Demographics}
+
+% Refernece to weighted average
 
 \section{Accessibility measure}
 
