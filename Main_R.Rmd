@@ -2967,10 +2967,10 @@ Plotting
 
 ```{r}
 ggplot(hex9_land_use_final) +
-  ggtitle("Opportunities") + 
+ # ggtitle("Opportunities") + 
   geom_sf(aes(fill = LU_COD_21), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "High Street Retail\nOpportunities") +
+  labs(fill = "Commercial corridor\nLand use density") +
   #theme_minimal() + 
     theme(plot.title = element_text(size = 8, face = "bold"))
 
