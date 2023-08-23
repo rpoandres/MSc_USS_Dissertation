@@ -1008,6 +1008,12 @@ The parameters of the accessibility modelling procedure allow configuring the tr
 
 The accessibility results show the number of reachable opportunities within a travel cost threshold from every possible origin location. The measure was calculated by every scenario described in sections \ref{Scenarios} and \ref{Inputs}, where the scenarios and inputs for the modelling were defined, respectively.
 
+
+
+Figure \ref{fig:Results_Opportunities} shows the spatial distribution of opportunities in Bogotá. The accessibility measure accounts for the number of these opportunities from a given location in space that can be reached according to the mode or modes of transportation considered in every scenario. Commercial corridor-related opportunities are spread in the city's west, southwest, east and northeast parts. However, the opportunities appeared clustered in the city's east and northeast parts.
+
+
+
 % Hide working figure
 % \begin{figure}[H]
 %     \centering
@@ -1065,13 +1071,16 @@ The accessibility results show the number of reachable opportunities within a tr
     \end{minipage}
 \end{figure}
 
+The accessibility results for the walking scenario presented in Figure \ref{fig:Results_Walking} showed the number of reachable opportunities from each location within a 30-minute walking threshold. The walking accessibility results map how the locations located near the major opportunity clusters have higher levels of accessibility compared with locations further away from the opportunity clusters. Consistently with the biggest opportunity clusters, the locations with the higher accessibility values are located in the east and southeast parts of the city.
+
+
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=1.3\linewidth]{Data/Results/Images/Access_BRT_base.png}
          \caption{BRT}
-        \label{fig:Results_Opportunities}
+        \label{fig:Access_BRT_Base}
     \end{minipage}%
     \hfill
     \begin{minipage}{0.45\textwidth}
@@ -1084,7 +1093,7 @@ The accessibility results show the number of reachable opportunities within a tr
         \centering
         \includegraphics[width=1.3\linewidth]{Data/Results/Images/Access_BRT_Metro_base.png}
          \caption{BRT and metro}
-        \label{fig:Results_Opportunities}
+        \label{fig:Access_BRT_Metro_Base}
     \end{minipage}    
 \end{figure}
 
@@ -1096,15 +1105,35 @@ The accessibility results show the number of reachable opportunities within a tr
     \label{fig:Access_Variation}
 \end{figure}
 
+The process recreates the current scenario's transit condition once the BRT transit operation is included in the modelling inputs. Figure \ref{fig:Access_BRT_Base} presents the accessibility results when enabling the walking and BRT modes. The results show how the BRT transit operation contributes favourably to increasing the accessibility of locations across the city. The locations with high accessibility values in the just walking scenario are no longer those with the highest accessibility values. Due to the BRT transit operation, new locations can reach more opportunities within the same 30-minute walking threshold and the 60-minute total duration limit. Although the commuting conditions in the current modelled scenario do not consider additional modes like bicycles or privately owned cars, it simulates the current commuting situation of 36\% of daily commutes \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019}.
 
-\section{Income groups}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=14cm]{Data/Results/Images/Access_diff_BRT_Metro_base.png}
+    \includegraphics[width=10cm]{Data/Results/Images/Access_diff_BRT_Metro_base.png}
     \caption{Current and future scenario accessibility variation}
     \label{fig:Access_Variation}
 \end{figure}
+
+
+
+\section{Income groups}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=13cm]{Data/Results/Images/Boxplot_Access_All_by_income_decile.png}
+    \caption{Before and after accessibility by income decile}
+    \label{fig:Access_Income_Before_After}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=13cm]{Data/Results/Images/Boxplot_Access_diff_by_income_decile.png}
+    \caption{Accessibility variation by income decile}
+    \label{fig:Access_Income_Before_After_Variation}
+\end{figure}
+
+
 
 \chapter{Discussion} \label{Chap6}
 \chapter{Conclusion} \label{Chap7}
