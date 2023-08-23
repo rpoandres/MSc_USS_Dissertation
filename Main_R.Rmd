@@ -128,11 +128,11 @@ summary(brt_gtfs)
 ### Validation
 
 ```{r}
-validate_gtfs(
-  "Data/Raw/Transport/BRT/GTFS-2023-06-21.zip",
-  output_path = "Data/Raw/Transport/BRT/Validation/",
-  validator_path = download_validator(tempdir())
-)
+# validate_gtfs(
+#   "Data/Raw/Transport/BRT/GTFS-2023-06-21.zip",
+#   output_path = "Data/Raw/Transport/BRT/Validation/",
+#   validator_path = download_validator(tempdir())
+# )
 ```
 
 
@@ -150,6 +150,9 @@ plot_str(brt_gtfs)
 ```{r}
 head(brt_gtfs$agency)
 ```
+
+Data type
+
 ```{r}
 Datatypelist_brt_agency <- brt_gtfs$agency %>% 
   summarise_all(class) %>%
@@ -2386,7 +2389,7 @@ Datatypelist_survey
 Summary
 
 ```{r}
-introduce(survey_raw)
+#introduce(survey_raw)
 ```
 
 Missing values
@@ -2420,24 +2423,24 @@ head(na_by_zpu)
 Missing ZPU by "directorio"
 
 ```{r}
-entry_by_directorio <- survey_raw %>%
-  group_by(directorio) %>%
-  summarize(count_entry = n(),count_na = sum(is.na(cod_upz_grupo))) %>%
-  mutate(percentage_entry = count_entry / nrow(survey_raw) * 100) %>%
-  mutate(control = ifelse(count_entry == count_na,"All na's", "None")) %>%
-  mutate(diff = count_entry - count_na) %>%
-  arrange((diff))
-
-entry_by_directorio
+# entry_by_directorio <- survey_raw %>%
+#   group_by(directorio) %>%
+#   summarize(count_entry = n(),count_na = sum(is.na(cod_upz_grupo))) %>%
+#   mutate(percentage_entry = count_entry / nrow(survey_raw) * 100) %>%
+#   mutate(control = ifelse(count_entry == count_na,"All na's", "None")) %>%
+#   mutate(diff = count_entry - count_na) %>%
+#   arrange((diff))
+# 
+# entry_by_directorio
 ```
 
 Filter equal values
 
 ```{r}
-entry_by_directorio_control <- filter(entry_by_directorio, control == "None") %>%
-  mutate(control_diff = diff==count_entry)
-
-unique(entry_by_directorio_control$control_diff)
+# entry_by_directorio_control <- filter(entry_by_directorio, control == "None") %>%
+#   mutate(control_diff = diff==count_entry)
+# 
+# unique(entry_by_directorio_control$control_diff)
 ```
 
 All entries, either have all NA's value per "directorio" or none.
@@ -2454,14 +2457,14 @@ filter(survey_raw, is.na(cod_upz_grupo))
 directorio = "220102"
 
 ```{r}
-filter(survey_raw, directorio == "220102") %>%
-  dplyr::select(directorio,directorio_per, directorio_hog, # ID
-         cod_upz_grupo, # ZPU code
-         nombre_upz_grupo, # ZPU name
-         orden, # Order in home
-         npcep4, # Age
-         npcep6, # Relation to Household leader
-         npcep11a) # Place of birth
+# filter(survey_raw, directorio == "220102") %>%
+#   dplyr::select(directorio,directorio_per, directorio_hog, # ID
+#          cod_upz_grupo, # ZPU code
+#          nombre_upz_grupo, # ZPU name
+#          orden, # Order in home
+#          npcep4, # Age
+#          npcep6, # Relation to Household leader
+#          npcep11a) # Place of birth
 ```
 
 #### Additional variables
@@ -2469,13 +2472,13 @@ filter(survey_raw, directorio == "220102") %>%
 Data type
 
 ```{r}
-Datatypelist_survey_add <- survey_add_raw %>% 
-  summarise_all(class) %>%
-  pivot_longer(everything(), 
-               names_to="All_variables", 
-               values_to="Variable_class")
-
-Datatypelist_survey_add
+# Datatypelist_survey_add <- survey_add_raw %>% 
+#   summarise_all(class) %>%
+#   pivot_longer(everything(), 
+#                names_to="All_variables", 
+#                values_to="Variable_class")
+# 
+# Datatypelist_survey_add
 ```
 
 ##### Profiling
@@ -2483,20 +2486,20 @@ Datatypelist_survey_add
 Summary
 
 ```{r}
-introduce(survey_add_raw)
+#introduce(survey_add_raw)
 ```
 
 Missing values
 
 ```{r}
-plot_missing(survey_raw)
+#plot_missing(survey_raw)
 ```
 
 Missing values on ID fields
 
 ```{r}
-survey_add_raw %>% dplyr::select(directorio, directorio_hog,directorio_per) %>%
-  plot_missing(.)
+# survey_add_raw %>% dplyr::select(directorio, directorio_hog,directorio_per) %>%
+#   plot_missing(.)
 
 ```
 
@@ -2546,11 +2549,11 @@ head(survey_add)
 Example review
 
 ```{r}
-filter(survey_raw, directorio == "220102") %>%
-  dplyr::select(
-    directorio,directorio_hog,directorio_per, # ID
-    cod_upz_grupo,
-    nombre_upz_grupo)
+# filter(survey_raw, directorio == "220102") %>%
+#   dplyr::select(
+#     directorio,directorio_hog,directorio_per, # ID
+#     cod_upz_grupo,
+#     nombre_upz_grupo)
 ```
 
 Droping rows with no UPZ code and name
@@ -2563,12 +2566,12 @@ survey_add_clean <- survey_add[complete.cases(survey_add[, columns_to_omit]),]
 Droping review
 
 ```{r}
-head(survey_add_clean)
+# head(survey_add_clean)
 ```
 Number of rows in cleaned add survey data
 
 ```{r}
-nrow(survey_add_clean)
+# nrow(survey_add_clean)
 ```
 
 ##### Homes
@@ -2583,7 +2586,7 @@ survey_add_homes <- survey_add_clean %>%
 Review
 
 ```{r}
-survey_add_homes
+# survey_add_homes
 ```
 
 
@@ -2663,24 +2666,24 @@ ggsave("Demo_Income_UPZ_Mean_Median.png", path = "Data/Results/Images/")
 directorio = "220102"
 
 ```{r}
-survey_add_raw_E1<- filter(survey_add, directorio == "220102") %>%
-  dplyr::select(
-    directorio,directorio_hog,directorio_per, # ID
-    N_fuerza_trabajo, # In labour market
-    N_informal, # Informal
-    N_analfabeta, # Illiterate
-    N_pobre_ipm, # MPI poor
-    N_codigo_upz_trabajo, # ZPU ID of workplace
-    N_INGTOT_PER, # Total income 
-    N_pobre_monetario,# Monetary poverty
-    cod_upz_grupo,
-    nombre_upz_grupo) 
+# survey_add_raw_E1<- filter(survey_add, directorio == "220102") %>%
+#   dplyr::select(
+#     directorio,directorio_hog,directorio_per, # ID
+#     N_fuerza_trabajo, # In labour market
+#     N_informal, # Informal
+#     N_analfabeta, # Illiterate
+#     N_pobre_ipm, # MPI poor
+#     N_codigo_upz_trabajo, # ZPU ID of workplace
+#     N_INGTOT_PER, # Total income 
+#     N_pobre_monetario,# Monetary poverty
+#     cod_upz_grupo,
+#     nombre_upz_grupo) 
 ```
 
 Review
 
 ```{r}
-survey_add_raw_E1
+# survey_add_raw_E1
 ```
 
 
@@ -2688,7 +2691,7 @@ survey_add_raw_E1
 Testing descriptive statistics
 
 ```{r}
-mean(survey_add_raw_E1$N_INGTOT_PER,na.rm = TRUE)
+# mean(survey_add_raw_E1$N_INGTOT_PER,na.rm = TRUE)
 ```
 
 
@@ -2884,7 +2887,14 @@ Decile label
 survey_add_intersect_hex9$income_decile <- ntile(survey_add_intersect_hex9$area_weighted_income_mean, 10)
 ```
 
-Review
+Quartile label
+
+```{r}
+survey_add_intersect_hex9$income_quartile <- ntile(survey_add_intersect_hex9$area_weighted_income_mean, 4)
+```
+
+
+eview
 
 ```{r}
 filter(survey_add_intersect_hex9, h3_index == "8966e090e1bffff")
@@ -2971,7 +2981,7 @@ ggplot(hex9_land_use_final) +
  # ggtitle("Opportunities") + 
   geom_sf(aes(fill = LU_COD_21), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Commercial corridor\nLand use density") +
+  labs(fill = "Commercial corridor\nOpportunities") +
   #theme_minimal() + 
     theme(plot.title = element_text(size = 8, face = "bold"))
 
@@ -3172,17 +3182,16 @@ ggsave("Land_Use_Commercial_Corridor_Terrain.png", path = "Data/Results/Images/"
 
 ```{r}
 ggplot() +
-  geom_sf(data = geo_zpu_wgs84) + annotation_scale(location = "br", width_hint = 0.2) +
+  geom_sf(data = geo_zpu_wgs84) + annotation_scale(location = "br", width_hint = 0.1) +
   annotation_north_arrow(location = "tl", which_north = "true", 
         pad_x = unit(0.1, "in"), pad_y = unit(0.1, "in"),
-        style = north_arrow_fancy_orienteering) + 
+        style = north_arrow_fancy_orienteering,scale = 0.1,height = unit(1, "cm"),
+  width = unit(1, "cm")) + 
   theme_minimal()
 
 ggsave("Study_Area_UPZ.png", path = "Data/Results/Images/")
 
 ```
-
-
 
 
 # Accessiblity modelling
@@ -3334,7 +3343,7 @@ main_ttm_hex9 <- rename(ttm_walk, walk_tt = travel_time)
 
 #### Cumulative opportunities measure
 
-High street retail opportunities
+Commercial corridor opportunities
 
 ```{r}
 cum_opportunities_walk <- cumulative_cutoff(
@@ -3355,7 +3364,7 @@ head(cum_opportunities_walk)
 
 #### Minimum travel cost
 
-To high street retail opportunities
+Commercial corridor opportunities
 
 ```{r}
 min_time_walk <- cost_to_closest(
@@ -3480,14 +3489,14 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
-plot_title <- paste("Walking accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+# plot_title <- paste("Walking accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
 
 
 ggplot(main_results_hex9) +
-  ggtitle(plot_title) +
+  # ggtitle(plot_title) +
   geom_sf(aes(fill = b_walk_30), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail Opportunities") +
+  labs(fill = "Walking\nAccessible\nOpportunities") +
   #theme_minimal() + 
     theme(plot.title = element_text(size = 8, face = "bold"))
 
@@ -3704,14 +3713,14 @@ Regular Vidiris color scheme
 
 ```{r}
 
-plot_title <- paste("BRT accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+# plot_title <- paste("BRT accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
 
 
 ggplot(main_results_hex9) +
-  ggtitle(plot_title) + 
+  # ggtitle(plot_title) + 
   geom_sf(aes(fill = b_brt_30), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail Opportunities") +
+  labs(fill = "Walking and BRT\nAccessible\nOpportunities") +
   #theme_minimal() + 
     theme(plot.title = element_text(size = 8, face = "bold"))
 
@@ -3947,14 +3956,14 @@ Regular Vidiris color scheme
 
 ```{r}
 
-plot_title <- paste("Metro accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+# plot_title <- paste("Metro accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
 
 
 ggplot(main_results_hex9) +
-  ggtitle(plot_title) +
+  # ggtitle(plot_title) +
   geom_sf(aes(fill = m_metro_30), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail Opportunities") +
+  labs(fill = "Walking and metro\nAccessible\nOpportunities") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
@@ -4187,15 +4196,15 @@ Inferno Viridis color scheme
 Regular Vidiris color scheme
 
 ```{r}
-plot_title <- paste("BRT and Metro accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+# plot_title <- paste("BRT and Metro accessibility: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
 
 
 
 ggplot(main_results_hex9) +
-  ggtitle(plot_title) + 
+  # ggtitle(plot_title) + 
   geom_sf(aes(fill = a_brt_metro_30), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Accessible\nHigh Street Retail Opportunities") +
+  labs(fill = "Walking, BRT and metro\nAccessible\nOpportunities") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
@@ -4660,11 +4669,11 @@ Plotting
 Regular Vidiris color scheme
 
 ```{r}
-plot_title <- paste("Walking accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
+# plot_title <- paste("Walking accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
 
 
 ggplot(main_results_hex9) +
-  ggtitle(plot_title) + 
+  # ggtitle(plot_title) + 
   geom_sf(aes(fill = b_walk_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail Opportunities") +
@@ -4739,12 +4748,12 @@ Regular Vidiris color scheme
 
 ```{r}
 
-plot_title <- paste("BRT accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
+# plot_title <- paste("BRT accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
 
 
 
 ggplot(main_results_hex9) +
-  ggtitle(plot_title) + 
+  # ggtitle(plot_title) + 
   geom_sf(aes(fill = b_brt_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail Opportunities") +
@@ -4815,12 +4824,12 @@ Plotting
 Regular Vidiris color scheme
 
 ```{r}
-plot_title <- paste("Metro accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
+# plot_title <- paste("Metro accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
 
 
 
 ggplot(main_results_hex9) +
-  ggtitle(plot_title) + 
+  # ggtitle(plot_title) + 
   geom_sf(aes(fill = m_metro_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail Opportunities") +
@@ -4892,11 +4901,11 @@ Regular Vidiris color scheme
 
 ```{r}
 
-plot_title <- paste("BRT and Metro accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
+# plot_title <- paste("BRT and Metro accessibility: cutoffs = ",r5r_1_global_cutoff,",  max_walk_time = ",r5r_1_max_walk_time,", max_trip_duration = ", r5r_1_max_trip_duration)
 
 
 ggplot(main_results_hex9) +
-  ggtitle(plot_title) + 
+  # ggtitle(plot_title) + 
   geom_sf(aes(fill = a_brt_metro_x), color = NA) +
   scale_fill_viridis_c() +
   labs(fill = "Accessible\nHigh Street Retail Opportunities") +
@@ -4914,6 +4923,12 @@ ggsave("Access_BRT_Metro_C1.png", path = "Data/Results/Images/")
 ```{r}
 summary(main_results_hex9)
 ```
+
+
+
+
+
+
 ## Hexagon measure comparison
 
 
@@ -4927,18 +4942,66 @@ main_results_hex9 <- main_results_hex9 %>%
 
 ### Plotting
 
+
+
+
+Pivot longer
+
+```{r}
+main_results_hex9_longer_scatterplot <- pivot_longer(main_results_hex9,
+                        cols = c(b_walk_30 , b_brt_30, m_metro_30,a_brt_metro_30),
+                        names_to = "scenario",
+                        values_to = "access_base")
+```
+
+
+Boxplot
+
+
+```{r}
+
+desired_scenario_order <- c("b_walk_30", "m_metro_30", "b_brt_30", "a_brt_metro_30")
+desired_scenario_label <- c("Walking", "Metro", "BRT", "Brt and metro")
+
+main_results_hex9_longer_scatterplot$scenario <- factor(
+  main_results_hex9_longer_scatterplot$scenario,
+  levels = desired_scenario_order
+)
+
+# Now create the ggplot with the modified order
+ggplot(main_results_hex9_longer_scatterplot) +
+  geom_boxplot(
+    aes(
+      x = scenario,
+      y = access_base,
+      fill = scenario
+    ),
+    show.legend = FALSE
+  ) +
+  scale_fill_viridis(discrete = TRUE) +  # Use scale_fill_viridis instead of scale_colour_viridis
+  labs(
+    x = "Scenario",
+    y = "Opportunities"
+  ) +
+  scale_x_discrete(labels = desired_scenario_label)
+
+ggsave("Boxplot_Access_Scenarios.png", path = "Data/Results/Images/")
+
+```
+
+
 Base
 
 ```{r}
-plot_title <- paste("BRT and Metro accessibility variation: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
+# plot_title <- paste("BRT and Metro accessibility variation: cutoffs = ",r5r_global_cutoff,",  max_walk_time = ",r5r_max_walk_time,", max_trip_duration = ", r5r_max_trip_duration)
 
 
 
 ggplot(main_results_hex9) +
-  ggtitle(plot_title) + 
+  # ggtitle(plot_title) + 
   geom_sf(aes(fill = diff_b_brt_a_brt_metro), color = NA) +
   scale_fill_viridis_c() +
-  labs(fill = "Accessibility variation\nHigh Street Retail Opportunities") +
+  labs(fill = "Accessibility variation") +
   #theme_minimal()
   theme(plot.title = element_text(size = 8, face = "bold"))
 
@@ -5004,7 +5067,7 @@ ggsave("Demo_income_decile_discrete.png", path = "Data/Results/Images/")
 
 ```{r}
 
-Working
+# Working
 
 # # Create the plot
 # p <- ggplot(main_results_hex9) +
@@ -5040,7 +5103,7 @@ ggplot(main_results_hex9) +
   scale_colour_viridis(discrete = TRUE) +
   labs(
     x = "Income decile",
-    y = "High Street Retail Opportunities\n(thousands)") +
+    y = "Opportunities\n(thousands)") +
   scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) # + theme_minimal()
 
 ggsave("Boxplot_Access_B_by_income_decile.png", path = "Data/Results/Images/")
@@ -5061,7 +5124,7 @@ ggplot(main_results_hex9) +
   scale_colour_viridis(discrete = TRUE) +
   labs(
     x = "Income decile",
-    y = "High Street Retail Opportunities\n(thousands)") +
+    y = "Opportunities\n(thousands)") +
   scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) # + theme_minimal()
 
 ggsave("Boxplot_Access_A_by_income_decile.png", path = "Data/Results/Images/")
@@ -5109,10 +5172,10 @@ ggplot(main_results_hex9_pivot_longer) +
   facet_wrap(
     ~ scenario,
     nrow = 1,
-    labeller = as_labeller(c(b_brt_30 = "Before", a_brt_metro_30 = "After"))
+    labeller = as_labeller(c(b_brt_30 = "Current", a_brt_metro_30 = "Future"))
   ) +
   scale_colour_viridis(discrete = TRUE) +
-  labs(x = "Income decile", y = "High Street Retail Opportunities (thousands)") +
+  labs(x = "Income decile", y = "Opportunities (thousands)") +
   scale_x_discrete(
     labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")
   ) #+ theme_minimal()
@@ -5137,10 +5200,39 @@ ggplot(main_results_hex9) +
   scale_colour_viridis(discrete = TRUE) +
   labs(
     x = "Income decile",
-    y = "High Street Retail Opportunities difference\n(thousands)") +
+    y = "Opportunities variation\n(thousands)") +
   scale_x_discrete(labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")) #+ theme_minimal()
 
 ggsave("Boxplot_Access_diff_by_income_decile.png", path = "Data/Results/Images/")
+```
+### By income quartile
+
+Have to do a pivot long with the quartile label
+
+```{r}
+ggplot(main_results_hex9_pivot_longer) +
+  geom_boxplot(
+    aes(
+      x = as.factor(income_decile),
+      y = accessible_jobs / 1000,
+      color = as.factor(income_decile),
+      #weight = population,
+      group = income_decile
+    ),
+    show.legend = FALSE
+  ) +
+  facet_wrap(
+    ~ scenario,
+    nrow = 1,
+    labeller = as_labeller(c(b_brt_30 = "Current", a_brt_metro_30 = "Future"))
+  ) +
+  scale_colour_viridis(discrete = TRUE) +
+  labs(x = "Income decile", y = "Opportunities (thousands)") +
+  scale_x_discrete(
+    labels = c("D1\npoorest", paste0("D", 2:9), "D10\nwealthiest")
+  ) #+ theme_minimal()
+
+ggsave("Boxplot_Access_All_by_income_decile.png", path = "Data/Results/Images/")
 ```
 
 
