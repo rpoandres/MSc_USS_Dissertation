@@ -959,13 +959,11 @@ where
 \end{itemize}
 
 
-\section{Scenarios}
+\section{Scenarios} \label{Scenarios}
 
-This study examined the current and future accessibility scenarios \ref{fig:Method_Summary}. On the one hand, the current scenario consists of the current transit operation and infrastructure composed of the BRT and street networks. On the other hand, the future scenario will include the BRT and street network, together with the future transit operation and infrastructure for the metro.
+This study examined the current and future accessibility scenarios as presented in Figure \ref{fig:Method_Summary}. On the one hand, the current scenario consists of the current transit operation and infrastructure composed of the BRT and street networks. On the other hand, the future scenario will include the BRT and street network, together with the future transit operation and infrastructure for the metro.
 
 Important to notice that the street network was used to have street infrastructure through which the modelling could compute travel by walking. It does not consider any other type of motorized transportation use apart from the BRT network. Additionally, single-mode scenarios were also considered in the accessibility modelling. For control purposes, accessibility for BRT, metro and walking modes was calculated individually to assess accessibility in a disaggregated manner.
-
-
 
 \section{Accessibility modelling}
 
@@ -978,14 +976,69 @@ The cumulative accessibility modelling was calculated using the R5R library with
 \end{enumerate}
 
 
-\subsection{Inputs}
+\subsection{Inputs} \label{Inputs}
+
+The input data provided for each scenario should be aligned with the transit and infrastructure each scenario aim to model. Table \ref{tab:Inputs_By_Scenario} indicates with a check mark the inputs considered for the before and after scenarios as described in \ref{fig:Method_Summary}, together with the additional control scenarios stated in subsection \ref{Scenarios}.
 
 
+\begin{table}[H]
+\centering
+\begin{tabular}{c|ccc}
+\hline
+\multicolumn{1}{l|}{} & \multicolumn{3}{c}{\textbf{Inputs}}                                                   \\ \hline
+\textbf{Scenario}     & \multicolumn{1}{l}{\textbf{Street network}} & \textbf{BRT GTFS} & \textbf{Metro GTFS} \\ \hline
+Current         & \checkmark & \checkmark &       \\ \hline
+Future          & \checkmark & \checkmark & \checkmark \\ \hline
+Walking only    & \checkmark &       &       \\ \hline
+Metro + walking & \checkmark &       & \checkmark \\ \hline
+\end{tabular}
+\caption{Input data by scenario.}
+\label{tab:Inputs_By_Scenario}
+\end{table}
 
 \subsection{Parameters}
 
+% Reference to the threshold
+
+The parameters of the accessibility modelling procedure allow configuring the transit and commuting conditions considered in the urban accessibility computation. Among the conditions that the R5R parameters can simulate in the accessibility modelling are the maximum walking duration and the total maximum commuting duration. Considering the average travel times when using one motorized transit mode in Bogotá \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019}, the maximum walking time and total trip duration had values of 30 and 60 minutes, respectively.
 
 \chapter{Results} \label{Chap5}
+
+\section{Accessibility by scenario}
+
+The accessibility results show the number of reachable opportunities within a travel cost threshold from every possible origin location. The measure was calculated by every scenario described in sections \ref{Scenarios} and \ref{Inputs}, where the scenarios and inputs for the modelling were defined, respectively.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.3\linewidth]{Data/Results/Images/Opportunities_COD_21.png}
+        \caption{Commecial corridor opportunities}
+        \label{fig:Results_Opportunities}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.3\linewidth]{Data/Results/Images/Access_Walk_base.png}
+        \caption{Walking accessibility}
+        \label{fig:Results_Walking}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.3\linewidth]{Data/Results/Images/Access_BRT_base.png}
+        \caption{Walking and BRT accessibility}
+        \label{fig:Results_BRT}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.3\linewidth]{Data/Results/Images/Metro_base.png}
+        \caption{Walking and metro accessibility}
+        \label{fig:Results_Metro}
+    \end{minipage}
+\end{figure}
+
+\section{Income groups}
+
 \chapter{Discussion} \label{Chap6}
 \chapter{Conclusion} \label{Chap7}
 
