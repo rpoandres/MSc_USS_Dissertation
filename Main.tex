@@ -919,7 +919,7 @@ To aggregate land use data to the hexagon grid, the intersecting geometries of e
 
 % Refefence of where are the opportunities in bogota
 
-\subsection{Demographics}
+\subsection{Demographics} \label{Demographics}
 
 The aggregation of demographic data to the hexagon would allow the assessment of socioeconomic variables of Bogotá's inhabitants across space. This study will incorporate income data gathered by \cite{secretariadistritaldeplaneacionMicrodatosEncuestaMultiproposito2023} to the hexagon grid.
 
@@ -963,18 +963,17 @@ where
 
 This study examined the current and future accessibility scenarios as presented in Figure \ref{fig:Method_Summary}. On the one hand, the current scenario consists of the current transit operation and infrastructure composed of the BRT and street networks. On the other hand, the future scenario will include the BRT and street network, together with the future transit operation and infrastructure for the metro.
 
-Important to notice that the street network was used to have street infrastructure through which the modelling could compute travel by walking. It does not consider any other type of motorized transportation use apart from the BRT network. Additionally, single-mode scenarios were also considered in the accessibility modelling. For control purposes, accessibility for BRT, metro and walking modes was calculated individually to assess accessibility in a disaggregated manner.
+It is important to notice that the walking mode is included in all scenarios, and the street network was used to have infrastructure through which the modelling could compute travel by walking. It does not consider any other type of motorized transportation use apart from the BRT network. Additionally, single-mode scenarios were also considered in the accessibility modelling. For control purposes, accessibility for BRT, metro and walking modes was calculated individually to assess accessibility in a disaggregated manner.
 
 \section{Accessibility modelling}
 
-The cumulative accessibility modelling was calculated using the R5R library with R Programing Language. The library calculates accessibility by performing tree procedures. Next, each procedure is described indicating the inputs required for each one:
+The cumulative accessibility modelling was calculated using the R5R library with R Programming Language. The library calculates accessibility by performing tree procedures. Next, each procedure is described, indicating the inputs required for each one:
 
 \begin{enumerate}
     \item Building multi-mode network: Based on the GTFS data and the street network, a multi-transport mode is built to connect origins and destinations according to the infrastructure available.
     \item Time travel matrix computation: The travel time between all origin and destination combinations is computed, favouring the fastest mode combination available.
     \item Apply cost travel thresholds: According to the threshold parameters, the destination locations are filtered so the accessibility results account for only the destination within the travel cost limits.
 \end{enumerate}
-
 
 \subsection{Inputs} \label{Inputs}
 
@@ -1073,6 +1072,11 @@ Figure \ref{fig:Results_Opportunities} shows the spatial distribution of opportu
 
 The accessibility results for the walking scenario presented in Figure \ref{fig:Results_Walking} showed the number of reachable opportunities from each location within a 30-minute walking threshold. The walking accessibility results map how the locations located near the major opportunity clusters have higher levels of accessibility compared with locations further away from the opportunity clusters. Consistently with the biggest opportunity clusters, the locations with the higher accessibility values are located in the east and southeast parts of the city.
 
+The process recreates the current scenario's transit condition once the BRT transit operation is included in the modelling inputs. Figure \ref{fig:Access_BRT_Base} presents the accessibility results when enabling the walking and BRT modes. The results show how the BRT transit operation contributes favourably to increasing the accessibility of locations across the city. The locations with high accessibility values in the just walking scenario are no longer those with the highest accessibility values. Due to the BRT transit operation, new locations can reach more opportunities within the same 30-minute walking threshold and the 60-minute total duration limit. Although the commuting conditions in the current modelled scenario do not consider additional modes like bicycles or privately owned cars, it simulates the current commuting situation of 36\% of daily commutes \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019}.
+
+To disaggregate the metro accessibility impact, the results for only metro scenario were modelled. Figure  \ref{fig:Results_Metro_Base} shows the accessibility result as a footprint of the route of the future metro line. As the walking mode is included in all scenarios, the accessibility increase is higher in the locations near the stations. The effect smoothly decreases as the walking commuting increases until it no longer complies with the duration thresholds.
+
+
 
 \begin{figure}[H]
     \centering
@@ -1087,7 +1091,7 @@ The accessibility results for the walking scenario presented in Figure \ref{fig:
         \centering
         \includegraphics[width=1.3\linewidth]{Data/Results/Images/Access_Metro_base.png}
         \caption{Metro}
-        \label{fig:Results_Walking}
+        \label{fig:Results_Metro_Base}
     \end{minipage}
     \begin{minipage}{0.45\textwidth}
         \centering
@@ -1097,6 +1101,7 @@ The accessibility results for the walking scenario presented in Figure \ref{fig:
     \end{minipage}    
 \end{figure}
 
+In like manner, the future scenario recreates the future accessibility situation, combining the current BRT operations with the estimated transit metro operations. \ref{fig:Access_BRT_Metro_Base} geographically represents the accessibility results for the aggregate transit conditions as if both BRT and metro were currently working. To better assess the locations that benefited the most in terms of accessibility from the metro operation, the accessibility variation between before and after scenarios was calculated. 
 
 \begin{figure}[H]
     \centering
@@ -1105,28 +1110,37 @@ The accessibility results for the walking scenario presented in Figure \ref{fig:
     \label{fig:Access_Variation}
 \end{figure}
 
-The process recreates the current scenario's transit condition once the BRT transit operation is included in the modelling inputs. Figure \ref{fig:Access_BRT_Base} presents the accessibility results when enabling the walking and BRT modes. The results show how the BRT transit operation contributes favourably to increasing the accessibility of locations across the city. The locations with high accessibility values in the just walking scenario are no longer those with the highest accessibility values. Due to the BRT transit operation, new locations can reach more opportunities within the same 30-minute walking threshold and the 60-minute total duration limit. Although the commuting conditions in the current modelled scenario do not consider additional modes like bicycles or privately owned cars, it simulates the current commuting situation of 36\% of daily commutes \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019}.
+Figure \ref{fig:Access_Variation} shows the locations with the highest accessibility variation in the future scenario. These locations can be classified into tree groups, each group with its particular circumstances, as described next:
 
+\begin{itemize}
+    \item Western area: The west area experienced the highest accessibility increase in the city. The accessibility increase was registered in two angles. First, the west zone had the polygon with the highest accessibility increase. The highest accessibility variation value was registered near the first station when travelling west to east on the northbound route. Second, the west Bogotá area had the largest group of adjacent hexagons, with a significant increase in Bogotá. Particularly in this area, the future metro transit operation, together with the current BRT operation, causes both situations as it allows to reach a larger opportunity number within the 30-minute walk and 60-minute total duration thresholds.
+    \item Southeast area: Locations in the southeast area presented positive variations in accessibility. The increase in magnitude and the number of adjacent hexagons is less compared to the western area. The southeast area was in a relatively better accessibility situation than the western area as more opportunities were already nearby. As a result, the accessibility impact in the southeast area was less compared to the western area.
+    \item Eastern area: Similarly to the southeast area, the east zone experienced increased accessibility. Locations in the eastern area had slightly higher variations than the southeast area, although the highest variations in Bogotá are still in the western area. The barely superior values in the eastern area compared to the southeast are mainly explained by more opportunities.
+\end{itemize}
+
+To more easily understand the overall accessibility impact of the metro transit operation, the distributional features of the accessibility value can be analyzed in each scenario. Figure \ref{fig:Boxplot_Access_Scenarios} shows the distribution of the accessibility results in a boxplot format for each scenario. When disaggregated, both walking and metro show possible outliers. These cases might be related to atypical privileged locations for each mode, either related to being close to the opportunities or near the metro stations, respectively. When the BRT and the metro transit operations are combined in the future scenario, the resulting distribution shows a significant increase in accessibility, particularly in the median and upper quartile.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=10cm]{Data/Results/Images/Access_diff_BRT_Metro_base.png}
-    \caption{Current and future scenario accessibility variation}
-    \label{fig:Access_Variation}
+    \includegraphics[width=8cm]{Data/Results/Images/Boxplot_Access_Scenarios.png}
+    \caption{Accessbility results boxplot by scenario}
+    \label{fig:Boxplot_Access_Scenarios}
 \end{figure}
-
-
 
 \section{Income groups}
 
-\begin{figure}[h]
+As part of assessing the results, this study examined the modelled accessibility values by the income level reported in each location across the study area. The income disaggregation analysis enables exploring which locations benefit the most and what socioeconomic conditions have been identified \citep{pereiraIntroductionUrbanAccessibility2023a}. As the demographic data has shown previously in section \ref{Demographics}, locations with reported high income were located in the north part of the city, while locations with low-income earners were in the south, southwest and west areas of Bogotá.
+
+Figure \ref{fig:Access_Income_Before_After} shows the location accessibility result by income decile for the before and the future.  
+
+\begin{figure}[ht]
     \centering
     \includegraphics[width=13cm]{Data/Results/Images/Boxplot_Access_All_by_income_decile.png}
     \caption{Before and after accessibility by income decile}
     \label{fig:Access_Income_Before_After}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=13cm]{Data/Results/Images/Boxplot_Access_diff_by_income_decile.png}
     \caption{Accessibility variation by income decile}
