@@ -34,7 +34,7 @@
 %\\ The Bartlett Faculty of the Built Environment
 %\\ Centre for Advanced Spatial Analysis
 \\
-\\ Remote repo link
+\\ \href{https://github.com/rpoandres/MSc_USS_Dissertation}{Code}
 \\ Word count: XXXXX
 \\
 %\\ University College London
@@ -73,7 +73,7 @@ This dissertation is submitted in part requirement for \\the \textit{MSc Urban S
 \begin{abstract}
 \input{0 Abstract}
 
-\keywords{keyword 1 - keyword 2 - keyword 3}
+\keywords{Accessibility modelling - transport - land use}
 % \vspace{-10mm} %To remove added white space after
 \end{abstract}
 \newpage
@@ -108,7 +108,7 @@ Add signature png here.
 \end{figure}
 \vspace{-2cm}
 \noindent\begin{tabular}{ll}
- & 20/08/23 \\
+ & 25/08/23 \\
 \makebox[2.5in]{\hrulefill} & \makebox[2.5in]{\hrulefill}\\
 \textit{Signature} & \textit{Date}\\
 \end{tabular}
@@ -435,6 +435,8 @@ In a further exercise, \cite{bocarejoAccessibilityAnalysisIntegrated2014} expand
 Similarly, with a social and equality accessibility approach, \cite{guzmanAssessingEquityTransport2017} performed an accessibility assessment on at a more regional scale. Not only considering Bogotá capital district municipality, \cite{guzmanAssessingEquityTransport2017} included the surrounding municipalities in order to have a more regional-cohesive result. Additionally, privately owned cars, ordinary buses and BRT transportation modes were disaggregated to assess accessibility individually. In terms of the opportunities, that means the destination of interest,\cite{guzmanAssessingEquityTransport2017} particularly focused on jobs and education-related points of interest.
 
 Subsequently, \cite{guzmanAccessibilityAffordabilityEquity2018} carried out a transport accessibility assessment which considered multiple fare subsidy scenarios. By formulating a possible fare subsidy scheme, \cite{guzmanAccessibilityAffordabilityEquity2018} spatially modelled the effect in affordability and accessibility derived from the use of the public transportation network.
+
+The main common purpose of previous research conducted in Bogotá was to assess the accessibility impact of the transportation system's future expansion, integration or fare scheme introduction. The accessibility results were mostly also assessed from a social and access-inequality perspective as they were disaggregated by population groups of interest.
 
 % Reference the use of accesibility measures when the transport system is expanding, when a fare is changing, to access impact across different population groups of interest, etc
 
@@ -967,13 +969,16 @@ It is important to notice that the walking mode is included in all scenarios, an
 
 \section{Accessibility modelling}
 
-The cumulative accessibility modelling was calculated using the R5R library with R Programming Language \citep{pereiraR5rRapidRealistic2021}. The library calculates accessibility by performing tree procedures. Next, each procedure is described, indicating the inputs required for each one:
+The cumulative accessibility modelling was calculated using the R5R library \citep{pereiraR5rRapidRealistic2021} with R Programming Language. The library calculates accessibility by performing tree main procedures. Next, each procedure is described, indicating the inputs required for each one:
 
 \begin{enumerate}
-    \item Building multi-mode network: Based on the GTFS data and the street network, a multi-transport mode is built to connect origins and destinations according to the infrastructure available.
+    \item Building multi-mode network: Based on the GTFS data and the street network, a multi-transport mode connects origins and destinations according to the available infrastructure.
     \item Time travel matrix computation: The travel time between all origin and destination combinations is computed, favouring the fastest mode combination available.
     \item Apply cost travel thresholds: According to the threshold parameters, the destination locations are filtered so the accessibility results account for only the destination within the travel cost limits.
+    \item Accessibility measure computation: After selecting the destination locations that comply with the travel cost limits, the library uses the land use data and computes the number of reachable opportunities from each origin location within the established limits. 
 \end{enumerate}
+
+
 
 \subsection{Inputs} \label{Inputs}
 
@@ -1118,7 +1123,7 @@ Figure \ref{fig:Access_Variation} shows the locations with the highest accessibi
     \item Eastern area: Similarly to the southeast area, the east zone experienced increased accessibility. Locations in the eastern area had slightly higher variations than the southeast area, although the highest variations in Bogotá are still in the western area. The barely superior values in the eastern area compared to the southeast are mainly explained by more opportunities.
 \end{itemize}
 
-To more easily understand the overall accessibility impact of the metro transit operation, the distributional features of the accessibility value can be analyzed in each scenario. Figure \ref{fig:Boxplot_Access_Scenarios} shows the distribution of the accessibility results in a boxplot format for each scenario. When disaggregated, both walking and metro show possible outliers. These cases might be related to atypical privileged locations for each mode, either related to being close to the opportunities or near the metro stations, respectively. When the BRT and the metro transit operations are combined in the future scenario, the resulting distribution shows a significant increase in accessibility, particularly in the median and upper quartile.
+To more easily understand the overall accessibility impact of the metro transit operation, the distributional features of the accessibility value can be analyzed in each scenario. Figure \ref{fig:Boxplot_Access_Scenarios} shows the distribution of the accessibility results in a boxplot format for each scenario. When disaggregated, both walking and metro show possible outliers. These cases might be related to atypical privileged locations for each mode, either related to being close to the opportunities or near the metro stations, respectively. When the BRT and the metro transit operations are combined in the future scenario, the resulting distribution shows a significant increase in accessibility, particularly in the median and upper quartile. Regarding the median accessibility variation between scenarios, it expanded from 59.682 to 63.213 opportunities, which represents a 5,9\% increase. Similarly, the upper quartile value increased 4,3\% as it went from 86.057 to 89.743 opportunities.
 
 \begin{figure}[H]
     \centering
@@ -1129,14 +1134,14 @@ To more easily understand the overall accessibility impact of the metro transit 
 
 \section{Income groups}
 
-As part of assessing the results, this study examined the modelled accessibility values by the income level reported in each location across the study area. The income disaggregation analysis enables exploring which locations benefit the most and what socioeconomic conditions have been identified \citep{pereiraIntroductionUrbanAccessibility2023a}. As the demographic data has shown previously in section \ref{Demographics}, locations with reported high income were located in the north part of the city, while locations with low-income earners were in the south, southwest and west areas of Bogotá.
+As part of assessing the results, this study examined the modelled accessibility values by the income level reported in each location across the study area. The income disaggregation analysis enables exploring which locations benefit the most and what socioeconomic conditions have been identified \citep{pereiraIntroductionUrbanAccessibility2023a}. As the demographic data has shown previously in section \ref{Demographics}, locations with reported high income were located in the north part of the city, while locations with low-income earners were in the south, southwest and west areas of Bogotá. In this case, the first and tenth deciles would represent locations with the poorest and the wealthiest level of income. 
 
-Figure \ref{fig:Access_Income_Before_After} shows the location accessibility result by income decile for the before and the future.  
+In the current scenario, the locations with the lowest accessibility median results were the first and second decile locations groups. On the contrary, the locations with the highest median accessibility result were the fifth, sixth and seventh income decile groups. Figure \ref{fig:Access_Income_Before_After} shows the accessibility results by income decile for the before and the future. In that particular order, the income-grouped locations with the greatest single increases were the second, fourth, first and second. Overall, the income decile with the highest increase in the accessibility median is the third decile, which represents the locations with the third lower income level reported.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=13cm]{Data/Results/Images/Boxplot_Access_All_by_income_decile.png}
-    \caption{Before and after accessibility by income decile}
+    \caption{Current and future accessibility by income decile}
     \label{fig:Access_Income_Before_After}
 \end{figure}
 
@@ -1150,6 +1155,64 @@ Figure \ref{fig:Access_Income_Before_After} shows the location accessibility res
 
 
 \chapter{Discussion} \label{Chap6}
+
+The research exercise aimed to address the following research question: 
+
+\begin{center}
+    \textit{How would Bogot\'{a}\textquotesingle s future metro line contribute to improving access to opportunities?} 
+    %How would the public transportation accessibility spatially vary with the construction of Bogot\'{a}\textquotesingle s future metro system?}
+\end{center}
+
+The research question was addressed by recreating the transit circumstances, modelling the number of reachable opportunities and comparing the accessibility results between the current and the future scenario. This study spatially assessed how the future metro infrastructure and transit operation and the already functioning BRT system would increase the number of reachable opportunities. Furthermore, this study examined the future accessibility impact by disaggregating the results by the income level reported in each location in Bogotá.
+
+The study generated results that show the overall increase in accessibility, where this is more intensely happening, and what population groups benefit the most in terms of accessibility with the construction of the first Bogotá metro line.
+
+% Reference novelty component
+
+Regarding the reproducibility of this study, the code used to conduct the data analysis, preprocessing, modelling, and visualization is available in this \href{https://github.com/rpoandres/MSc_USS_Dissertation}{repository}, together with the maps and figures included in this document.
+
+\section{Implications}
+
+\subsection{Transit assessment}
+
+This study expanded the use of accessibility measures to spatially and socioeconomically assess the tangible benefits related to a transport infrastructure project \citep{bocarejos.TransportAccessibilitySocial2012,bocarejoAccessibilityAnalysisIntegrated2014,guzmanAssessingEquityTransport2017}. As accessibility modelling better integrates, both transit offers and the reachable locations of interest (opportunities), its use should be adopted by transport planning practitioners instead of considering standalone mobility-driven measures to support transport decision-making processes \citep{ferreiraAccessibilityGoldMobility2012}. It is important to realize that with the mere use of travel time analysis when assessing the impact of the future metro, the measure would have fallen short in reckoning the value of reaching new opportunities with the same commuting constraints.
+
+The method developed in this study models and analyses accessibility to any location of interest. This versatile feature of the methodology allows for conducting a multi-layer accessibility assessment. In that sense, accessibility assessment could account for a multi-opportunity type assessment depending on the specific circumstances and research purposes. An opportunity can entitle a location related to any circumstance like education, health, jobs and leisure. In other words, for any type of location of interest in the study area, an accessibility measure could be computed and reviewed individually or collectively when strategically assessing the suitability, sustainability and social inclusion of a transportation-related project \citep{pereiraIntroductionUrbanAccessibility2023a}. By having this multipurpose accessibility measure platform, the transport planning decisions can more easily be framed as part of initiatives that contribute to SDG \# 11 'Make cities and human settlements inclusive, safe, resilient and sustainable' \citep{unitednations17GOALSSustainable2015}. Furthermore, with the demographic disaggregation of results, in this case, done income decile, it is possible for local authorities and transport planning decision-makers to prioritize and allocate resources strategically to targeted population groups who might be experiencing a  more vulnerable and disadvantaged situation.
+
+
+
+
+\subsection{Future alternative scenario modelling}
+
+The research contributed to enabling the tools for facilitating alternative scenario modelling in addition to the already modelled future metro scenario. This study examined the future metro scenario and the current BRT transit operation as a standalone possibility following the transit operations' estimated performance and the physical location of the metro infrastructure. However, a wide range of modelling accessibility opportunities can be easily covered by expanding the spectrum of alternative scenarios. By including new alternative scenarios and expanding the input data, this study can be scaled to model accessibility under new transit circumstances systematically.
+
+The new alternative scenarios could rapidly provide insight into the impact of accessibility by modifying commuting duration thresholds, route paths, frequencies, timetables, and number of stations, among other transit specifications. As several inputs in the modelling process are structured based on general operational assumptions of the non-existent metro system, the inputs can be restructured and multiple alternative scenarios by modifying this assumption. An example of this is the relation between the travel speed of the metro and the timetables of the trips. The arrival and departure time schedules are constructed based on the stations' geographical location and the metro's expected travel speed. To follow the example, the tools employed in this study could deployed to replicate new possible versions of the system by changing the locations of the stations and/or the travel speed of the metro. This logic of simulation and experimentation workflow falls accurately into the outlook portrayed by \cite{wilsonFutureUrbanModelling2018, battyUrbanModeling2009a,longleyGeographicInformationScience2015} where urban modelling supported by geographic information system provided a digital to test and estimate variables of interest in future scenarios. 
+
+% Metro culture promotion
+% Preparing for the metro
+
+\section{Future research}
+
+\subsection{Sensibility and new measure possibilities}
+
+% New key performance indicators
+
+Regarding the further expansion of accessibility-driven measures, stating accessibility measures as the basis, platform and backbone of transport-related planning brings a wide range of new measures derived from accessibility. An example is ratios that could be calculated when designing a future transit operation or assessing an existing one. 
+
+By measuring the relationship between accessibility measures and other relevant measures related to transport through a ratio, they could contribute to a more informed decision as the ratio variables reflect both accessibility and strategic features of the project. The combination of accessibility-based measures and other components of the projects can more easily articulate the project stakeholders around the same social-equality-oriented accessibility strategy. As an illustration, a ratio between the increase in accessibility and the cost of increasing the carrying capacity of the metro, measured in passengers per hour per direction, can establish a cost-benefit relation between accessibility gains and the construction cost per kilometre. The same ratio exercise can be done with operational, financial and transit variables. Ultimately, an accessibility-based ratio will contribute to a more accessibility-aware culture and promote their use in any transport-related decision.
+
+\subsection{Additional transport modes}
+
+This study employed a multi-transport methodology that could be expanded to additional transport modes. As urban mobility includes more diversity in the modes available for commuting, so can the accessibility modelling process. 
+
+\subsection{Opportunities data refinement}
+
+\section{Limitations}
+
+\subsection{Demographic data resolution}
+
+\subsection{Transit conditions and assumptions}
+
 \chapter{Conclusion} \label{Chap7}
 
 
