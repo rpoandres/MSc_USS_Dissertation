@@ -35,7 +35,7 @@
 %\\ Centre for Advanced Spatial Analysis
 \\
 \\ \href{https://github.com/rpoandres/MSc_USS_Dissertation}{Code}
-\\ Word count: 10.344
+\\ Word count: 10.658
 \\
 %\\ University College London
 \\
@@ -73,7 +73,7 @@ This dissertation is submitted in part requirement for \\the \textit{MSc Urban S
 \begin{abstract}
 \input{0 Abstract}
 
-\keywords{Accessibility modelling - transport - land use}
+\keywords{Accessibility modelling - transport - land use - GTFS - Bogotá - Metro - sustainable transport}
 % \vspace{-10mm} %To remove added white space after
 \end{abstract}
 \newpage
@@ -104,7 +104,7 @@ I also feel grateful for the generosity of those who have shared their knowledge
 
 \thispagestyle{empty}
 \chapter*{Declaration}
-I, Andr\'{e}s Restrepo Jim\'{e}nez, hereby declare that this dissertation is all my own original work and that all sources have been acknowledged. It is 10.344 words in length. \\
+I, Andr\'{e}s Restrepo Jim\'{e}nez, hereby declare that this dissertation is all my own original work and that all sources have been acknowledged. It is 10.658 words in length. \\
 %Add signature png here.
 \begin{figure}[H]
 \includegraphics{Logos/Signature.jpg}
@@ -163,7 +163,7 @@ I, Andr\'{e}s Restrepo Jim\'{e}nez, hereby declare that this dissertation is all
 
 % The first announcement of the construction of Bogota's future metro system was on XXXXXX by XXXX. 
 
-On several occasions, the need for a higher-capacity public transportation system in Colombia's capital has taken great attention from the general public. The initial idea of building a metro in Bogot\'{a} goes back to the year 1942 when the current mayor at the time suggested the building of a new metro system as the functioning trolley car was highly demanded \citep{metrodebogotaHistoriaMetroBogota2011}. The previous versions of the project were unsuccessful in terms of their execution and compilation. However, each attempt reinforced the need to improve Bogota's public transportation system.
+The need for a high-capacity public transportation system in Colombia's capital has historically taken great attention from the general public. The initial idea of building a metro in Bogot\'{a} goes back to the year 1942 when the current mayor at the time suggested the building of a new metro system as the functioning trolley car was highly demanded \citep{metrodebogotaHistoriaMetroBogota2011}. The previous versions of the project were unsuccessful in terms of their execution and compilation. However, each attempt reinforced the need to improve Bogota's public transportation system.
 
 The scale and dimension of Colombia's capital, Bogot\'{a} can be measured from multiple angles. Population-wise, with 7.9 million people, it is the country's biggest city and accounts for 15\% of the country's total population, as Medell\'{i}n and Cali take second and third place with 5\% and 4\% of the total population, respectively \citep{daneProyeccionesPoblacionPopulation2023}. Regarding the city's economic role, it is the biggest economic hub with 25\% of the nation's GDP, followed similarly as in the population distribution by Medell\'{i}n and Cali, with 6\% and 4\%, respectively \citep{daneCuentasNacionalesDepartamentales2023}.
 
@@ -264,7 +264,7 @@ Drawing upon the references \cite{battyUrbanModeling2009a} and \cite{wilsonFutur
   \item Network analysis: It allows the study of the connections patterns that may arise between components to systematically assess the collective behaviour of components as a whole \citep{newmanNetworksIntroduction2010}.
   \begin{itemize}
       \item \cite{arcauteCitiesRegionsBritain2016} explored the urban and regional spatial hierarchical structures in the United Kingdom by applying different distance thresholds (percolation theory) in the street network.
-      \item 
+      \item \cite{zhongDetectingDynamicsUrban2014} conducted network analysis to examine the spatial structure of Singapore using daily "smart card" transit data.
   \end{itemize}
 \end{enumerate}
 
@@ -274,9 +274,9 @@ With the emergence of computational modelling, \cite{battyUrbanModeling2009a} de
 In a more prospective and industry-related exercise, \cite{wilsonFutureUrbanModelling2018} presented his view on how urban modelling will develop and prosper. Regarding tools and the inputs to further urban modelling development, \cite{wilsonFutureUrbanModelling2018} mentioned how big data and technological advancements will enable new capacities and input data to apply modelling in the urban context. Apart from the already relatively well-developed urban modelling tools designed for transport assessment and retail location intelligence, \cite{wilsonFutureUrbanModelling2018} listed other industries that could expand spatial modelling to support their location decision-making processes. Among the high-use modelling potential situations, \cite{wilsonFutureUrbanModelling2018} mentioned the energy sector, global trading models and the defence and security industry.
 
 
-Given these points, it was highlighted by \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018} how these modelling tools hold great value for both policymakers and private parties, as they manage to integrate theoretical constructs or business strategies and put them to the test through computational modelling \citep{battyUrbanModeling2009a}. Either from a public, private or research perspective, modelling tools applied to the urban context could provide decision-makers with new innovative insights and possible solutions to the numerous challenges that cities and society currently face across the globe.
+Given these points, it was highlighted by \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018} how these modelling tools hold great value for both policymakers and private parties, as they manage to integrate theoretical constructs or business strategies and put them to the test through computational modelling \citep{battyUrbanModeling2009a}. From a public, private or research perspective, modelling tools applied to the urban context could provide decision-makers with new innovative insights and possible solutions to the numerous challenges that cities and society currently face across the globe. Furthermore, \cite{battyUrbanModeling2009a} clarified that apart from the computational models mentioned above, GIS-based models are also part of the urban modelling domain and will be described in the next section of the present document.
 
-Furthermore, \cite{battyUrbanModeling2009a} clarified that apart from the computational models mentioned above, GIS-based models are also part of the urban modelling domain and will be described in the next section of the present document.
+As can be seen, the previous exercises together aimed to predict a future or alternative scenario by conducting urban modelling simulation. Urban modelling can provide valuable insight into the complex and interrelated phenomena that are the urban environment.
 
 % Used simulation to model future urban scenarios and deppe understanding on intertwined relations that happened in cities and regions
 
@@ -351,7 +351,7 @@ The geo-processing involved in GIS modelling relies on various geometrical and m
 % \end{itemize}
 
 
-In that sense, GIS can address a wide range of location-sensitive topics as they enable and support spatial modelling processes to test future scenarios according to the applicable use case.
+In that sense, GIS can be used as infrastructure and platform to address a wide range of location-sensitive topics as they enable and support spatial modelling processes to test future scenarios according to the applicable use case. Combining urban modelling techniques and GIS-based analysis enables many opportunities when spatially assessing a future or alternative scenario in the built environment. 
 
 
 \section{Accessibility modelling}
@@ -361,9 +361,7 @@ The concept of urban accessibility can be defined as the 'with which people can 
 It is important to realize that the universal meaning of accessibility can represent different concepts. \cite{pereiraIntroductionUrbanAccessibility2023a} presented how accessibility can be understood differently depending on the scale and the context where it is applied. On one hand, macro or urban accessibility refers to the effortless ability of people to reach locations of interest. On the other hand, micro-accessibility is related to how spaces are suitable for people with different levels of mobility or reasoning challenges. 
 
 
-% Mobility vs accessibility
-
-Likewise, accessibility and mobility are terms constantly used in the transport assessment context representing different concepts. Their main distinctive feature can be summarized 
+Likewise, accessibility and mobility are terms constantly used in the transport assessment context, representing different concepts. Their main distinctive feature can be summarized 
 as 'Accessibility,..., refers to the potential ability to reach activities and opportunities. While a mobility analysis would focus, for example, on the time people spend commuting...' \cite{pereiraIntroductionUrbanAccessibility2023a}. Regarding the benefits of introducing accessibility measures in transport planning, \cite{ferreiraAccessibilityGoldMobility2012} argued that planning practitioners should include accessibility measures as they better capture the real benefits in transport-related assessment.
 
 
@@ -417,7 +415,7 @@ Similarly, with a social and equality accessibility approach, \cite{guzmanAssess
 
 Subsequently, \cite{guzmanAccessibilityAffordabilityEquity2018} carried out a transport accessibility assessment that considered multiple fare subsidy scenarios. By formulating a possible fare subsidy scheme, \cite{guzmanAccessibilityAffordabilityEquity2018} spatially modelled the effect in affordability and accessibility derived from using the public transportation network.
 
-The main common purpose of previous research conducted in Bogotá was to assess the accessibility impact of the transportation system's future expansion, integration or fare scheme introduction. The accessibility measures were mostly assessed from a social and access-inequality perspective as results were disaggregated by population groups of interest.
+The main common purpose of previous research conducted in Bogotá was to assess the accessibility impact of the transportation system's future expansion, integration or fare scheme introduction. The accessibility measures were mostly assessed from a social and access-inequality perspective as results were disaggregated by population groups of interest. Overall, the conducted study falls in the same direction explored in the previous experiences regarding using accessibility measures to assess the suitability of a transport-related decision. Among the accessibility-oriented assessment, the novel feature of this study is the simulation of the future commuting conditions that the metro system would offer, together with the BRT's current operation.
 
 
 
