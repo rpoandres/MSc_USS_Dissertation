@@ -35,7 +35,7 @@
 %\\ Centre for Advanced Spatial Analysis
 \\
 \\ \href{https://github.com/rpoandres/MSc_USS_Dissertation}{Code}
-\\ Word count: XXXXX
+\\ Word count: 10.344
 \\
 %\\ University College London
 \\
@@ -79,7 +79,7 @@ This dissertation is submitted in part requirement for \\the \textit{MSc Urban S
 \newpage
 \thispagestyle{empty}
 \begin{center}
-I dedicate this ...
+I dedicate this to my beloved family, my dear friends and all who supported, inspired and encouraged me to experience all that has let me here today.
 \end{center}
 
 \newpage
@@ -98,11 +98,14 @@ Copyright \copyright  \thinspace 2023 by Andr\'{e}s Restrepo Jim\'{e}nez \\ All 
 \thispagestyle{empty}
 \chapter*{Acknowledgements}
 
+First, I would like to thank Dr. Fulvio Lopane for his advice and permanent support during this research exercise. His inputs and suggestions contributed largely to the envisioning and execution of this study.
+
+I also feel grateful for the generosity of those who have shared their knowledge, tools and previous experiences through the open-source community who ultimately enabled the compilation of this research.
 
 \thispagestyle{empty}
 \chapter*{Declaration}
-I, Andr\'{e}s Restrepo Jim\'{e}nez, hereby declare that this dissertation is all my own original work and that all sources have been acknowledged. It is xxx words in length. \\
-Add signature png here.
+I, Andr\'{e}s Restrepo Jim\'{e}nez, hereby declare that this dissertation is all my own original work and that all sources have been acknowledged. It is 10.344 words in length. \\
+%Add signature png here.
 \begin{figure}[H]
 \includegraphics{Logos/Signature.jpg}
 \end{figure}
@@ -127,12 +130,13 @@ Add signature png here.
 \chapter*{List of acronyms or abbreviations}
 \begin{sortedlist} %sort alphabetically
   \sortitem{BRT: Bus rapid transit}
-  \sortitem{GIS: Geopraphic information system}
+  \sortitem{GIS: Geographic information system}
   \sortitem{GTFS: General transit feed specification}
   \sortitem{GDP: Gross domestic product}
   \sortitem{SDP: Sustainability development goal}
   \sortitem{OSM: Open Street Map}
   \sortitem{PBF: Protocol Binary Format}
+  \sortitem{ZPU: Zoning planning unit}
   \end{sortedlist}
 % \end{singlespace}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -157,13 +161,13 @@ Add signature png here.
 
 % The first announcement of the construction of Bogota's future metro system was on XXXXXX by XXXX. 
 
-On several occasions, the need for a higher-capacity public transportation system in Colombia's capital has taken great attention from the general public. The initial idea of building a metro in Bogot\'{a} goes back to the year 1942 when the current mayor at the time suggested the building of a new metro system as the functioning trolley car was highly demanded \citep{metrodebogotaHistoriaMetroBogota2011}. The previous versions of the project were unsuccessful in terms of their execution and compilation, however, each attempt reinforced the need to improve Bogota's public transportation system.
+On several occasions, the need for a higher-capacity public transportation system in Colombia's capital has taken great attention from the general public. The initial idea of building a metro in Bogot\'{a} goes back to the year 1942 when the current mayor at the time suggested the building of a new metro system as the functioning trolley car was highly demanded \citep{metrodebogotaHistoriaMetroBogota2011}. The previous versions of the project were unsuccessful in terms of their execution and compilation. However, each attempt reinforced the need to improve Bogota's public transportation system.
 
 The scale and dimension of Colombia's capital, Bogot\'{a} can be measured from multiple angles. Population-wise, with 7.9 million people, it is the country's biggest city and accounts for 15\% of the country's total population, as Medell\'{i}n and Cali take second and third place with 5\% and 4\% of the total population, respectively \citep{daneProyeccionesPoblacionPopulation2023}. Regarding the city's economic role, it is the biggest economic hub with 25\% of the nation's GDP, followed similarly as in the population distribution by Medell\'{i}n and Cali, with 6\% and 4\%, respectively \citep{daneCuentasNacionalesDepartamentales2023}.
 
 Currently, the main mode of transportation in the city is a bus rapid transit (BRT) system that accounts for approximately 36\% of the total daily trips \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019}. Given the rapid population growth in Colombia's capital during the last decades of the 20th century, the 'Transmilenio' system started operations in the early '00s and was intended to provide a cost-efficient transport solution \citep{rodriguezValueAccessibilityBogota2004}. 
 
-By September 2016, the local and national governments finally materialized their intentions in a formal agreement to support the development of the metro project which led to the ongoing construction process that started in 2021. The project consists of the construction of the first of two future metro lines. The scope of this research will only include the first metro line in the future scenario as the final designs of the second metro line have not been published yet. 
+By September 2016, the local and national governments finally materialized their intentions in a formal agreement to support the development of the metro project, which led to the ongoing construction process that started in 2021. The project consists of constructing the first of two future metro lines. The scope of this research will only include the first metro line in the future scenario as the final designs of the second metro line have not been published yet. 
 
 The first metro line will have a 23,9-kilometre length overground track with 16 stations. With an investment of 12,95 billion COP (4,33\footnote{September 2017 average COP/USD rate: 2.991,42 \citep{bancodelarepublicaTasaCambioRepresentativa2023}} billion USD), the construction of the first line began in 2021 and is supposed to be finished by 2028.
 
@@ -176,22 +180,22 @@ The first metro line will have a 23,9-kilometre length overground track with 16 
 
 The improvement of the current transport infrastructure system in Colombia's capitals aims to impact a significant share of Bogot\'{a}'s population, as 1 in every 3 trips in the city relies on public transportation. According to Bogot\'{a} City Council, BRT is the primary mode of commuting, with 4,8 million trips a day \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019}. From the total of 13.4 million daily trips, BRT accounts for 36\% total trips, followed by walking\footnote{Pedestrian trips with length greater or equal to 15 minutes} and privately owned cars, with 24\% and 15\% of total trips, respectively.
 
+Although the current BRT network might be the primary provider of transit service in Bogotá, it has registered high congestion levels in the high-density corridors \citep{guzmanDensityorientedPublicTransport2021}. To spatially assess how the operation of BRT and metro systems would work in an aggregate manner in terms of accessibility, it is necessary to recreate the commuting conditions in a future and hypothetical scenario coupled with the current situation.
+
+The study conducted can provide insight into the use of accessibility measures in sustainability-oriented contexts. Contrary to travel time-based measures, accessibility could provide a more holistic and integral approach to transport accessibility assessments as it is influenced not just by the transport infrastructure. From a possible use in policy-making initiatives, expanding the spectrum of possible transport-related measures when assessing a transport infrastructure project can contribute to maximising the impact of the Sustainable Development Goals in general.
+
+% \begin{itemize}
 
 
-\begin{itemize}
-
-\item Congested BRT Network
-
-\item Brief intro to Bogota as a city and centre of economic and decision-making processes
-\item How does it contribute or prevent people to have better life quality
-\item It takes advantage of the use of publicly available data from transport and local authorities (spatial and non-spatial)
-  \item Provide technical tools to assess transport planning decision
-  \item Baseline reference for future or similar transport public policy decision making
-  \item Assess how the metro system designs address the accessibility of the inhabitants
-  \item Spatial reference for future local government intervention and investment decisions from the private sector
-  \item Highlight accessibility importance in an economic and urban context and How can it drive growth
-  \item Mention the impact on making cities more "liveable" and contribute to having a better life quality
-\end{itemize}
+% \item How does it contribute or prevent people to have better life quality
+% \item It takes advantage of the use of publicly available data from transport and local authorities (spatial and non-spatial)
+%   \item Provide technical tools to assess transport planning decision
+%   \item Baseline reference for future or similar transport public policy decision making
+%   \item Assess how the metro system designs address the accessibility of the inhabitants
+%   \item Spatial reference for future local government intervention and investment decisions from the private sector
+%   \item Highlight accessibility importance in an economic and urban context and How can it drive growth
+%   \item Mention the impact on making cities more "liveable" and contribute to having a better life quality
+% \end{itemize}
 
 \section{Research question}
 
@@ -230,63 +234,43 @@ The present research aims to address:
 
 \section{Modelling in the urban context}
 
-The use of modelling tools in the urban environment has gained popularity for analyzing high-complexity topics to support the decision-making process \citep{houApproachBuildingOccupancy2020}. As urban theories can be represented in mathematical models, the use of simulation processes allows researchers to experiment with possible outcomes in future urban scenarios \citep{battyUrbanModeling2009a}.
+The use of modelling tools in the urban environment has gained popularity for analyzing high-complexity topics to support the decision-making process \citep{houApproachBuildingOccupancy2020}. As urban theories can be represented in mathematical models, using simulation processes allows researchers to experiment with possible outcomes in future urban scenarios \citep{battyUrbanModeling2009a}.
 
-Regarding the urban modelling process as a discipline both, \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018}, presented past references to grasp a general notion of its historic evolution. On one hand, \cite{battyUrbanModeling2009a} stated how the first formal contributions on the topic go back to \cite{alonsoLocationLandUse1964}, the basis of the so-called new urban economics. Batty included a model-building process overview listing the main scientific and mathematics principles to consider. On the other hand, \cite{wilsonScienceCitiesRegions2012} highlighted the influence of \cite{lowryModelMetropolis1964} as a milestone in the urban modelling evolution and uses it as an example to explain urban modelling together with a full historical review of the field.
+Regarding the urban modelling process as a discipline both \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018} presented past references to grasp a general notion of its historical evolution. On the one hand, \cite{battyUrbanModeling2009a} stated how the first formal contributions go back to \cite{alonsoLocationLandUse1964}, the basis of the so-called new urban economics. Batty included a model-building process overview listing the main scientific and mathematics principles to consider. On the other hand, \cite{wilsonScienceCitiesRegions2012} highlighted the influence of \cite{lowryModelMetropolis1964} as a milestone in the urban modelling evolution and uses it as an example to explain urban modelling together with a full historical review of the field.
 
 Taking \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018} as references, the urban models can be grouped into three main categories: 
 
 \begin{enumerate}
   \item Land-use transportation: Conceptually based on the gravitational model \citep{wilsonFamilySpatialInteraction1971a}, it aims to predict the spatial interaction (flows) between land use, economic activity and the inherent transportation costs of spatial units within the area of study. Leveraging on the principles of Newton's model, these models forecast how spatial units would interact with one another considering the cost of interaction and attractiveness between them. As an example, \cite{lopaneLanduseTransportinteractionFramework2023} used the spatial interaction model to estimate the possible impact on the population's urban spatial allocation when major land use modification is done and massive transport infrastructure is put in place in Turin, Oxford and Athens.
-  \item Urban dynamics: Built on the principles used in ecological dynamic models and system dynamics, the urban dynamics models intend to derive the aggregate future dynamic activity or state that may result within an urban system through time.
-  \item Cellular automata and agent-based modelling: They aim to simulate the emergent aggregate result of individual agent-level actions in a system, as agents interact with both the environment and other agents.
-  \item Network analysis: It allows to study of the connections patterns that may arise between components to systematically assess the collective behaviour of components as a whole \citep{newmanNetworksIntroduction2010}.
+  \item Urban dynamics: Built on the principles used in ecological and system dynamics models, the urban dynamics models intend to derive the aggregate future dynamic activity or state that may result within an urban system through time.
+  \item Cellular automata and agent-based modelling: They aim to simulate the emergent aggregate result of individual agent-level actions in a system as agents interact with the environment and other agents. 
+  \item Network analysis: It allows the study of the connections patterns that may arise between components to systematically assess the collective behaviour of components as a whole \citep{newmanNetworksIntroduction2010}.
 \end{enumerate}
 
-With the emergence of computational modelling, \cite{battyUrbanModeling2009a} described how it allowed urban theories to be deployed in an experimental digital environment. As theoretical knowledge can be represented in mathematical models, the use of simulation processes allowed researchers to experiment with hypothetical circumstances and produce possible outcomes in future urban scenarios \citep{battyUrbanModeling2009a}.
+With the emergence of computational modelling, \cite{battyUrbanModeling2009a} described how it allowed urban theories to be deployed in an experimental digital environment. As theoretical knowledge can be represented in mathematical models, simulation processes allowed researchers to experiment with hypothetical circumstances and produce possible outcomes in future urban scenarios \citep{battyUrbanModeling2009a}.
 
 % Refernce to the futuro portraid by Wilson
 
-In a more prospective and industry-related exercise, \cite{wilsonFutureUrbanModelling2018} presented his view on how urban modelling will develop and prosper in the future. Regarding tools and the inputs to further urban modelling development, \cite{wilsonFutureUrbanModelling2018} mentioned how big data and technological advancements will enable new capacities and new input data to apply modelling in the urban context. Apart from the already relatively well-developed urban modelling tools designed for transport assessment and retail location intelligence, \cite{wilsonFutureUrbanModelling2018} listed other industries that could expand spatial modelling to support their location decision-making processes. Among the high-use modelling potential situations, \cite{wilsonFutureUrbanModelling2018} mentioned the energy sector, global trading models and the defence and security industry.
+In a more prospective and industry-related exercise, \cite{wilsonFutureUrbanModelling2018} presented his view on how urban modelling will develop and prosper. Regarding tools and the inputs to further urban modelling development, \cite{wilsonFutureUrbanModelling2018} mentioned how big data and technological advancements will enable new capacities and input data to apply modelling in the urban context. Apart from the already relatively well-developed urban modelling tools designed for transport assessment and retail location intelligence, \cite{wilsonFutureUrbanModelling2018} listed other industries that could expand spatial modelling to support their location decision-making processes. Among the high-use modelling potential situations, \cite{wilsonFutureUrbanModelling2018} mentioned the energy sector, global trading models and the defence and security industry.
 
-% Move to other section
-% Technological information developments for the last decades have enabled greater capture, storing and processing capacities \citep{krainesIntegratingDistributedComputational2011}, a more multidisciplinary and robust approach is now available when addressing built environment-related phenomena. 
 
 Given these points, it was highlighted by \cite{battyUrbanModeling2009a} and \cite{wilsonFutureUrbanModelling2018} how these modelling tools hold great value for both policymakers and private parties, as they manage to integrate theoretical constructs or business strategies and put them to the test through computational modelling \citep{battyUrbanModeling2009a}. Either from a public, private or research perspective, modelling tools applied to the urban context could provide decision-makers with new innovative insights and possible solutions to the numerous challenges that cities and society currently face across the globe.
 
 Furthermore, \cite{battyUrbanModeling2009a} clarified that apart from the computational models mentioned above, GIS-based models are also part of the urban modelling domain and will be described in the next section of the present document.
 
-% Mention to the groups described by Batty, complemented with the ones described by Clarke's article
-
-
-
-
-% which included the main model types, their applications and future uses for urban policy-making. 
-
-
-
-% In order to deploy these state-of-the-art computational tools on the subject of interest, data is required. Apart from the underlying theory of the model, data that intends to capture the topic of interest is essential to leverage computational models to contribute to urban-related topics. The expansion of urban modelling is highly related to the data availability to use as input in the simulation process. Luckily, there have been enormous 
-
-% Without input data for the modelling process, the future of urban modelling would be highly compromised, luckily that is not the case. 
-
-% Open data
-
-% Open government
-
-% Data science
 
 \section{Geographic information systems}
 
-Geographic information can be defined as the result of combining non-spatial data with their location in space. \cite{longleyGeographicInformationScience2015} defined geographic information as data that represents the 'what' and the 'where' features of anything. The 'what' component of the data would account for the attributes or non-spatial data captured and the 'when' is responsible for holding the coordinates that symbolise a specific location on earth.
+Geographic information can be defined as combining non-spatial data with their location in space. \cite{longleyGeographicInformationScience2015} defined geographic information as data representing the 'what' and the 'where' features of anything. The 'what' component of the data would account for the attributes or non-spatial data captured, and the 'when' is responsible for holding the coordinates that symbolise a specific location on Earth.
 
-According to \cite{maclachlanAppliedGeographicInformation2022} geographic information can be divided into two main data types:
+According to \cite{maclachlanAppliedGeographicInformation2022}, geographic information can be divided into two main data types:
 
 \begin{enumerate}
   \item Vector: Geographic vector data typically includes points, lines, polygons and grids.
   \item Raster: The raster format consists of a set of cell grids in which each cell holds a specific value. 
 \end{enumerate}
 
-To illustrate the use of geographic data, Figure \ref{fig:Fig_data_types} shows the fashion in which data type can deliver a fair representation of the real world, through the use of both vector and raster data.
+To illustrate the use of geographic data, Figure \ref{fig:Fig_data_types} shows how data type can deliver a fair representation of the real world through vector and raster data.
 
 \begin{figure}[htp]
     \centering
@@ -298,7 +282,7 @@ To illustrate the use of geographic data, Figure \ref{fig:Fig_data_types} shows 
 
 % Include image of types of data: Look in \cite{longleyGeographicInformationScience2015} or use image from Andys book
 
-The main use of geographic information is to represent the relative locations of features through a schematic and visual geographic model. With a certain level of abstraction, detail and scale, geographic modelling (mapping) produces knowledge related to the location and the features of the subject of study \citep{longleyGeographicInformationScience2015}. Hence, a geographic information system (GIS), consists of the systematic collection of geo-referenced attribute data. Gifted with powerful processing capabilities, 'GI systems are computer-based tools for collecting, storing, processing, analyzing, and visualizing geographic information' \citep{longleyGeographicInformationScience2015}.
+The main use of geographic information is to represent the relative locations of features through a schematic and visual geographic model. With a certain level of abstraction, detail and scale, geographic modelling (mapping) produces knowledge related to the location and the features of the subject of study \citep{longleyGeographicInformationScience2015}. Hence, a geographic information system (GIS) systematically collects geo-referenced attribute data. Gifted with powerful processing capabilities, 'GI systems are computer-based tools for collecting, storing, processing, analyzing, and visualizing geographic information' \citep{longleyGeographicInformationScience2015}.
 
 % Geographic model
 
@@ -310,9 +294,9 @@ The main use of geographic information is to represent the relative locations of
 
 % Reference to urban modelling for transport
 
-As computing does in most cases, computer-based GIS offers the capacity of processing data in a fraction of the time that would take if is performed manually. Similarly, the generation and capture capacity of location-related attributes has widespread \citep{longleyGeographicInformationScience2015}, as the use of digital means has expanded to support all kinds of services and activities. The conjunctions of these two circumstances are aligned with the future scenario portrayed by \cite{wilsonFutureUrbanModelling2018} with the use of urban modelling covering new unattended spatial modelling and analysis needs.
+As computing does in most cases, computer-based GIS offers the capacity to process data in a fraction of the time that it would take if it is performed manually. Similarly, the generation and capture capacity of location-related attributes has widespread \citep{longleyGeographicInformationScience2015}, as digital means have expanded to support all kinds of services and activities. The conjunctions of these two circumstances align with the future scenario portrayed by \cite{wilsonFutureUrbanModelling2018} with urban modelling covering new unattended spatial modelling and analysis needs.
 
-When leveraging GIS technology to contribute to a specific topic or situation, the use cases vary enormously. As an example of the versatility of GIS to address location-related topics, \citep{longleyGeographicInformationScience2015} listed possible scenarios which include:
+The use cases vary enormously when leveraging GIS technology to contribute to a specific topic or situation. As an example of the versatility of GIS to address location-related topics, \citep{longleyGeographicInformationScience2015} listed possible scenarios, which include:
 
 \begin{itemize}
 \item Impact assessment of possible transport infrastructure.
@@ -325,7 +309,7 @@ When leveraging GIS technology to contribute to a specific topic or situation, t
 \item Tourism navigation and reviewing tools.
 \end{itemize}
 
-The geo-processing involved in GIS modelling relies on a wide range of geometrical and mathematical operations. Depending on the type, nature and purpose of the modelling process, different computational procedures are performed to transform the inputs into the intended outcomes that hopefully contribute to the area of study. These methods are usually supported by processing algorithms composed of sequential simpler operations like time, distance, length and area computing. 
+The geo-processing involved in GIS modelling relies on various geometrical and mathematical operations. Depending on the modelling process's type, nature and purpose, different computational procedures are performed to transform the inputs into the intended outcomes that hopefully contribute to the area of study. These methods are usually supported by processing algorithms composed of sequential simpler operations like time, distance, length and area computing. 
 
 % As the GIS derive its operation in  geoprocessing workflows, next some examples of the intermediate results are listed:
 
@@ -345,59 +329,44 @@ The geo-processing involved in GIS modelling relies on a wide range of geometric
 % \end{itemize}
 
 
-In that sense, GIS can be used to address a wide range of location-sensitive topics as they enable and support spatial modelling processes to test future scenarios according to the applicable use case.
+In that sense, GIS can address a wide range of location-sensitive topics as they enable and support spatial modelling processes to test future scenarios according to the applicable use case.
 
-PENDING
-
-
-% Illustrate intermediate results
-
-% Feature management engineering
-% Geometry operations
-% Geoprocessing
-% format conversion
-% projection
-% Aggregation
-
-
-% REfenrece to specific GIS measures
 
 \section{Accessibility modelling}
 
 The concept of urban accessibility can be defined as the 'with which people can reach places and opportunities – or, conversely, a characteristic of places and opportunities in terms of how easily they can be reached by the population', \cite{geursAccessibilityEvaluationLanduse2004b} and \cite{neutensEquityUrbanService2010}. Alternatively, \cite{paezMeasuringAccessibilityPositive2012} further expands the definition by framing accessibility into two main components: 'the cost of travel...and the quality/quantity of opportunities'. The cost of travel can be understood as either the monetary cost or the duration or time of the trip to reach the destination, depending on the modelling setup and purpose.
 
-Important to realize that the universal meaning of the word accessibility can represent different concepts. \cite{pereiraIntroductionUrbanAccessibility2023a} presented how accessibility can be understood differently depending on the scale and the context where is applied. On one hand, macro or urban accessibility refers to the effortless ability of people in reaching locations of interest. On the other hand, micro-accessibility is related to how spaces are suitable for people with different levels of mobility or reasoning challenges. 
+It is important to realize that the universal meaning of accessibility can represent different concepts. \cite{pereiraIntroductionUrbanAccessibility2023a} presented how accessibility can be understood differently depending on the scale and the context where it is applied. On one hand, macro or urban accessibility refers to the effortless ability of people to reach locations of interest. On the other hand, micro-accessibility is related to how spaces are suitable for people with different levels of mobility or reasoning challenges. 
 
 
 % Mobility vs accessibility
 
-Likewise, accessibility and mobility are both terms constantly used in the transport assessment context that represent different concepts. Their main distinctive feature can be summarized 
-as 'Accessibility,..., refers to the potential ability to reach activities and opportunities. While a mobility analysis would focus, for example, on the time people spend commuting...' \cite{pereiraIntroductionUrbanAccessibility2023a}. Regarding the benefits of introducing the use of accessibility measures in transport planning, \cite{ferreiraAccessibilityGoldMobility2012} argued that planning practitioners should include accessibility measures as it better captures the real benefits in transport-related assessment.
+Likewise, accessibility and mobility are terms constantly used in the transport assessment context representing different concepts. Their main distinctive feature can be summarized 
+as 'Accessibility,..., refers to the potential ability to reach activities and opportunities. While a mobility analysis would focus, for example, on the time people spend commuting...' \cite{pereiraIntroductionUrbanAccessibility2023a}. Regarding the benefits of introducing accessibility measures in transport planning, \cite{ferreiraAccessibilityGoldMobility2012} argued that planning practitioners should include accessibility measures as they better capture the real benefits in transport-related assessment.
 
-% Reference to other authors in Colombian or non-Colombian cases
 
-From a global perspective, the aggregate results that urban accessibility provides can also be used to measure contributions related to sustainability. As the measure encapsulates the interaction between transport and opportunities, it explicitly relates to sustainability development goal \# 11 'Make cities and human settlements inclusive, safe, resilient and sustainable' \citep{unitednations17GOALSSustainable2015}. Under this sustainability development goal (SDG), both topics 'Sustainable transport' and 'Sustainable cities and human settlements' are aligned with the use of accessibility measurements, considering that it quantitatively captures the principles that these topics promote.
+From a global perspective, the aggregate results that urban accessibility provides can also be used to measure sustainability-related contributions. As the measure encapsulates the interaction between transport and opportunities, it explicitly relates to sustainability development goal \# 11 'Make cities and human settlements inclusive, safe, resilient and sustainable' \citep{unitednations17GOALSSustainable2015}. Under this sustainability development goal (SDG), both topics 'Sustainable transport' and 'Sustainable cities and human settlements' are aligned with accessibility measurements, considering that they quantitatively capture the principles that these topics promote.
 
-Regarding the interpretation and use of an accessibility-based measure, there are references in the urban development field.  
+There are references in the urban development field regarding the interpretation and use of accessibility-based measures.  
 
-\cite{pereiraIntroductionUrbanAccessibility2023a} highlighted how it manages to holistically capture the overall result of the transportation offer, the distribution of strategically important activities and the location of individuals within the study area. Additionally, \cite{pereiraIntroductionUrbanAccessibility2023a} stated how accessibility is also related to social inclusion as it accounts for not only the current functioning transport system but also how this system allows individuals to access the location of their interest.
+\cite{pereiraIntroductionUrbanAccessibility2023a} highlighted how it holistically captures the transportation offer's overall result, the distribution of strategically important activities and the location of individuals within the study area. Additionally, \cite{pereiraIntroductionUrbanAccessibility2023a} stated how accessibility is also related to social inclusion as it accounts for not only the current functioning transport system but also how this system allows individuals to access the location of their interest.
 
 \cite{papaAccessibilityInstrumentsPlanning2016} and \cite{boisjolyHowGetThere2017} stated how accessibility measures are used in transport assessment contexts. \cite{boisjolyHowGetThere2017} presented how accessibility measures favour a more systematic assessment of transportation needs being covered, although their use has not been widespread among transport planning practitioners as the authors expected. \cite{boisjolyHowGetThere2017} considered transport plans from cities in Europe, North America, Australia and Asia.
-In contrast, \cite{papaAccessibilityInstrumentsPlanning2016} showcased several European examples where accessibility measures were included in the assessment considered in routine planning practices.
+In contrast, \cite{papaAccessibilityInstrumentsPlanning2016} showcased several European examples where accessibility measures were included in the assessment in routine planning practices.
 
 % Brief explanation of accessibility measures
 
-Within accessibility, multiple measures are available to model how easily people can reach their destinations of interest. \cite{paezMeasuringAccessibilityPositive2012} and \cite{dijstOpportunitiesTransportMode2002}, presented a general review of the main groups of accessibility measures, which are summarized and listed next:
+Within accessibility, multiple measures are available to model how easily people can reach their destinations of interest. \cite{paezMeasuringAccessibilityPositive2012} and \cite{dijstOpportunitiesTransportMode2002} presented a general review of the main groups of accessibility measures, which are summarized and listed next:
 
 \begin{itemize}
   \item Place-based measures: The place-based measures aim to quantity the ability to reach opportunities from a specific location in space due to the spatial distribution of opportunities and the transport network available. These measures can be grouped as follows:
     \begin{itemize}
         \item Cumulative opportunity measures: The cumulative measure considers the total of opportunities that can be reached from a given location that complies with a time or travel cost threshold.
             \begin{itemize}
-                \item Active cumulative accessibility measure: It consists of the number of opportunities that a person located in a given location can access with ease within a threshold. 
+                \item Active cumulative accessibility measure: It consists of the number of opportunities a person in a given location can easily access within a threshold. 
                 \item Passive cumulative accessibility measure: It reflects the number of people that can reach a certain destination or opportunity without exceeding the travel cost threshold.
             \end{itemize}
-        \item Minimum travel cost: It maps the nearest locations of interest (opportunity) by considering the one destination with the lowest travel cost, either time or monetary cost.
+        \item Minimum travel cost: It maps the nearest locations of interest (opportunity) by considering the one destination with the lowest travel cost, either time or monetary.
         \item Gravity measures: Based on Newton's gravitational model, it accounts for variation in travel cost as the distance between the origin and destination location increases.
         \item Floating catchment area competition: The catchment area measure aims to account for the interaction between the offer of opportunities and the demand of individuals according to their spatial distribution and accessibility levels.
         
@@ -405,46 +374,30 @@ Within accessibility, multiple measures are available to model how easily people
   \item Person-based measures: In conjunction with the transport network and spatial opportunity distribution, this measure also considers the personal features of individuals in a given location in space.
 \end{itemize}
 
-% References to research
-
-
-
-% \begin{itemize}
-%   \item Success cases of the use of accessibility measures
-%   \item Reference to initiatives and efforts from NGO organizations related to urban accessibility: IBD, World Bank, GIZ.
-%   \item Reference to north and global south previous research
-% \end{itemize}
-
 \section{Colombia and the Bogot\'{a} study case}
 
-In the urban development field, there is an extended list of references related to the use of accessibility applied to transport assessments context. Particular interest in research activities has been expended on areas that have experienced migration and/or relatively more rapid urbanisation processes \citep{kojimaIntroductionPopulationMigration1996}. Latin america and Colombia are not excluded from this trend as the rapid urbanization reinforces the already present inequalities in cities \citep{wrightwendelAccessibilityUsabilityGreen2012,tellezUrbanDevelopmentBogota2018}.
+In urban development, there is an extended list of references related to accessibility applied to transport assessment contexts. Particular interest in research activities has been expended on areas that have experienced migration and/or relatively more rapid urbanisation processes \citep{kojimaIntroductionPopulationMigration1996}. Latin America and Colombia are not excluded from this trend as the rapid urbanization reinforces the already present inequalities in cities \citep{wrightwendelAccessibilityUsabilityGreen2012,tellezUrbanDevelopmentBogota2018}.
 
 
-Colombia's capital, Bogot\'{a} has been an area of study of multiple transport and accessibility-related research exercises. That should not come as a surprise considering the population growth that Bogot\'{a} and her surrounding municipalities have experienced over the last couple of decades. By 2017, Bogot\'{a} had almost doubled its population during the last 30 years and similarly did the near municipalities by increasing their population by almost 3 times during the same time period \citep{guzmanCityProfileBogota2017}.
+Colombia's capital, Bogot\'{a} has been an area of study of multiple transport and accessibility-related research exercises. That should not come as a surprise considering the population growth that Bogot\'{a} and her surrounding municipalities have experienced over the last couple of decades. By 2017, Bogot\'{a} had almost doubled its population during the last 30 years and similarly did the nearby municipalities by increasing their population by almost 3 times during the same period \citep{guzmanCityProfileBogota2017}.
 
-A milestone in Bogotá's transportation history was the operation start of its current BRT 'Transmilenio' system by the beginning of the 21st century \citep{rodriguezValueAccessibilityBogota2004}. Derived from the deployment and the integration of collective bus services in Bogotá, the resulting accessibility effect of the BRT system has been a popular element of study among transport and development-related researchers. The next paragraph intends to explore the previous research exercises that have expanded on the topic of interest of the present research. However, there are clearly other valuable contributions that could not be included due to practical limitations.
+A milestone in Bogotá's transportation history was the operation start of its current BRT 'Transmilenio' system by the beginning of the 21st century \citep{rodriguezValueAccessibilityBogota2004}. Derived from the deployment and the integration of collective bus services in Bogotá, the resulting accessibility effect of the BRT system has been a popular element of study among transport and development-related researchers. The next paragraph intends to explore the previous research exercises that have expanded on the present research topic of interest. However, there are clearly other valuable contributions that could not be included due to practical limitations.
 
 % It is clear that the BRT system provided the city with a functioning solution to integrate most of the collective bus services.
 
 Although it was not a proper accessibility assessment as defined in previous sections, \cite{rodriguezValueAccessibilityBogota2004} initially examined the relationship between proximity and land value and found that apparently there was a positive relation between the land price and the proximity to the BRT system stations. However, the influence might be underscored by the short time frame (2 years) between the measure and the operation kick-off of the BRT system.
 
-With a more straightforward social-inequality and accessibility approach, \cite{bocarejos.TransportAccessibilitySocial2012} performed an urban accessibility assessment on the city's BRT system. Considering that their main research goal was to generate an 'analysis tool that helps quantify and differentiate access inequalities' \cite{bocarejos.TransportAccessibilitySocial2012} highlighted the value of introducing the accessibility concept as part of the analysis. Additionally, the authors also considered economic individual constraints that the users might have in order to 'consider not only an indicator that relates the transport system to land use, but the real possibility of transport use and ease of access to the city opportunities depending on individual purchasing power' \cite{bocarejos.TransportAccessibilitySocial2012}.
+With a more straightforward social-inequality and accessibility approach, \cite{bocarejos.TransportAccessibilitySocial2012} performed an urban accessibility assessment on the city's BRT system. Considering that their main research goal was to generate an 'analysis tool that helps quantify and differentiate access inequalities' \cite{bocarejos.TransportAccessibilitySocial2012} highlighted the value of introducing the accessibility concept as part of the analysis. Additionally, the authors also considered economic individual constraints that the users might have to 'consider not only an indicator that relates the transport system to land use, but the real possibility of transport use and ease of access to the city opportunities depending on individual purchasing power' \cite{bocarejos.TransportAccessibilitySocial2012}.
 
-In a further exercise, \cite{bocarejoAccessibilityAnalysisIntegrated2014} expanded on the accessibility assessment by including additional variables related to the use and related benefit of the BRT system in Bogotá. As the BRT system progressively expanded and integrated more auxiliary routes intended to feed the main corridors of the system, their research purpose was to assess the impact of the integration in accessibility terms. As the integration of the auxiliary routes with the main BRT network was a novel situation at the time, \cite{bocarejoAccessibilityAnalysisIntegrated2014} included further variables in the assessment like the purchasing power of the users and cost/benefit ratio considering multiple possible fare schemes. The results confirmed the relevance of the use of accessibility measures as they found that the integration in fact generated time reductions in the periphery areas of the city, however, affordability constraints can materialize in low-income users \citep{bocarejoAccessibilityAnalysisIntegrated2014}.
+In a further exercise, \cite{bocarejoAccessibilityAnalysisIntegrated2014} expanded on the accessibility assessment by including additional variables related to the use and related benefit of the BRT system in Bogotá. As the BRT system progressively expanded and integrated more auxiliary routes intended to feed the main corridors of the system, their research purpose was to assess the impact of the integration in accessibility terms. As the integration of the auxiliary routes with the main BRT network was a novel situation at the time, \cite{bocarejoAccessibilityAnalysisIntegrated2014} included further variables in the assessment like the purchasing power of the users and cost/benefit ratio considering multiple possible fare schemes. The results confirmed the relevance of the use of accessibility measures as they found that the integration generated time reductions in the periphery areas of the city; however, affordability constraints can materialize in low-income users \citep{bocarejoAccessibilityAnalysisIntegrated2014}.
 
-Similarly, with a social and equality accessibility approach, \cite{guzmanAssessingEquityTransport2017} performed an accessibility assessment on at a more regional scale. Not only considering Bogotá capital district municipality, \cite{guzmanAssessingEquityTransport2017} included the surrounding municipalities in order to have a more regional-cohesive result. Additionally, privately owned cars, ordinary buses and BRT transportation modes were disaggregated to assess accessibility individually. In terms of the opportunities, that means the destination of interest,\cite{guzmanAssessingEquityTransport2017} particularly focused on jobs and education-related points of interest.
+Similarly, with a social and equality accessibility approach, \cite{guzmanAssessingEquityTransport2017} performed an accessibility assessment at a more regional scale. Not only considering Bogotá capital district municipality, \cite{guzmanAssessingEquityTransport2017} included the surrounding municipalities for a more regional-cohesive result. Additionally, privately owned cars, ordinary buses and BRT transportation modes were disaggregated to assess accessibility individually. Regarding the opportunities, that means the destination of interest,\cite{guzmanAssessingEquityTransport2017} particularly focused on jobs and education-related points of interest.
 
-Subsequently, \cite{guzmanAccessibilityAffordabilityEquity2018} carried out a transport accessibility assessment which considered multiple fare subsidy scenarios. By formulating a possible fare subsidy scheme, \cite{guzmanAccessibilityAffordabilityEquity2018} spatially modelled the effect in affordability and accessibility derived from the use of the public transportation network.
+Subsequently, \cite{guzmanAccessibilityAffordabilityEquity2018} carried out a transport accessibility assessment that considered multiple fare subsidy scenarios. By formulating a possible fare subsidy scheme, \cite{guzmanAccessibilityAffordabilityEquity2018} spatially modelled the effect in affordability and accessibility derived from using the public transportation network.
 
-The main common purpose of previous research conducted in Bogotá was to assess the accessibility impact of the transportation system's future expansion, integration or fare scheme introduction. The accessibility results were mostly also assessed from a social and access-inequality perspective as they were disaggregated by population groups of interest.
+The main common purpose of previous research conducted in Bogotá was to assess the accessibility impact of the transportation system's future expansion, integration or fare scheme introduction. The accessibility measures were mostly assessed from a social and access-inequality perspective as results were disaggregated by population groups of interest.
 
-% Reference the use of accesibility measures when the transport system is expanding, when a fare is changing, to access impact across different population groups of interest, etc
 
-% \begin{itemize}
-%   \item Reference to National (Colombia) and local government (Bogota) plans related to transport infrastructure (or in Chapter 3?)
-%   \item SGG in National development plan of Colombia
-%   \item Reference to research done in Bogota (or in Chapter 3?)
-% \end{itemize}
 
 \chapter{Data} \label{Chap3}
 
@@ -494,7 +447,7 @@ The following sections contain a general description of each input data used to 
 
 \subsection{BRT network}
 
-The transit information from the current BRT network systematically both the infrastructure and the transport operation. As the entity responsible for managing the operation of the BRT system, Transmilenio S.A. has published\footnote{Transit information dated 21/06/2023} their transit using a GTFS\footnote{GTFS: General transport feed specification} format. The GTFS format is an open-source standardized format that describes transport operations' main features. Numerous transport agencies are currently using this format as it integrates spatial data, fleet, fare and timetables \citep{pereiraIntroductionUrbanAccessibility2023a, mobiltydataGeneralTransitFeed2023}.
+The transit information from the current BRT network systematically both the infrastructure and the transport operation. As the entity responsible for managing the operation of the BRT system, Transmilenio S.A. has published\footnote{Transit information dated 21/06/2023} their transit using a GTFS\footnote{GTFS: General transport feed specification} format. The GTFS format is an open-source standardized format that describes transport operations' main features. Numerous transport agencies currently use this format as it integrates spatial data, fleet, fare and timetables \citep{pereiraIntroductionUrbanAccessibility2023a, mobiltydataGeneralTransitFeed2023}.
 
 GTFS data comprises tables containing spatial and non-spatial features of the transportation system. Through key fields to trace relationships between the multiple tables, GTFS characterises multimode systems, their routes, fares, frequencies, and timetables, among other features. For example, Figure \ref{fig:GTFS_structure} illustrates the general structure of GTFS data and how the tables relate. Similarly, Table \ref{tab:GTFS_description}, describes the main features of every table in the GTFS data structure.
 
@@ -581,7 +534,7 @@ Figure \ref{fig:Metro_Network} presents the track locations, stations, and Bogot
 
 \section{Land use}
 
-Land use data allows classifying properties according to their predominant economic use. Through terrain spatial data published by \cite{alcaldiadebogotad.c.DestinoEconomicoPredominante2022} it is possible to compute the spatial distribution of properties by their primary land use. Figure \ref{fig:Land_Use_Commercial} shows the spatial distribution of terrains in bogotá classified as commercial corridor land use, with clusters mainly in the east zone of Bogotá. 
+Land use data allows classifying properties according to their predominant economic use. Through terrain spatial data published by \cite{alcaldiadebogotad.c.DestinoEconomicoPredominante2022} it is possible to compute the spatial distribution of properties by their primary land use. Figure \ref{fig:Land_Use_Commercial} shows the spatial distribution of terrains in Bogotá classified as commercial corridor land use, with clusters mainly in the east zone of Bogotá. 
 
 \begin{figure}[H]
     \centering
@@ -595,11 +548,11 @@ Land use data allows classifying properties according to their predominant econo
 % Reference to the survey
 % Reference to the GIS layer
 
-With a multipurpose approach, \cite{secretariadistritaldeplaneacionCapaGeograficaEncuesta2023} gathered information through a survey from Bogotá's households. The multipurpose survey captured multiple variables at a residential, household and personal level of Bogotá's population. Among the topics covered in the survey, it included variables related to living conditions, housing, utilities, health, education and demographics.
+With a multipurpose approach, \cite{secretariadistritaldeplaneacionCapaGeograficaEncuesta2023} gathered information through a survey from Bogotá's households. The multipurpose survey captured multiple variables at a residential, household and personal level of Bogotá's population. Among the topics covered in the survey it included variables related to living conditions, housing, utilities, health, education and demographics.
 
 The survey data has been gone through an anonymization procedure done by \cite{secretariadistritaldeplaneacionMicrodatosEncuestaMultiproposito2023} to keep non-spatial and spatial attributes unexposed. The residential location of the public surveyed is not published. However, the data can be spatially aggregated by the zoning planning unit (ZPU) used by Bogotá City Council as a spatial-administrative subdivision of their main boroughs. As the survey microdata contains the corresponding ZPU where each survey was collected, it is possible to aggregate the results spatially. 
 
-Figure \ref{fig:Demo_Income_ZPU} present the median household income by ZPU in Bogotá. The highest median income values are registered in the northeast part of the city, while the lowest are found in the south and southwest area.
+Figure \ref{fig:Demo_Income_ZPU} present the median household income by ZPU in Bogotá. The highest median income values are registered in the northeast part of the city, while the lowest are found in the south and southwest areas.
 
 \begin{figure}[H]
     \centering
@@ -627,9 +580,6 @@ Hence, this study measured urban accessibility for the current and future metro 
 \end{figure}
 
 First, this study generated projected transit data for the metro system based on the main features and spatial data already published by Bogotá's local authorities. Second, land use and demographic data are integrated into a spatial framework to track the spatial distribution of economic activity and to assess living conditions in Bogotá's inhabitants spatially. Finally, by integrating transit information from before and after scenarios, the study maps how the accessibility levels will spatially vary by population groups of interest with the construction and operation of the new metro system. The analysis, preprocessing, modelling and visualization process was conducted using R Programming Language. For the accessibility modelling process, the study used the R5R library to produce the results and the accessibility library as a control method.
-
-
-
 
 
 \section{Ethics}
@@ -669,7 +619,7 @@ The geographical analysis unit used in this study is a hexagon grid. The hexagon
 
 \section{Workflow for data preparation}
 
-To correctly model accessibility, transport infrastructure data, land use data and demographic data should be all combined in the same framework, as they are the main element influencing urban accessibility \citep{pereiraIntroductionUrbanAccessibility2023a}. Figure \ref{fig:Workflow_Summary} summarises the preprocessing workflow to transform the input data into the appropriate format data for the accessibility modelling. As described in Table \ref{tab:Data_summary}, the BRT data, the street network and the metro data will comprise the transport infrastructure component, while the land use data and the survey data will form the land use and demographic component, respectively.
+To correctly model accessibility, transport infrastructure data, land use data and demographic data should be all combined in the same framework, as they are the main elements influencing urban accessibility \citep{pereiraIntroductionUrbanAccessibility2023a}. Figure \ref{fig:Workflow_Summary} summarises the preprocessing workflow to transform the input data into the appropriate format data for the accessibility modelling. As described in Table \ref{tab:Data_summary}, the BRT data, the street network and the metro data will comprise the transport infrastructure component, while the land use data and the survey data will form the land use and demographic component, respectively.
 
 \begin{figure}[H]
     \centering
@@ -709,11 +659,11 @@ The agency table in the GTFS data structure contains general information on the 
 
 \subsection{Routes}
 
-The scope of the current metro construction project includes the metro infrastructure for the first line, and so does the scope of this research. The track of the metro line draws a line in a north-south line in the east zone of Bogotá to further go to the southwest of the city, as shown in Figure \ref{fig:Metro_Network} . For modelling purposes, this research will consider to possible routes:
+The scope of the current metro construction project includes the metro infrastructure for the first line, and so does the scope of this research. The track of the metro line draws a north-south line in the east zone of Bogotá to further go to the southwest of the city, as shown in Figure \ref{fig:Metro_Network} . For modelling purposes, this research will consider two possible routes:
 
 \begin{itemize}
 \item South route: The southern route will begin in the station located further southwest of the city and finish in the station located further north.
-\item North route: The northern route will start in the further north located station and end at the station further southwest in Bogotá.
+\item North route: The northern route will start at the further north located station and end at the station further southwest in Bogotá.
 \end{itemize}
 
 \begin{table}[ht]
@@ -739,8 +689,6 @@ As shown in Table \ref{tab:Metro_Routes}, the route must include the general ide
 The trips represent the service unit of the transit service. A trip for each route will be considered in the modelling as shown in Table \ref{tab:Metro_Trips}. Apart from the identification data from each trip, the trip data also include a reference to the shape table in the shape\_id field, which will be explained later.
 
 
-
-
 \begin{table}[ht]
 \centering
 \renewcommand{\arraystretch}{1.5}
@@ -758,7 +706,7 @@ The trips represent the service unit of the transit service. A trip for each rou
 
 \subsection{Calendar and Calendar Dates}
 
-The calendar and calendar date table allows the transit planning practitioners to schedule with days of the week when will the service of a trip operates and what particular date can be a service included or omitted from the operation. The scheduling structure of the metro service was based on the published schedule of the current BRT service. Both tables for the metro service are presented in Table \ref{tab:Metro_Calendar} and Table \ref{tab:Metro_Calendar_Dates}, respectively.
+The calendar and calendar date table allow transit planning practitioners to schedule the days of the week when the service of a trip operates and what particular date can be included or omitted from the operation. The scheduling structure of the metro service was based on the published schedule of the current BRT service. Both tables for the metro service are presented in Table \ref{tab:Metro_Calendar} and Table \ref{tab:Metro_Calendar_Dates}, respectively.
 
 \begin{table}[ht]
 \centering
@@ -780,7 +728,7 @@ The calendar and calendar date table allows the transit planning practitioners t
 \label{tab:Metro_Calendar}
 \end{table}
 
-Using the service\_id field, the calendar table allows to establish different types of service scheduling by weekday in a specific date range. Similarly, the calendar dates table can add or remove a service from a specific date, according to the value in the exception\_type field.
+Using the service\_id field, the calendar table allows establishing different types of service scheduling by weekday in a specific date range. Similarly, the calendar dates table can add or remove a service from a specific date according to the value in the exception\_type field.
 
 \begin{table}[ht]
 \centering
@@ -805,7 +753,7 @@ Using the service\_id field, the calendar table allows to establish different ty
 
 The shape table contains the geometry of the path of the trip. As the track path of the future metro has already been published in a spatial format, the shape table data will be structured based on the publicly available geometry of the metro track. As the modelling will be based on the assumption of one trip for each of the north and south routes, the geometry of the trips will only differ in the sequential order in which they travel the path.
 
-Table \ref{tab:Metro_Shapes} shows a preview of the result of converting the spatial data of the track path into the shape table GTFS format. The shapes table contains the longitude and latitude coordinates of the path in the shape\_pt\_lon and shape\_pt\_lat fields, respectively. Equally important, the table indicates the sequential order in which the transit service will travel the path with an ascending integer values sequence in the shape\_pt\_sequence field.
+Table \ref{tab:Metro_Shapes} shows a preview of the result of converting the spatial data of the track path into the shape table GTFS format. The shapes table contains the longitude and latitude coordinates of the path in the shape\_pt\_lon and shape\_pt\_lat fields, respectively. Equally important, the table indicates the sequential order where the transit service will travel the path with an ascending integer values sequence in the shape\_pt\_sequence field.
 
 \begin{table}[ht]
 \centering
@@ -873,11 +821,11 @@ The metro company, jointly with Bogotá's city council, have stated that the met
 \label{tab:Metro_Stop_Times}
 \end{table}
 
-Important to realize that the arrival and departure times listed in Table \ref{tab:Metro_Stop_Times} assume that the transit user would be aboard instantly. Although unrealistic, this was kept intentionally in this matter. After reviewing the BRT GTFS data \citep{transmilenios.a.GTFSEstaticos202306212023}, the arrival and departure time of all BRT transit presented the same behaviour. Hence, for modelling proposes, the resulting metro GTFS data will reflect this similarly to prevent artificially affecting the competitiveness between modes.
+It is important to realize that the arrival and departure times listed in Table \ref{tab:Metro_Stop_Times} assume that the transit user would be aboard instantly. Although unrealistic, this was kept intentionally in this matter. After reviewing the BRT GTFS data \citep{transmilenios.a.GTFSEstaticos202306212023}, all BRT transit's arrival and departure times presented the same behaviour. Hence, for modelling proposes, the resulting metro GTFS data will reflect this similarly to prevent artificially affecting the competitiveness between modes.
 
 \subsection{Frequencies}
 
-The frequencies table accounts for how often the trips depart from their respective first station during the day. The frequency of travel will vary depending on the current commuting temporal patterns in Bogotá. According to \cite{alcaldiadebogotad.c.EncuestaMovilidad20192019}, the schedule will assume a peak hour between 5:30 and 9:00 am and 4:00 and 7:00 pm. During the peak and non-peak hours, the frequencies of the trips will be one every 3 minutes and one every 15 minutes, respectively. The seconds' values in the headwat\_secs field express the hourly differentiated schedule for the time ranges established in the start\_time and end\_time fields.
+The frequencies table accounts for how often the trips depart from their respective first station during the day. The frequency of travel will vary depending on the current commuting temporal patterns in Bogotá. According to \cite{alcaldiadebogotad.c.EncuestaMovilidad20192019}, the schedule will assume a peak hour between 5:30 and 9:00 a.m. and 4:00 and 7:00 p.m. During the peak and non-peak hours, the frequencies of the trips will be one every 3 minutes and one every 15 minutes, respectively. The seconds' values in the headwat\_secs field express the hourly differentiated schedule for the time ranges established in the start\_time and end\_time fields.
 
 \begin{table}[ht]
 \centering
@@ -905,10 +853,8 @@ The study uses a hexagon grid as a common spatial observation unit for both the 
 
 \subsection{Land use}
 
-% Reference to spatial join + count
-% Include map
 
-The land use data published by \cite{alcaldiadebogotad.c.DestinoEconomicoPredominante2022} is a spatial shapefile format containing the registered perimeter boundary of all terrains. Each feature represented the geometry of the terrain, and the land use category was stored in a character column in the spatial dataset.
+The land use data published by \cite{alcaldiadebogotad.c.DestinoEconomicoPredominante2022} is a spatial shapefile format containing the registered perimeter boundary of all terrains. Each feature represented the geometry of the terrain, and the land use category was stored in a character column in the spatial data set.
 
 To aggregate land use data to the hexagon grid, the intersecting geometries of every terrain were counted and grouped by their respective land use case to count for the number of each land use terrain location within each hexagon grid. Henceforth, the resulting grid contained the terrain for every land use category. As the hexagon grid has a homogeneous area, the results can be interpreted as the terrain density by hexagon for the land use category of interest. Figure \ref{fig:Opportunities_Spatial} presents the resulting hexagon grid for the commercial corridor land use density.
 
@@ -919,7 +865,6 @@ To aggregate land use data to the hexagon grid, the intersecting geometries of e
     \label{fig:Opportunities_Spatial}
 \end{figure}
 
-% Refefence of where are the opportunities in bogota
 
 \subsection{Demographics} \label{Demographics}
 
@@ -969,7 +914,7 @@ It is important to notice that the walking mode is included in all scenarios, an
 
 \section{Accessibility modelling}
 
-The cumulative accessibility modelling was calculated using the R5R library \citep{pereiraR5rRapidRealistic2021} with R Programming Language. The library calculates accessibility by performing tree main procedures. Next, each procedure is described, indicating the inputs required for each one:
+The cumulative accessibility modelling was calculated using the R5R library \citep{pereiraR5rRapidRealistic2021} with R Programming Language. The library calculates accessibility by performing four main procedures. Next, each procedure is described, indicating the inputs required for each one:
 
 \begin{enumerate}
     \item Building multi-mode network: Based on the GTFS data and the street network, a multi-transport mode connects origins and destinations according to the available infrastructure.
@@ -982,7 +927,7 @@ The cumulative accessibility modelling was calculated using the R5R library \cit
 
 \subsection{Inputs} \label{Inputs}
 
-The input data provided for each scenario should be aligned with the transit and infrastructure each scenario aim to model. Table \ref{tab:Inputs_By_Scenario} indicates with a check mark the inputs considered for the before and after scenarios as described in \ref{fig:Method_Summary}, together with the additional control scenarios stated in subsection \ref{Scenarios}.
+The input data provided for each scenario should be aligned with the transit and infrastructure each scenario aims to model. Table \ref{tab:Inputs_By_Scenario} indicates with a check mark the inputs considered for the before and after scenarios as described in \ref{fig:Method_Summary}, together with the additional control scenarios stated in subsection \ref{Scenarios}.
 
 
 \begin{table}[H]
@@ -1004,7 +949,7 @@ Metro + walking & \checkmark &       & \checkmark \\ \hline
 
 % Reference to the threshold
 
-The parameters of the accessibility modelling procedure allow configuring the transit and commuting conditions considered in the urban accessibility computation. Among the conditions that the R5R parameters can simulate in the accessibility modelling are the maximum walking duration and the total maximum commuting duration. Considering the average travel times when using one motorized transit mode in Bogotá \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019}, the maximum walking time and total trip duration had values of 30 and 60 minutes, respectively.
+The parameters of the accessibility modelling procedure allow configuring the transit and commuting conditions considered in the urban accessibility computation. The conditions that the R5R parameters can simulate in the accessibility modelling are the maximum walking duration and total commuting duration. Considering the average travel times when using one motorized transit mode in Bogotá \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019}, the maximum walking time and total trip duration had values of 30 and 60 minutes, respectively.
 
 \chapter{Results} \label{Chap5}
 
@@ -1017,46 +962,6 @@ The accessibility results show the number of reachable opportunities within a tr
 Figure \ref{fig:Results_Opportunities} shows the spatial distribution of opportunities in Bogotá. The accessibility measure accounts for the number of these opportunities from a given location in space that can be reached according to the mode or modes of transportation considered in every scenario. Commercial corridor-related opportunities are spread in the city's west, southwest, east and northeast parts. However, the opportunities appeared clustered in the city's east and northeast parts.
 
 
-
-% Hide working figure
-% \begin{figure}[H]
-%     \centering
-%     \begin{minipage}{0.45\textwidth}
-%         \centering
-%         \includegraphics[width=1.3\linewidth]{Data/Results/Images/Opportunities_COD_21.png}
-%          \caption{Opportunities}
-%         \label{fig:Results_Opportunities}
-%     \end{minipage}%
-%     \hfill
-%     \begin{minipage}{0.45\textwidth}
-%         \centering
-%         \includegraphics[width=1.3\linewidth]{Data/Results/Images/Access_Walk_base.png}
-%         \caption{Walking}
-%         \label{fig:Results_Walking}
-%     \end{minipage}
-%     \centering
-%     \begin{minipage}{0.45\textwidth}
-%         \centering
-%         \includegraphics[width=1.3\linewidth]{Data/Results/Images/Access_BRT_base.png}
-%          \caption{BRT}
-%         \label{fig:Results_Opportunities}
-%     \end{minipage}%
-%     \hfill
-%     \begin{minipage}{0.45\textwidth}
-%         \centering
-%         \includegraphics[width=1.3\linewidth]{Data/Results/Images/Access_Metro_base.png}
-%         \caption{Metro}
-%         \label{fig:Results_Walking}
-%     \end{minipage}
-    
-%     \centering
-%     \begin{minipage}{0.45\textwidth}
-%         \centering
-%         \includegraphics[width=1.3\linewidth]{Data/Results/Images/Opportunities_COD_21.png}
-%          \caption{BRT and metro}
-%         \label{fig:Results_Opportunities}
-%     \end{minipage}
-% \end{figure}
 
 \begin{figure}[H]
     \centering
@@ -1079,7 +984,7 @@ The accessibility results for the walking scenario presented in Figure \ref{fig:
 
 The process recreates the current scenario's transit condition once the BRT transit operation is included in the modelling inputs. Figure \ref{fig:Access_BRT_Base} presents the accessibility results when enabling the walking and BRT modes. The results show how the BRT transit operation contributes favourably to increasing the accessibility of locations across the city. The locations with high accessibility values in the just walking scenario are no longer those with the highest accessibility values. Due to the BRT transit operation, new locations can reach more opportunities within the same 30-minute walking threshold and the 60-minute total duration limit. Although the commuting conditions in the current modelled scenario do not consider additional modes like bicycles or privately owned cars, it simulates the current commuting situation of 36\% of daily commutes \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019}.
 
-To disaggregate the metro accessibility impact, the results for only metro scenario were modelled. Figure  \ref{fig:Results_Metro_Base} shows the accessibility result as a footprint of the route of the future metro line. As the walking mode is included in all scenarios, the accessibility increase is higher in the locations near the stations. The effect smoothly decreases as the walking commuting increases until it no longer complies with the duration thresholds.
+To disaggregate the metro accessibility impact, the results for only metro scenario were modelled. Figure \ref{fig:Results_Metro_Base} shows the accessibility result as a footprint of the route of the future metro line. As the walking mode is included in all scenarios, the accessibility increase is higher in the locations near the stations. The effect smoothly decreases as the walking commuting increases until it no longer complies with the duration thresholds.
 
 
 
@@ -1115,7 +1020,7 @@ In like manner, the future scenario recreates the future accessibility situation
     \label{fig:Access_Variation}
 \end{figure}
 
-Figure \ref{fig:Access_Variation} shows the locations with the highest accessibility variation in the future scenario. These locations can be classified into tree groups, each group with its particular circumstances, as described next:
+Figure \ref{fig:Access_Variation} shows the locations with the highest accessibility variation in the future scenario. These locations can be classified into three groups, each group with its particular circumstances, as described next:
 
 \begin{itemize}
     \item Western area: The west area experienced the highest accessibility increase in the city. The accessibility increase was registered in two angles. First, the west zone had the polygon with the highest accessibility increase. The highest accessibility variation value was registered near the first station when travelling west to east on the northbound route. Second, the west Bogotá area had the largest group of adjacent hexagons, with a significant increase in Bogotá. Particularly in this area, the future metro transit operation, together with the current BRT operation, causes both situations as it allows to reach a larger opportunity number within the 30-minute walk and 60-minute total duration thresholds.
@@ -1123,7 +1028,7 @@ Figure \ref{fig:Access_Variation} shows the locations with the highest accessibi
     \item Eastern area: Similarly to the southeast area, the east zone experienced increased accessibility. Locations in the eastern area had slightly higher variations than the southeast area, although the highest variations in Bogotá are still in the western area. The barely superior values in the eastern area compared to the southeast are mainly explained by more opportunities.
 \end{itemize}
 
-To more easily understand the overall accessibility impact of the metro transit operation, the distributional features of the accessibility value can be analyzed in each scenario. Figure \ref{fig:Boxplot_Access_Scenarios} shows the distribution of the accessibility results in a boxplot format for each scenario. When disaggregated, both walking and metro show possible outliers. These cases might be related to atypical privileged locations for each mode, either related to being close to the opportunities or near the metro stations, respectively. When the BRT and the metro transit operations are combined in the future scenario, the resulting distribution shows a significant increase in accessibility, particularly in the median and upper quartile. Regarding the median accessibility variation between scenarios, it expanded from 59.682 to 63.213 opportunities, which represents a 5,9\% increase. Similarly, the upper quartile value increased 4,3\% as it went from 86.057 to 89.743 opportunities.
+To more easily understand the overall accessibility impact of the metro transit operation, the distributional features of the accessibility value can be analyzed in each scenario. Figure \ref{fig:Boxplot_Access_Scenarios} shows the distribution of the accessibility results in a boxplot format for each scenario. When disaggregated, both walking and metro show possible outliers. These cases might be related to atypical privileged locations for each mode, either related to being close to the opportunities or near the metro stations, respectively. When the BRT and the metro transit operations are combined in the future scenario, the resulting distribution shows a significant increase in accessibility, particularly in the median and upper quartile. Regarding the median accessibility variation between scenarios, it expanded from 59.682 to 63.213 opportunities, which represents a 5,9\% increase. Similarly, the upper quartile value increased by 4.3\% from 86.057 to 89.743 opportunities.
 
 \begin{figure}[H]
     \centering
@@ -1163,11 +1068,10 @@ The research exercise aimed to address the following research question:
     %How would the public transportation accessibility spatially vary with the construction of Bogot\'{a}\textquotesingle s future metro system?}
 \end{center}
 
-The research question was addressed by recreating the transit circumstances, modelling the number of reachable opportunities and comparing the accessibility results between the current and the future scenario. This study spatially assessed how the future metro infrastructure and transit operation and the already functioning BRT system would increase the number of reachable opportunities. Furthermore, this study examined the future accessibility impact by disaggregating the results by the income level reported in each location in Bogotá.
+The research question was addressed by recreating the transit circumstances, modelling the number of reachable opportunities and comparing the accessibility results between the current and the future scenario. This study spatially assessed how the future metro infrastructure and transit operation and the already functioning BRT system would increase the number of reachable opportunities. A novel feature of the study was the creation of the transit specification for the metro service in GTFS format, considering that the first line is supposed to start operations in 2028. Furthermore, this study examined the future accessibility impact by disaggregating the results by the income level reported in each location in Bogotá.
 
 The study generated results that show the overall increase in accessibility, where this is more intensely happening, and what population groups benefit the most in terms of accessibility with the construction of the first Bogotá metro line.
 
-% Reference novelty component
 
 Regarding the reproducibility of this study, the code used to conduct the data analysis, preprocessing, modelling, and visualization is available in this \href{https://github.com/rpoandres/MSc_USS_Dissertation}{repository}, together with the maps and figures included in this document.
 
@@ -1177,9 +1081,7 @@ Regarding the reproducibility of this study, the code used to conduct the data a
 
 This study expanded the use of accessibility measures to spatially and socioeconomically assess the tangible benefits related to a transport infrastructure project \citep{bocarejos.TransportAccessibilitySocial2012,bocarejoAccessibilityAnalysisIntegrated2014,guzmanAssessingEquityTransport2017}. As accessibility modelling better integrates, both transit offers and the reachable locations of interest (opportunities), its use should be adopted by transport planning practitioners instead of considering standalone mobility-driven measures to support transport decision-making processes \citep{ferreiraAccessibilityGoldMobility2012}. It is important to realize that with the mere use of travel time analysis when assessing the impact of the future metro, the measure would have fallen short in reckoning the value of reaching new opportunities with the same commuting constraints.
 
-The method developed in this study models and analyses accessibility to any location of interest. This versatile feature of the methodology allows for conducting a multi-layer accessibility assessment. In that sense, accessibility assessment could account for a multi-opportunity type assessment depending on the specific circumstances and research purposes. An opportunity can entitle a location related to any circumstance like education, health, jobs and leisure. In other words, for any type of location of interest in the study area, an accessibility measure could be computed and reviewed individually or collectively when strategically assessing the suitability, sustainability and social inclusion of a transportation-related project \citep{pereiraIntroductionUrbanAccessibility2023a}. By having this multipurpose accessibility measure platform, the transport planning decisions can more easily be framed as part of initiatives that contribute to SDG \# 11 'Make cities and human settlements inclusive, safe, resilient and sustainable' \citep{unitednations17GOALSSustainable2015}. Furthermore, with the demographic disaggregation of results, in this case, done income decile, it is possible for local authorities and transport planning decision-makers to prioritize and allocate resources strategically to targeted population groups who might be experiencing a  more vulnerable and disadvantaged situation.
-
-
+The method developed in this study models and analyses accessibility to any location of interest. This versatile feature of the methodology allows for conducting a multi-layer accessibility assessment. In that sense, accessibility assessment could account for a multi-opportunity type assessment depending on the specific circumstances and research purposes. An opportunity can entitle a location related to education, health, jobs and leisure. In other words, for any location of interest in the study area, an accessibility measure could be computed and reviewed individually or collectively when strategically assessing the suitability, sustainability and social inclusion of transportation-related projects \citep{pereiraIntroductionUrbanAccessibility2023a}. By having this multipurpose accessibility measure platform, the transport planning decisions can more easily be framed as part of initiatives that contribute to SDG \# 11 'Make cities and human settlements inclusive, safe, resilient and sustainable' \citep{unitednations17GOALSSustainable2015}. Furthermore, with the demographic disaggregation of results, in this case, done income decile, it is possible for local authorities and transport planning decision-makers to prioritize and allocate resources strategically to targeted population groups who might be experiencing a  more vulnerable and disadvantaged situation.
 
 
 \subsection{Future alternative scenario modelling}
@@ -1188,14 +1090,11 @@ The research contributed to enabling the tools for facilitating alternative scen
 
 The new alternative scenarios could rapidly provide insight into the impact of accessibility by modifying commuting duration thresholds, route paths, frequencies, timetables, and number of stations, among other transit specifications. As several inputs in the modelling process are structured based on general operational assumptions of the non-existent metro system, the inputs can be restructured and multiple alternative scenarios by modifying this assumption. An example of this is the relation between the travel speed of the metro and the timetables of the trips. The arrival and departure time schedules are constructed based on the stations' geographical location and the metro's expected travel speed. To follow the example, the tools employed in this study could deployed to replicate new possible versions of the system by changing the locations of the stations and/or the travel speed of the metro. This logic of simulation and experimentation workflow falls accurately into the outlook portrayed by \cite{wilsonFutureUrbanModelling2018, battyUrbanModeling2009a,longleyGeographicInformationScience2015} where urban modelling supported by geographic information system provided a digital to test and estimate variables of interest in future scenarios. 
 
-% Metro culture promotion
-% Preparing for the metro
 
 \section{Future research}
 
-\subsection{Sensibility and new measure possibilities}
+\subsection{New measure possibilities}
 
-% New key performance indicators
 
 Regarding the further expansion of accessibility-driven measures, stating accessibility measures as the basis, platform and backbone of transport-related planning brings a wide range of new measures derived from accessibility. An example is ratios that could be calculated when designing a future transit operation or assessing an existing one. 
 
@@ -1203,25 +1102,34 @@ By measuring the relationship between accessibility measures and other relevant 
 
 \subsection{Additional transport modes}
 
-This study employed a multi-transport methodology that could be expanded to additional transport modes. As urban mobility includes more diversity in commuting modes, such as active travel modes \citep{malteseActiveTravelSustainable2021}, so can the accessibility modelling process. As \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019} showed modes like scooters and bicycles are also an alternative when commuting in Bogotá. The use of non-carbon motorized vehicles for daily commutes contributes to reducing the transport sector's impact, considering that this sector faces structural challenges to achieve truly decarbonization status. Measuring the cycling accessibility results and decreasing carbon-based mobility would integrate an active mode of transport with a climate change-related initiative. Likewise, the link between accessibility and an active travel model, either used exclusively or combined with other modes, can quantify the environmental and accessibility cost-benefit relationship. 
+This study employed a multi-transport methodology that could be expanded to additional transport modes. As urban mobility includes more diversity in commuting modes, such as active travel modes \citep{malteseActiveTravelSustainable2021}, so can the accessibility modelling process. As \citep{alcaldiadebogotad.c.EncuestaMovilidad20192019} showed modes like scooters and bicycles are also an alternative when commuting in Bogotá. Using non-carbon motorized vehicles for daily commutes reduces the transport sector's impact, considering that this sector faces structural challenges to achieve decarbonization status. Measuring the cycling accessibility results and decreasing carbon-based mobility would integrate an active mode of transport with a climate change-related initiative. Likewise, the link between accessibility and an active travel model, used exclusively or combined with other modes, can quantify the environmental and accessibility cost-benefit relationship. 
 
 
 \subsection{Opportunities data refinement}
 
-The opportunity preprocessing procedure of the land use aggregation accounts for the number of terrains located in a land use category in a given location (hexagon grid) in Bogotá. Among the features or attributes related to each terrain, some variables can contribute to assessing the magnitude or importance of each opportunity more accurately. The area or the number of levels in height construction, combined with the land use category, can help dimension the number of opportunities that a particular terrain can hold. An example of this situation is when big commercial developments are developed either in high-level construction or holding multiple commercial units within one standalone terrain. By using the leasable commercial area and the number of levels of construction, the land use area could more precisely reflect the real number that one single terrain can hold. Additionally, grouping between the different land use categories can be made. For example, residential and non-residential land use can be linked to the distinct density of possible job opportunities. Furthermore, within the non-residential group, each can land use could contribute differently to accessibility depending on the type of opportunities included in the research exercises. In a word, land use data preprocessing could reflect additional features to more precisely assess the number of opportunities.
+The opportunity preprocessing procedure of the land use aggregation accounts for the number of terrains located in a land use category in a given location (hexagon grid) in Bogotá. Among the features or attributes related to each terrain, some variables can contribute to assessing the magnitude or importance of each opportunity more accurately. The area or the number of levels in height construction, combined with the land use category, can help dimension the number of opportunities that a particular terrain can hold. An example is when big commercial developments are developed in high-level construction or holding multiple commercial units within one standalone terrain. By using the leasable commercial area and the number of levels of construction, the land use area could more precisely reflect the real number that one single terrain can hold. Additionally, grouping between the different land use categories can be made. For example, residential and non-residential land use can be linked to the distinct density of possible job opportunities. Furthermore, within the non-residential group, each land use could contribute differently to accessibility depending on the type of opportunities included in the research exercises. In a word, land use data preprocessing could reflect additional features to more precisely assess the number of opportunities.
 
 \section{Limitations}
 
 \subsection{Demographic data resolution}
 
-The scale of spatial aggregation from the demographics data limits the accuracy of the assessment of the results. As shown in \ref{fig:Study_Area_ZPU}, Bogotá is administratively divided into 112 ZPU\footnote{For consistency purposes, the map shows 96 ZPU as aggregated in the Muliprpuse Survey, although there are official 112 \citep{secretariadistritaldegobiernoCaracterizacionUsuarios20212021}} and that same spatial aggregation is used to georeference the demographic data to disaggregate the accessibility results. The size of the ZPU polygons compared to the size of the resolution 9 hexagon grid cells is superior. As the demographic data is spatially referenced using the ZPU polygons, the spatial interrelation between the accessibility results and the demographic data (e.g. income) weakens when the size of the initial layer of the data exceeds the size of the spatial analysis unit used for the spatial aggregation process.
+The scale of spatial aggregation from the demographics data limits the accuracy of the assessment of the results. As shown in \ref{fig:Study_Area_ZPU}, Bogotá is administratively divided into 112 ZPU\footnote{For consistency purposes, the map shows 96 ZPU as aggregated in the Muliprpuse Survey, although there are official 112 \citep{secretariadistritaldegobiernoCaracterizacionUsuarios20212021}} and that same spatial aggregation is used to georeference the demographic data to disaggregate the accessibility results. The size of the ZPU polygons compared to the size of the resolution 9 hexagon grid cells is superior. As the demographic data is spatially referenced using the ZPU polygons, the spatial interrelation between the accessibility results and the demographic data (e.g. income) weakens when the size of the initial layer of the data exceeds the size of the spatial analysis unit used for the spatial aggregation process. The spatial aggregation procedure was performed despite this limitation, and the results showed consistency within the values used in the results assessment process.
 
 \subsection{Transit conditions and assumptions}
 
-The transit operations reported by the current BRT operation could be rescaled in some cases to better reflect a more realistic transit operation together with the current level of demand for the BRT transit service. In specific features of the GTFS data used by this study to replicate the BRT transit operation, an adjustment procedure can be done to more accurately and realistically simulate the daily transit operation in Bogotá. One case identified was the timetable structure in the stop times table in the BRT GTFS data. According to the data contained in the GTFS data, the arrival and departure time of the BRT service is the same. That means there is no time reserved for the boarding of passengers. The disembarking of passengers is an activity that consumes time and should be considered in the operation, especially as the BRT has consistently reported high congestion levels in high-density corridors \citep{guzmanDensityorientedPublicTransport2021}.
+The transit operations reported by the current BRT operation could be rescaled in some cases to better reflect a more realistic transit operation together with the current level of demand for the BRT transit service. In specific features of the GTFS data used by this study to replicate the BRT transit operation, an adjustment procedure can be done to more accurately and realistically simulate the daily transit operation in Bogotá. One case identified was the timetable structure in the stop times table in the BRT GTFS data. According to the data contained in the GTFS data, the arrival and departure time of the BRT service is the same. That means there is no time reserved for the boarding of passengers. The disembarking of passengers is an activity that consumes time and should be considered in operation, especially as the BRT has consistently reported high congestion levels in high-density corridors \citep{guzmanDensityorientedPublicTransport2021}. Although this unrealistic situation was identified in the GTFS data, the same situation was replicated in the metro transit operation to prevent the metro from artificially losing and competing against the BRT operations. Given these points, to assess the mode choice more realistically, both BRT and metro modes should account for interrelated congestion conditions for future research.
 
 \chapter{Conclusion} \label{Chap7}
 
+
+Bogot\'{a} has doubled in population during the last 30 years \citep{guzmanCityProfileBogota2017}. The current size and future population growth of Bogotá intensify the urgency to generate more liveable and sustainable spaces. For this reason, strengthening more sustainability-oriented transport and planning decision-making processes is urgently required. The method employed systematically combined the transport infrastructure and Bogotá's future and current transit operations with the spatial distribution of opportunities to model how accessible those opportunities were. The methodology considered mobility conditions as the commuting time between origins and locations in Bogotá and measured what those commuting circumstances meant regarding access to opportunities. 
+
+
+The results were first examined spatially across Bogotá for each scenario to address the research question. Later, overall results were comparatively plotted to understand their distribution and structural differences between scenarios. The accessibility spatial results showed that the western area of Bogotá would experience the highest increase in accessibility when the first metro line transit operation starts, functioning together with the current BRT transit operation. The city's western area presented the highest positive variation in accessibility combined with the largest group of adjacent locations with a significantly high accessibility increase. Although the western area had a relatively lower number of opportunities nearby, the metro transit operation enabled opportunities to be reached within a 30-minute walking and a total 60-minute commuting limit. 
+
+All things considered, cities and transport-related agencies can potentially use the model and the results generated to assess the performance of future or currently functioning transport with a measure that holistically integrates the real tangible access benefit to locations of interest (opportunities) when using a transportation system and can contribute to achieving more social-inclusive, liveable and ultimately, sustainable cities.
+
+% Refecenre policy makers
 
 \renewcommand{\bibname}{References}
 \bibliographystyle{agsm}
@@ -1231,9 +1139,33 @@ The transit operations reported by the current BRT operation could be rescaled i
 % APPENDIX
 \begin{appendices}
 \chapter{Source code and data} \label{Source_Code}
-Source code and data for all of the methods implemented in Chap. \ref{Chap4} for the project can be found in the remote repository: \href{https://github.com/rpoandres/MSc_USS_Dissertation}{GitHub}
+Source code and data for all of the methods implemented in Chapter \ref{Chap4} for the project can be found in the remote repository: \href{https://github.com/rpoandres/MSc_USS_Dissertation}{GitHub}
 
 % \chapter{Ethics review} \label{Ethics_Review}
+
+\chapter{Supervision records}
+
+Dr. Fulvio Lopane supervised this dissertation, and the next table lists the meetings undertaken during the supervision period:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|p{6cm}|}
+\hline
+\textbf{Number} & \textbf{Date} & \textbf{Main topics reviewed}                                                                                      \\ \hline
+1 &
+  30/03/2023 &
+  Based on the availability and spatial data resolution, methodological alternatives were explored. Additionally, an initial ethics screening was done to assess risk level. \\ \hline
+2 &
+  16/05/2023 & The initial list of activities and the main structure of the document were reviewed. Related literature and potential additional input data were mentioned.\\ \hline
+3               & 22/06/2023    & Progress update on the R5R library review. Initial structure of literature review section was also reviewed.       \\ \hline
+4               & 13/07/2023    & Update on the preprocessing code, the BRT route geometry review and the initial set of accessibility results.         \\ \hline
+5               & 07/08/2023    & Updates on including the metro transport mode in the accessibility computation. List of main activities to execute. \\ \hline
+6 &
+  \multicolumn{1}{l|}{22/08/2023} &
+  Checklist before submission review, result visual display review and exploration on what messages to include in the discussion section. \\ \hline
+\end{tabular}
+\end{table}
+
 
 
 
