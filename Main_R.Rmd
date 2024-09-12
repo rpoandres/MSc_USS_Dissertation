@@ -36,7 +36,6 @@ library(osmdata)
 library(leaflet) # for making the interactive map
 library(elevatr) # DEM (Digital Elevation Model)
 library(raster)
-#library(terra) # Not installed
 library(h3jsr) # H3 hegagonal grid
 library(remotes)
 library(h3)
@@ -3157,8 +3156,12 @@ ggplot() +
   geom_sf(data = geo_zpu_wgs84_mono_fill) + 
   geom_sf(data = raw_metro_line, aes(color = "Metro Lines"), lwd = 1.1) +
   geom_sf(data = raw_metro_stations, aes(color = "Metro Stations"), lwd=1.6) +
-  theme_minimal() +
-  scale_color_manual(values = legend_data$color, labels = legend_data$label) + labs(color=NULL)
+ theme_minimal() +
+  scale_color_manual(values = legend_data$color, labels = legend_data$label) + labs(color=NULL) + annotation_scale(location = "br", width_hint = 0.1) +
+  annotation_north_arrow(location = "tl", which_north = "true", 
+        pad_x = unit(0.1, "in"), pad_y = unit(0.1, "in"),
+        style = north_arrow_fancy_orienteering,scale = 0.1,height = unit(1, "cm"),
+  width = unit(1, "cm"))
 
 ggsave("Metro_Network.png", path = "Data/Results/Images/")
 ```
@@ -3171,7 +3174,11 @@ ggplot() +
   scale_fill_manual(values = c("TRUE" = "#43a2ca", "FALSE" = "#e0f3db")) +
   labs(color = NULL) +
   theme_minimal() +
-  guides(fill = "none")
+  guides(fill = "none") + annotation_scale(location = "br", width_hint = 0.1) +
+  annotation_north_arrow(location = "tl", which_north = "true", 
+        pad_x = unit(0.1, "in"), pad_y = unit(0.1, "in"),
+        style = north_arrow_fancy_orienteering,scale = 0.1,height = unit(1, "cm"),
+  width = unit(1, "cm"))
 
 ggsave("Land_Use_Commercial_Corridor_Terrain.png", path = "Data/Results/Images/")
 ```
@@ -3498,7 +3505,11 @@ ggplot(main_results_hex9) +
   scale_fill_viridis_c() +
   labs(fill = "Walking\nAccessible\nOpportunities") +
   #theme_minimal() + 
-    theme(plot.title = element_text(size = 8, face = "bold"))
+    theme(plot.title = element_text(size = 8, face = "bold")) ++ annotation_scale(location = "br", width_hint = 0.1) +
+  annotation_north_arrow(location = "tl", which_north = "true", 
+        pad_x = unit(0.1, "in"), pad_y = unit(0.1, "in"),
+        style = north_arrow_fancy_orienteering,scale = 0.1,height = unit(1, "cm"),
+  width = unit(1, "cm"))
 
 ggsave("Access_Walk_base.png", path = "Data/Results/Images/")
 ```
