@@ -710,6 +710,7 @@ geo_shapes_sample<- gtfstools::get_trip_geometry(brt_gtfs,file = "shapes", trip_
 ```{r}
 head(geo_shapes_sample)
 ```
+
 Plotting sample geometries
 
 ```{r}
@@ -724,6 +725,7 @@ ggplot() +
 ```{r}
 unique(st_is_valid(geo_shapes))
 ```
+
 There are invalid geometries in the new data.
 
 ##### Empty geometries (not working)
@@ -731,9 +733,10 @@ There are invalid geometries in the new data.
 ```{r}
 unique(st_is_empty(geo_shapes))
 ```
+
 There are not empty geometries in new data set.
 
-##### Remove invalid geometries (not used in new data yet)
+##### Remove invalid geometries (not used in new data set)
 
 ```{r}
 # invalid_geometries <- !st_is_valid(geo_from_stops_filtered)
@@ -815,30 +818,10 @@ filter(brt_gtfs$stop_times, stop_sequence==0)
 
 Zero entries with zero value in the stop sequence field
 
-Filter a specific trip
 
-##### Number of stations by trip (remove)
+##### Case 1
 
-
-Adjusted count
-
-```{r}
-# stops_by_trip <- brt_gtfs$stop_times %>%
-#   group_by(trip_id, stop_sequence) %>%
-#   summarize(count_stop_sequence = n()) %>%
-#   pivot_wider(names_from = stop_sequence, values_from = count_stop_sequence, values_fill = 0,names_prefix = "S_")
-# 
-# head(stops_by_trip)
-```
-Extract stops_by_trip to excel
-
-```{r}
-# write_xlsx(stops_by_trip,"Test/stops_by_trip.xlsx")
-```
-
-
-
-##### Case 1 
+In order to individually review the route geometries, a set of cases is selected.
 
 Two stops
 
@@ -877,7 +860,6 @@ Review of individual geometry
 ```{r}
 geo_case_2 <- gtfstools::get_trip_geometry(brt_gtfs, trip_id = "BO7ED0007-02-2_T_2192")
 ```
-
 
 Plotting geometry only
 
@@ -918,6 +900,8 @@ ggplot() +
 
 
 ### Frequencies (blank)
+
+The absence of this table does not represent an obstacle as it is optional considering that there is the stop_times table.
 
 ```{r}
 head(brt_gtfs$frequencies)
@@ -960,7 +944,6 @@ brt_gtfs$fare_rules
 ```{r}
 unique(brt_gtfs$fare_rules$fare_id)
 ```
-Fare 2 missing
 
 #### Route id
 
@@ -973,6 +956,8 @@ Fare information for 1086 routes.
 
 ### Route detailed review
 
+Case 1 is reviewed in detail.
+
 #### Case 1
 
 Route 6-4, "6-4" in route id field with id 
@@ -980,7 +965,6 @@ Route 6-4, "6-4" in route id field with id
 ```{r}
 brt_gtfs_C1_1 <- filter_by_route_id(brt_gtfs, "T_1899", keep = TRUE)
 ```
-
 
 ##### Route
 
@@ -1001,7 +985,6 @@ Number of trips
 length(unique(brt_gtfs_C1$trips$trip_id))
 ```
 There are 666 trips for this route.
-
 
 ##### Shapes
 
@@ -1028,6 +1011,7 @@ ggplot() +
   geom_sf(data = geo_brt_gtfs_C1) +
   theme_minimal()
 ```
+
 ##### Stops
 
 ```{r}
@@ -1047,12 +1031,12 @@ geo_brt_stations_C1_sf %>%
   st_geometry() %>%
   plot()
 ```
+
 ##### Stop times
 
 ```{r}
 arrange(brt_gtfs_C1$stop_times, trip_id, stop_sequence)
 ```
-
 
 ##### Fare attribute
 
@@ -1065,6 +1049,7 @@ brt_gtfs_C1$fare_attributes
 ```{r}
 brt_gtfs_C1$fare_rules
 ```
+
 ##### Plotting
 
 ```{r}
@@ -1073,7 +1058,10 @@ ggplot() +
   geom_sf(data = geo_brt_gtfs_C1) + 
   theme_minimal()
 ```
+
 ###### Case 1 - 1
+
+A specific trip is filtered by id.
 
 ```{r}
 brt_gtfs_C1_1 <- filter_by_trip_id(brt_gtfs, "BC4290001-02-3_T_1899", keep = TRUE)
@@ -1135,16 +1123,16 @@ arrange(brt_gtfs_C1_1$stop_times, trip_id, stop_sequence)
 ```
 
 
-
-
 ```{r}
 inter_brt_stops_shape_1 <- st_intersection(geo_brt_stations_C1_1_sf,geo_brt_gtfs_C1_1)
 ```
+
 Review
 
 ```{r}
 inter_brt_stops_shape_1
 ```
+
 Plotting
 
 ```{r}
@@ -1152,7 +1140,7 @@ ggplot() +
   geom_sf(data = inter_brt_stops_shape_1) +
   theme_minimal()
 ```
-There is overlaping between stations and trip shape
+
 
 
 ## Mapping
@@ -1164,7 +1152,6 @@ Appending different sf object
 ```{r}
 geo_shapes_complete <- bind_rows(geo_shapes_main, geo_shapes_urban, geo_shapes_feeder,geo_shapes_feeder_v, geo_shapes_special, geo_shapes_comp)
 ```
-
 
 
 ### Plotting
@@ -1207,8 +1194,9 @@ ggsave("BRT_Network_Route.png", path = "Data/Results/Images/")
 ```
 
 
-
 # OSM network
+
+In order to have a proxy of the pedestrian infrastructure, the vehicle infrastructures is used and taken from Open Street Map. This infrastructure is required to model the walking mode in the accessibility modelling procedure.
 
 ## Data reading
 
@@ -1239,7 +1227,6 @@ ggplot() +
 
 ggsave("OSM_Network.png", path = "Data/Results/Images/")
 ```
-
 
 
 ## Data inspection
@@ -1279,20 +1266,10 @@ par(mar = rep(0.1, 4))
 plot(sf::st_geometry(osm_subsetting))
 ```
 
-Interactive map by subsetting value
-
-```{r}
-# leaflet() %>% 
-#   addTiles() %>% 
-#   addPolylines(data = osm_subsetting)
-
-```
-
-**What sub-setting should be done before the accessibility modelling?**
-
-## Data cleaning (Non-existing)
 
 # Metro system
+
+The following sections aims to create the GTFS data of the future metro system, based on the spatial features of the publicly available designs and the estimated travel speed. In order to model both metro and BRT transportation modes, the operations of both modes should be stored in GTFS format.
 
 ## GTFS data generation
 
@@ -1353,7 +1330,6 @@ Reads it as a table
 ```{r}
 data.table::setDT(metro_trips)
 ```
-
 
 
 ### Stops
@@ -1426,7 +1402,6 @@ metro_stops <- metro_stops[order(metro_stops$stop_code),]
 ```
 
 
-
 ### Calendar
 
 Creating a mirror calendar table from the BRT GTFS data.
@@ -1460,7 +1435,6 @@ metro_calendar_dates$date <- gsub('-','',metro_calendar_dates$date)
 ```
 
 
-
 ### Shapes
 
 Reading track data of first line of metro.
@@ -1490,7 +1464,6 @@ Create sf for north direction
 ```{r}
 raw_metro_line_north <- raw_metro_line
 ```
-
 
 Create shape id column
 
