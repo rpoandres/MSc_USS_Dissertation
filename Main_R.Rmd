@@ -49,13 +49,13 @@ library(RColorBrewer)
 
 ## Temporary directory
 
-Location
+Location to store temporary data.
 
 ```{r}
 tempdir()
 ```
 
-Deletes
+Deletes temporary directory.
 
 ```{r}
 # unlink(tempdir(), recursive = TRUE)
@@ -63,13 +63,19 @@ Deletes
 
 ## Memory setup
 
+Setup is required to run the accessibility modelling procedure.
+
 ```{r}
 options(java.parameters = "-Xmx4G")
 ```
 
 # Bus Rapid Transit network (BRT)
 
+This section aims to review and process he GTFS dta from the BRT operation in Bogota.
+
 ## Downloading the data (turn off)
+
+This is section is not operational, instead the data will be read locally.
 
 Setting the temp file path
 
@@ -89,7 +95,6 @@ Downloading the BRT GTFS data
 Initial: The GTFS data is a static feed (2021-07-04) provided by the Transport Secretary of Bogota City Council available [here](https://datos.movilidadbogota.gov.co/datasets/599751603a494051b15ac3d4f1f38ec5/about).
 
 Update: The data was updated with static feed (2023-06-21) provided by Transmilenio in their open data webpage and available [here](https://datosabiertos-transmilenio.hub.arcgis.com/documents/gtfs-est%C3%A1ticos-2023-06-21/about).
-
 
 
 Review of tables of downloaded data
@@ -135,9 +140,6 @@ summary(brt_gtfs)
 ```
 
 
-
-
-
 ### Profiling
 
 ```{r}
@@ -162,7 +164,6 @@ Datatypelist_brt_agency
 ```
 
 
-
 ### Routes
 
 ```{r}
@@ -171,7 +172,7 @@ head(brt_gtfs$routes)
 
 #### Id
 
-Number of rows in route table
+Number of rows in route table.
 
 ```{r}
 nrow(brt_gtfs$routes)
@@ -183,7 +184,6 @@ Number of route id's.
 n_distinct(brt_gtfs$routes$route_id)
 ```
 
-There was 547 different routes in the BRT network, and 1086 in the new data.
 
 #### Description
 
@@ -198,6 +198,7 @@ Description texts
 ```{r}
 unique(brt_gtfs$routes$route_desc)
 ```
+
 Filtering route id by desc value
 
 ##### Main corredor
@@ -227,7 +228,6 @@ geo_shapes_main <- geo_shapes_main %>%
   filter(row_number() == 1) %>%
   ungroup()
 ```
-
 
 Create route type id field
 
@@ -264,7 +264,6 @@ geo_shapes_urban <- geo_shapes_urban %>%
   ungroup()
 ```
 
-
 Create route type id field
 
 ```{r}
@@ -299,7 +298,6 @@ geo_shapes_feeder <- geo_shapes_feeder %>%
   filter(row_number() == 1) %>%
   ungroup()
 ```
-
 
 Create route type id field
 
@@ -336,7 +334,6 @@ geo_shapes_feeder_v <- geo_shapes_feeder_v %>%
   ungroup()
 ```
 
-
 Create route type id field
 
 ```{r}
@@ -370,8 +367,6 @@ geo_shapes_comp <- geo_shapes_comp %>%
   filter(row_number() == 1) %>%
   ungroup()
 ```
-
-
 
 Create route type id field
 
@@ -407,7 +402,6 @@ geo_shapes_special <- geo_shapes_special %>%
   filter(row_number() == 1) %>%
   ungroup()
 ```
-
 
 Create route type id field
 
@@ -456,40 +450,6 @@ geo_shapes_special$route_desc <- "Special"
 ```
 
 
-Test
-
-
-```{r}
-# # Main
-# geo_shapes_main %>%
-#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-#            "Main")
-# 
-# geo_shapes_urban %>%
-#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-#            "Urban")
-# 
-# geo_shapes_feeder %>%
-#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-#            "Feeder")
-# 
-# geo_shapes_feeder_v %>%
-#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-#            "Feeder_v")
-# 
-# geo_shapes_comp %>%
-#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-#            "Complementary")
-# 
-# geo_shapes_special %>%
-#   st_write("Data/Preprocessed/BRT/Network/BRT_Network.gpkg",
-#            "Special")
-
-
-```
-
-
-
 #### Type
 
 Number of types
@@ -512,7 +472,6 @@ Consistent with official GTFS [specification](https://gtfs.org/schedule/referenc
 head(brt_gtfs$trips)
 ```
 
-**How can you tell the direction?** **It does not have the shape id**
 
 Number of routes in table
 
@@ -526,9 +485,10 @@ Number of uniques entries
 n_distinct(brt_gtfs$trips)
 ```
 
-There were 158976 trips included in the initial BRT GTFS data and 179454 in the updated data.
 
 #### Case 1
+
+In order to demographically display and review the routes, a set of routes is selected.
 
 Routes: Z_7295 and Z_7295-2.
 
@@ -553,7 +513,6 @@ Stop times
 ```{r}
 View(brt_gtfs_trip_c1$stop_times)
 ```
-
 
 
 ### Stops
@@ -598,7 +557,6 @@ Number of rows in station table
 n_distinct(brt_gtfs$stops$stop_id)
 ```
 
-There were 7819 different stations in the BRT network, and 8214 in the new data.
 
 #### Stop code
 
@@ -612,11 +570,13 @@ Stop code and stop id seem to be equivalent.
 
 ### Calendar
 
+
+
 ```{r}
 head(brt_gtfs$calendar)
 ```
 
-From 1-5, it is the same schedule in the intial data, 2-5 in the new data.
+Data type
 
 ```{r}
 Datatypelist_brt_calendar <- brt_gtfs$calendar %>% 
@@ -626,8 +586,6 @@ Datatypelist_brt_calendar <- brt_gtfs$calendar %>%
                values_to="Variable_class")
 Datatypelist_brt_calendar
 ```
-
-
 
 ### Calendar dates
 
@@ -666,7 +624,6 @@ It seems to be holidays in Colombia.
 ```{r}
 n_distinct(brt_gtfs$calendar_dates$service_id)
 ```
-
 
 
 
@@ -715,7 +672,7 @@ Saving shapes as geopackage (not working)
 #            delete_layer=TRUE)
 ```
 
-Plotting geometry onlyv (too big)
+Plotting geometry only (not working)
 
 ```{r}
 # geo_shapes %>%
@@ -723,7 +680,7 @@ Plotting geometry onlyv (too big)
 #   plot()
 ```
 
-Basic geo map (too big)
+Basic geo map (not working)
 
 ```{r}
 # ggplot() +
@@ -733,6 +690,8 @@ Basic geo map (too big)
 
 ##### Sample of geometries
 
+Given the high volume of routes, a fixed number is selected for plotting purposes.
+
 ```{r}
 set.seed(123) 
 
@@ -740,6 +699,7 @@ sample <- sample(brt_gtfs$trips$trip_id,1000)
 
 head(sample)
 ```
+
 Subsetting geometries
 
 ```{r}
@@ -1195,11 +1155,6 @@ ggplot() +
 There is overlaping between stations and trip shape
 
 
-### Validation
-
-## Data cleaning (pending)
-
-
 ## Mapping
 
 ### Appeding
@@ -1209,9 +1164,6 @@ Appending different sf object
 ```{r}
 geo_shapes_complete <- bind_rows(geo_shapes_main, geo_shapes_urban, geo_shapes_feeder,geo_shapes_feeder_v, geo_shapes_special, geo_shapes_comp)
 ```
-
-Erasing duplicates rows
-
 
 
 
