@@ -3096,7 +3096,7 @@ ggsave("Study_Area_UPZ.png", path = "Data/Results/Images/")
 The next section of the code aims to calculate the accessibility measure across different transport scenarios and transportation modes. The modeled transportation modes considered in the accessibility measure are:
 - Walking only mode
 - Base (before) scenario: BRT + walking mode
-- Metro only scenario
+- Control scenario: Metro + Walking mode
 - Future (after) scenario: BRT + metro + walking mode
 
 For every scenario or mode, two accessibility modelling libraries are used for control and comparison purposes:
@@ -3417,7 +3417,7 @@ ggplot(main_results_hex9) +
 ggsave("Access_Walk_base.png", path = "Data/Results/Images/")
 ```
 
-## Base (befores) scenario: BRT + walking
+## Base (before) scenario: BRT + walking
 
 It does not have the future metro data.
 
@@ -3652,7 +3652,7 @@ Save results in geopackage (not ar use)
 
 
 
-## Metro only scenario
+## Control scenario: Metro + Walking 
 
 ### Setup
 
@@ -3890,7 +3890,7 @@ Save results in geopackage (not in use, write just at the end)
 #            delete_layer=TRUE)
 ```
 
-## Future scenario: BRT and metro scenario
+## Future (after) scenario: BRT + metro + walking mode
 
 ### Setup
 
@@ -4972,9 +4972,9 @@ ggplot(main_results_hex9) +
 ggsave("Access_diff_BRT_Metro_base.png", path = "Data/Results/Images/")
 ```
 
-## Results assessment
+# Results assessment
 
-### By income decile
+## By income decile
 
 Merge income data with results matrix
 
@@ -4987,7 +4987,7 @@ main_results_hex9 <- merge(
 )
 ```
 
-#### ZPU Map
+### ZPU Map
 
 Plot income decile
 
@@ -5049,7 +5049,7 @@ ggsave("Demo_income_decile_discrete.png", path = "Data/Results/Images/")
 ```
 
 
-#### Scarerplot
+### Scarerplot
 
 Before
 
@@ -5171,7 +5171,7 @@ ggplot(main_results_hex9) +
 ggsave("Boxplot_Access_diff_by_income_decile.png", path = "Data/Results/Images/")
 ```
 
-### By income decile before and after
+## By income decile before and after
 
 In order to better compare the accessibility impact across different income groups, the before and after results are plotted in the same figure.
 
