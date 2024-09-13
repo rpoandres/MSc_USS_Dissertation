@@ -6,14 +6,14 @@ The code support a academic research exercise to spatially (geographically) asse
 
 The script is divided in the following sections:
 
- 1. Bus Rapid Transit (BRT) network
- 1. OSM network (Pedestrian network)
- 1. Metro system (GTFS data generation)
- 1. Multipurpose survey (Socioeconomic data)
- 1. Land use (Job opportunities)
- 1. Accessibility modelling
-      1.Walking only mode
-     1.Walking only mode
+1. Bus Rapid Transit (BRT) network
+1. OSM network (Pedestrian network)
+1. Metro system (GTFS data generation)
+1. Multipurpose survey (Socioeconomic data)
+1. Land use (Job opportunities)
+1. Accessibility modelling
+  1.Walking only mode
+    1.Walking only mode
      
 1. First item
     1. Sub-item 1
