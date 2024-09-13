@@ -2,7 +2,7 @@
 
 ### Repo containing code of dissertation from MSc Urban Spatial Science at [The Bartlett Centre for Advanced Spatial Analysis](https://www.ucl.ac.uk/bartlett/casa/) of [University College London](https://www.ucl.ac.uk/).
 
-The code support a academic research exercise to spatially (geographically) assess the impact of the new metro system of Bogotá, Colombia in terms of accessibility to economic activity (job opportunities). 
+The code support a academic research exercise to spatially (geographically) assess the impact of the new metro system of Bogotá, Colombia in terms of accessibility to economic activity (job opportunities). Full document available [here](https://www.researchgate.net/publication/377531023_Accessibility_impact_of_transport_infrastructure_Spatial_assessment_of_Bogota's_future_metro_system)
 
 The script is divided in the following sections:
 
@@ -12,12 +12,13 @@ The script is divided in the following sections:
 1. Multipurpose survey (Socioeconomic data)
 1. Land use (Job opportunities)
 1. Accessibility modelling
-  1.Walking only mode
-    1.Walking only mode
-     
-1. First item
-    1. Sub-item 1
-    2. Sub-item 2
-2. Second item
-    1. Sub-item 1
-    2. Sub-item 2
+    1. Walking only mode
+    1. Base (before) scenario: BRT + walking mode
+    1. Control scenario: Metro + walking mode
+    1. Future (after) scenario: BRT + metro + walking mode
+    1. Time travel matrix
+    1. Parameters
+1. Results assessment
+    1. By income decile
+    
+
