@@ -1293,6 +1293,8 @@ data.table::setDT(metro_agency)
 
 ### Routes
 
+For the route creation, as there is only one metro line considered, a northbound and a southbound route will be created.
+
 Create a metro route table
 
 ```{r}
@@ -1457,9 +1459,10 @@ ggplot() +
   geom_sf(data = raw_metro_line) +
   theme_minimal()
 ```
-#### North direction shape
 
-Create sf for north direction
+#### Northbound shape
+
+Create sf for northbound shape
 
 ```{r}
 raw_metro_line_north <- raw_metro_line
@@ -1486,9 +1489,9 @@ metro_shapes_north <- convert_sf_to_shapes(raw_metro_line_north, shape_id = NULL
 
 Sequence is build west to east in the shape table.
 
-#### South direction shape
+#### Southbound shape
 
-Reverse raw geometry for south direction shape
+Reverse raw geometry for southbound shape
 
 ```{r}
 raw_metro_line_south <- st_reverse(raw_metro_line)
@@ -1528,7 +1531,6 @@ metro_shapes <- metro_shapes %>%
 
 ### Stops
 
-
 Intersect with route geometry
 
 ```{r}
@@ -1567,7 +1569,7 @@ metro_stops$stop_lat <- st_coordinates(metro_stops)[, 2]
 
 ```
 
-Adjust station code, populate location_type and zone_id
+Adjust station code, populate location_type and zone_id fields
 
 ```{r}
 metro_stops$location_type <- "0"
@@ -1593,12 +1595,13 @@ metro_stops <- metro_stops[order(metro_stops$stop_code),]
 ```
 
 
-
 ### Stop times
 
 #### Distance calculation
 
-Point only geometry
+Based on the location of each stations, the distance between them is calculated.
+
+Point geometry
 
 ```{r}
 metro_stations_points <- raw_metro_stations %>%
@@ -1656,6 +1659,9 @@ distance_stations_df <- data.frame(o_station = unlist(origin_list), d_station = 
 
 #### Setting trip speed
 
+The duration of the trip between stations and the route scheduling is calculated considering the estimated mean travel speed, according to the local authorities.
+
+
 Initial speed setting: 43 km/h according to [Metro de bogotá](https://www.metrodebogota.gov.co/?q=que-es-metro#:~:text=Conectar%C3%A1n%20el%20sur%20y%20el,de%20las%20obras%20del%20viaducto.) 
 
 ```{r}
@@ -1670,9 +1676,9 @@ distance_stations_df <- distance_stations_df %>%
   mutate(dura_min = distance/speed_m_per_m)
 ```
 
-#### North direction trip
+#### Northbound trip
 
-Stop time table for the north direction trip
+Stop time table for the northbound trip
 
 ```{r}
 metro_stop_times_N <- metro_stops %>%
@@ -1744,7 +1750,7 @@ metro_stop_times_N <- metro_stop_times_N %>%
 ```
 
 
-#### South direction trip
+#### Southbound trip
 
 Stop time table for the south direction trip
 
@@ -1826,17 +1832,16 @@ metro_stop_times_S <- metro_stop_times_S %>%
 
 #### Appeding trips
 
-Appends both north and south direction trips
+Appends both northbound and southbound trips
 
 ```{r}
 metro_stop_times_full <- bind_rows(metro_stop_times_N,metro_stop_times_S)
 ```
 
 
-
 ### Frequencies
 
-Peak, off peak hours and periodicity
+Peak hours, off peak hours and periodicity
 
 ```{r}
 start_time_list <- list("00:00:00","05:30:00", "09:00:00", "16:00:00", "19:00:00")
@@ -1862,8 +1867,6 @@ metro_frequencies_N$start_time <- as_hms("00:00:00")
 metro_frequencies_N$end_time <- as_hms("00:00:00")
 ```
 
-
-
 Assign to dataframe
 
 ```{r}
@@ -1878,7 +1881,7 @@ Calculate headway_secs
 metro_frequencies_N$headway_secs <- metro_frequencies_N$periodicity*60
 ```
 
-#### South direction trip
+#### Southbound trip
 
 Creates mirror frequency table for south direction trip
 
@@ -1909,13 +1912,17 @@ metro_frequencies_full$exact_times <- 0
 ```
 
 
+### Fare attributes
 
-### Fare attributes (non-existing)
+Non existing optional table, not considered an obstacle for the accessibility modelling.
 
-### Fare rules (non-existing)
+### Fare rules 
 
+Non existing optional table, not considered an obstacle for the accessibility modelling.
 
 ### Compilation
+
+Every GTFS table created is compiled into zip file.
 
 #### Write
 
@@ -1982,6 +1989,7 @@ names(metro_gtfs)
 ```{r}
 summary(metro_gtfs)
 ```
+
 ### Profiling
 
 ```{r}
@@ -2061,8 +2069,6 @@ Datatypelist_metro_calendar
 ```
 
 
-
-
 #### Calendar dates
 
 ```{r}
@@ -2078,7 +2084,6 @@ metro_gtfs$shapes$shape_dist_traveled = as.numeric(as.character(metro_gtfs$shape
 metro_gtfs$shapes$Shape_Leng = as.numeric(as.character(metro_gtfs$shapes$Shape_Leng))
 ```
 
-
 Dataframe
 
 ```{r}
@@ -2091,7 +2096,7 @@ Geometry
 geo_metro_shapes <- gtfstools::get_trip_geometry(metro_gtfs, file = "shapes")
 ```
 
-Qtm
+Quick temathic map
 
 ```{r}
 qtm(geo_metro_shapes)
@@ -2110,7 +2115,7 @@ geo_metro_shapes %>%
 
 #### Stop times
 
-Dataframe
+Stop time data frame
 
 ```{r}
 metro_gtfs$stop_times
@@ -2118,7 +2123,7 @@ metro_gtfs$stop_times
 
 #### Frequencies
 
-Dataframe
+Frequencies data frame
 
 ```{r}
 metro_gtfs$frequencies
@@ -2167,6 +2172,7 @@ ggplot() +
   geom_sf(data = geo_metro_shapes) + 
   theme_minimal()
 ```
+
 Intesect
 
 ```{r}
@@ -2177,15 +2183,10 @@ Review
 ```{r}
 inter_metro_stops_shape
 ```
-__No intersection between stops and track of metro__
-
-
-
-
-
-## Data cleaning (non-existing)
 
 # Multipurpose survey
+
+
 
 ## Reading the data
 
