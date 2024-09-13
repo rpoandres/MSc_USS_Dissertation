@@ -2186,11 +2186,14 @@ inter_metro_stops_shape
 
 # Multipurpose survey
 
-
+In order to assess the accessibility results using socioeconomic variables (income decile), the data gathered in the Multipurpose Survey [Encuesta Multiproposito] is used. The survey data is divided into two sets of data: the main forms and the additional variables (which includes a houshold income estimation).
 
 ## Reading the data
 
 ### ZPU layer
+
+At the geographical-administrative level, Bogota is geographicaly divided in Zonal Planning Units - ZPU [Unidades de planeación Zonal - UPZ]. The Multipurpose Survey stores this ZPU int the data gathering process so, in order to geographically relate results with socioeconomic variables, this ZPU are use as spatial aggregations units.
+
 
 ```{r}
 geo_zpu <- st_read("Data/Raw/Demo/Survey/Shape/ShapeEM2021/EM2021_UPZ.shp")
@@ -2379,6 +2382,8 @@ filter(survey_raw, is.na(cod_upz_grupo))
 
 ##### Example
 
+In order to better comprehend the survey structure, a specific survey is reviewed in detail.
+
 directorio = "220102"
 
 ```{r}
@@ -2435,6 +2440,7 @@ Initial number of rows
 ```{r}
 nrow(survey_add_raw)
 ```
+
 Erasing duplicates of location id for later merge
 
 ```{r}
@@ -2501,6 +2507,8 @@ Number of rows in cleaned add survey data
 
 ##### Homes
 
+Home incomde mean and medean are calculated.
+
 ```{r}
 survey_add_homes <- survey_add_clean %>%
   group_by(cod_upz_grupo, directorio_hog) %>%
@@ -2516,6 +2524,8 @@ Review
 
 
 ##### ZPU
+
+ZPU income mean and income median are calculated based on the home mean and median income. 
 
 ```{r}
 survey_add_zpu <- survey_add_homes %>%
@@ -2572,6 +2582,7 @@ ggplot(geo_zpu_survey_add) +
 
 ggsave("Demo_Income_UPZ_Median_Median.png", path = "Data/Results/Images/")
 ```
+
 Mean median
 
 ```{r}
@@ -2620,7 +2631,9 @@ Testing descriptive statistics
 ```
 
 
-# Land use 
+# Land use
+
+To locate the main clusters of economic activity (job opportunities), spatial data of the main use of the real state properey terrain is used.
 
 ## Data reading
 
@@ -2680,31 +2693,6 @@ qtm(land_use_terrain84_clean)
 
 
 
-
-
-# Elevation data (Not included yet)
-
-Elevation data on every ZPU polygon
-
-**Should be calculated for the H3 hegagon grid**
-
-```{r}
-# elevation <- get_elev_raster(geo_zpu, z = 9)
-```
-
-```{r}
-# elevation
-```
-
-Plotting test
-
-```{r}
-# plot(elevation)
-# plot(geo_zpu, add = TRUE)
-```
-
-## Data cleaning (pending,remove?)
-
 # Preprocessing
 
 ## Spatial analysis unit
@@ -2716,7 +2704,6 @@ Dissolve polygons
 ```{r}
 geo_zpu_wgs84_mono <- st_union(geo_zpu_wgs84, by_feature = FALSE)
 ```
-
 
 ### Hegagonal grid
 
@@ -2740,30 +2727,6 @@ ggplot() +
   geom_sf(data = hex_grid_9) +
   theme_minimal()
 ```
-There are holes in the grid with a 9 resolution.
-
-#### Resolution 8
-
-Intersecting grids
-
-```{r}
-# intergrid_8 <- polyfill(geo_zpu_wgs84_mono, res = 8)
-```
-H3 id to sf
-
-```{r}
-# hex_grid_8 <- h3_to_geo_boundary_sf(intergrid_8)
-```
-
-Basic geo map
-
-```{r}
-# ggplot() +
-#   geom_sf(data = hex_grid_8) +
-#   theme_minimal()
-```
-
-There are not holes with 8 resolution value.
 
 
 
@@ -2796,7 +2759,7 @@ Storing the intersecting area
 survey_add_intersect_hex9$intersect_area <- as.numeric(st_area(survey_add_intersect_hex9))
 ```
 
-Weighted income mean
+Weighted income mean: As the geometry of the H3 hexagons differs from the ZPU geometry, the income result for every hexagon will be result of an area weighted average of the overlapped ZPU income values.
 
 ```{r}
 survey_add_intersect_hex9 <- survey_add_intersect_hex9 %>%
@@ -2819,7 +2782,7 @@ survey_add_intersect_hex9$income_quartile <- ntile(survey_add_intersect_hex9$are
 ```
 
 
-eview
+Detail review
 
 ```{r}
 filter(survey_add_intersect_hex9, h3_index == "8966e090e1bffff")
@@ -2878,8 +2841,6 @@ Merge with initial hexagon grid
 
 Saving hexagon grid
 
-__It does not include demographics data yet__
-
 ```{r}
 # hex9_land_use_final %>%
 #   st_write("Data/Preprocessed/Grid/Hex9_grid.gpkg",
@@ -2899,6 +2860,7 @@ Review
 ```{r}
 head(hex9_land_use_final)
 ```
+
 Plotting
 
 ```{r}
@@ -3055,8 +3017,9 @@ Save point data as csv
 
 
 
-
 # Pre modelling plotting
+
+In the following section, every input of the modelling process is plotted individually.
 
 ## Transport infrastructure
 
@@ -3091,6 +3054,7 @@ ggplot() +
 
 ggsave("Metro_Network.png", path = "Data/Results/Images/")
 ```
+
 ### Land use
 
 
@@ -3129,10 +3093,20 @@ ggsave("Study_Area_UPZ.png", path = "Data/Results/Images/")
 
 # Accessiblity modelling
 
+The next section of the code aims to calculate the accessibility measure across different transport scenarios and transportation modes. The modeled transportation modes considered in the accessibility measure are:
+- Walking only mode
+- Base (before) scenario: BRT + walking mode
+- Metro only scenario
+- Future (after) scenario: BRT + metro + walking mode
+
+For every scenario or mode, two accessibility modelling libraries are used for control and comparison purposes:
+- Accessibility package
+- R5R package
+
+
 ## Data preparation
 
 Creates directory for accessibility analysis
-
 
 ```{r}
 access_dir <- "Accessibility"
@@ -3183,6 +3157,7 @@ file.copy(from = "Data/Preprocessed/Grid/Hex9_grid_LU.csv", to = file.path(metro
 
 
 ```
+
 After data
 
 ```{r}
@@ -3313,6 +3288,7 @@ Review
 ```{r}
 head(min_time_walk)
 ```
+
 ### R5R package
 
 ```{r}
@@ -3440,7 +3416,7 @@ ggplot(main_results_hex9) +
 ggsave("Access_Walk_base.png", path = "Data/Results/Images/")
 ```
 
-## Base scenario
+## Base scenario: BRT + walking
 
 It does not have the future metro data.
 
@@ -3916,7 +3892,7 @@ Save results in geopackage (not in use, write just at the end)
 #            delete_layer=TRUE)
 ```
 
-## BRT and metro scenario
+## Future scenario: BRT and metro scenario
 
 ### Setup
 
