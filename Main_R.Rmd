@@ -69,7 +69,7 @@ Setup is required to run the accessibility modelling procedure.
 options(java.parameters = "-Xmx4G")
 ```
 
-# Bus Rapid Transit network (BRT)
+# Bus Rapid Transit (BRT) network 
 
 This section aims to review and process he GTFS dta from the BRT operation in Bogota.
 
@@ -1194,7 +1194,7 @@ ggsave("BRT_Network_Route.png", path = "Data/Results/Images/")
 ```
 
 
-# OSM network
+# OSM network (Pedestrian network)
 
 In order to have a proxy of the pedestrian infrastructure, the vehicle infrastructures is used and taken from Open Street Map. This infrastructure is required to model the walking mode in the accessibility modelling procedure.
 
@@ -2184,7 +2184,7 @@ Review
 inter_metro_stops_shape
 ```
 
-# Multipurpose survey
+# Multipurpose survey (Socioeconomic data)
 
 In order to assess the accessibility results using socioeconomic variables (income decile), the data gathered in the Multipurpose Survey [Encuesta Multiproposito] is used. The survey data is divided into two sets of data: the main forms and the additional variables (which includes a houshold income estimation).
 
@@ -2631,7 +2631,7 @@ Testing descriptive statistics
 ```
 
 
-# Land use
+# Land use (Job opportunities)
 
 To locate the main clusters of economic activity (job opportunities), spatial data of the main use of the real state properey terrain is used.
 
@@ -3199,7 +3199,7 @@ r5r_max_walk_time <- 30 # minutes
 r5r_max_trip_duration <- 60 # minutes
 ```
 
-## Walking mode
+## Walking only mode
 
 Considers just walking mode.
 
