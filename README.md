@@ -28,7 +28,9 @@ The script is divided in the following sections:
 
 ## Results
 
+### Curent (before) scenario
 ![Curent (before) scenario](Data/Results/Images/Access_BRT_base.png "Curent (before) scenario")
+
 ![Future (after) scenario](Data/Results/Images/Access_BRT_Metro_base.png)
 ![Accessibility impact](Data/Results/Images/Access_diff_BRT_Metro_base.png)
 ![Accessibility results by income decile](Data/Results/Images/Boxplot_Access_All_by_income_decile.png)
