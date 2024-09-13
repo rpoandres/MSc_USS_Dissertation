@@ -3126,7 +3126,7 @@ dir.create(after_dir)
 
 ```
 
-Copy input files to before directory
+Copy input files to directories
 
 Before data
 
@@ -3181,6 +3181,7 @@ Visualize directory
 ```{r}
 fs::dir_tree(access_dir)
 ```
+
 ## Parameters
 
 Parameters value in accessibility modelling
@@ -3416,7 +3417,7 @@ ggplot(main_results_hex9) +
 ggsave("Access_Walk_base.png", path = "Data/Results/Images/")
 ```
 
-## Base scenario: BRT + walking
+## Base (befores) scenario: BRT + walking
 
 It does not have the future metro data.
 
@@ -3668,8 +3669,6 @@ hex_points_main <- data.table::fread("Accessibility/Metro/hex9_points_LU.csv")
 ### Inputs review
 
 
-
-
 ### Time travel matrix
 
 Without erasing geometries
@@ -3696,7 +3695,6 @@ Rename columns of time travel output
 ```{r}
 data.table::setnames(ttm_metro, "travel_time_p50", "travel_time")
 ```
-
 
 Merge
 
@@ -4021,6 +4019,7 @@ Review
 ```{r}
 head(r5r_access_full)
 ```
+
 ### Results comparison
 
 Using accessibility package
@@ -4148,7 +4147,10 @@ Summary
 ```{r}
 summary(main_ttm_hex9)
 ```
+
 ### Variations
+
+Variations between scenarios are calculated.
 
 ```{r}
 main_ttm_hex9 <- main_ttm_hex9 %>%
@@ -4164,6 +4166,7 @@ Summary after variations
 ```{r}
 summary(main_ttm_hex9)
 ```
+
 Groping results by origin hexagon
 
 ```{r}
@@ -4190,6 +4193,8 @@ geo_sta_diff_ttm_hex9 <- merge(
 ```
 
 #### Plotting
+
+The difference between scenarios is plotted to assess the accessibility impact between them.
 
 ##### Walking vs BRT
 
@@ -4263,6 +4268,7 @@ ggplot(geo_sta_diff_ttm_hex9) +
 
 ggsave("Ttm_diff_Walk_Metro_Mean.png", path = "Data/Results/Images/")
 ```
+
 Median
 
 ```{r}
@@ -4290,6 +4296,7 @@ ggplot(geo_sta_diff_ttm_hex9) +
 
 ggsave("Ttm_diff_Walk_Metro_Min.png", path = "Data/Results/Images/")
 ```
+
 Maximum
 
 ```{r}
@@ -4333,6 +4340,7 @@ ggplot(geo_sta_diff_ttm_hex9) +
 
 ggsave("Ttm_diff_BRT_BRT_Metro_Median.png", path = "Data/Results/Images/")
 ```
+
 Minimum
 
 ```{r}
@@ -4366,7 +4374,7 @@ ggsave("Ttm_diff_BRT_BRT_Metro_Max.png", path = "Data/Results/Images/")
 
 #### Descriptive statistics
 
-Descriptive statistics of ttm by mode
+Descriptive statistics of time travel matrix by mode.
 
 ```{r}
 sta_ttm_hex9 <- main_ttm_hex9 %>%
@@ -4509,12 +4517,7 @@ main_ttm_hex9 %>%
 
 ### Sampled examples (pending)
 
-Review of consistency of merge and values of ttm values across scenarios
-
-
-
-
-
+Review of consistency of merge and values of time travel mode values across scenarios.
 
 
 
@@ -4809,7 +4812,6 @@ main_results_hex9<- rename(main_results_hex9, a_brt_metro_x = accessibility)
 
 Plotting
 
-
 Regular Vidiris color scheme
 
 ```{r}
@@ -4865,7 +4867,7 @@ median_variation_per <- median_variation_abs/median(main_results_hex9[["b_brt_30
 print(median_variation_per)
 ```
 
-Upper quuartile absolute variation
+Upper quartile absolute variation
 
 Before
 
@@ -4905,8 +4907,6 @@ main_results_hex9 <- main_results_hex9 %>%
 
 
 ### Plotting
-
-
 
 
 Pivot longer
@@ -4971,6 +4971,7 @@ ggplot(main_results_hex9) +
 
 ggsave("Access_diff_BRT_Metro_base.png", path = "Data/Results/Images/")
 ```
+
 ## Results assessment
 
 ### By income decile
@@ -5048,7 +5049,6 @@ ggsave("Demo_income_decile_discrete.png", path = "Data/Results/Images/")
 ```
 
 
-
 #### Scarerplot
 
 Before
@@ -5072,6 +5072,7 @@ ggplot(main_results_hex9) +
 
 ggsave("Boxplot_Access_B_by_income_decile.png", path = "Data/Results/Images/")
 ```
+
 After
 
 ```{r}
@@ -5093,9 +5094,9 @@ ggplot(main_results_hex9) +
 
 ggsave("Boxplot_Access_A_by_income_decile.png", path = "Data/Results/Images/")
 ```
+
 Before and after
 
-Povit longer
 
 ```{r}
 main_results_hex9_pivot_longer <- main_results_hex9[,c("h3_index","b_brt_30", "a_brt_metro_30", "income_decile")] %>%
@@ -5169,9 +5170,10 @@ ggplot(main_results_hex9) +
 
 ggsave("Boxplot_Access_diff_by_income_decile.png", path = "Data/Results/Images/")
 ```
-### By income quartile
 
-Have to do a pivot long with the quartile label
+### By income decile before and after
+
+In order to better compare the accessibility impact across different income groups, the before and after results are plotted in the same figure.
 
 ```{r}
 ggplot(main_results_hex9_pivot_longer) +
@@ -5200,8 +5202,6 @@ ggsave("Boxplot_Access_All_by_income_decile.png", path = "Data/Results/Images/")
 ```
 
 
-
-
 ### Write geopackage
 
 ```{r}
@@ -5212,8 +5212,3 @@ main_results_hex9 %>%
 ```
 
 
-
-
-
-
-## Alternative scenario
